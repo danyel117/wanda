@@ -1,7 +1,18 @@
 import { LoginButton } from '@components/LoginButton';
-import LoginModal from '@components/modals/LoginModal';
-import type { NextPage } from 'next';
+import type { GetServerSideProps, NextPage } from 'next';
 import Head from 'next/head';
+import matchRoles from 'utils/matchRoles';
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const { rejected, isPublic, page } = await matchRoles(ctx);
+  return {
+    props: {
+      rejected,
+      isPublic,
+      page,
+    },
+  };
+};
 
 const Home: NextPage = () => {
   return (

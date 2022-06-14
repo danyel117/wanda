@@ -17,7 +17,7 @@ const LoginModal = ({ open, setOpen }: LoginModalProps) => {
         <span>Select your preferred login method:</span>
         <div className='px-10 flex flex-col gap-3'>
           <LoginButton Icon={FcGoogle} text='Google' provider='google' />
-          <LoginButton Icon={FaGithub} text='GitHub' provider='google' />
+          <LoginButton Icon={FaGithub} text='GitHub' provider='github' />
         </div>
       </div>
     </Modal>

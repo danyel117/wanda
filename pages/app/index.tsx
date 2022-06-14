@@ -1,7 +1,19 @@
-import React from 'react';
+import { GetServerSideProps, NextPage } from 'next';
+import matchRoles from 'utils/matchRoles';
 
-const index = () => {
-  return <div>Wanda Internal panel</div>;
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const { rejected, isPublic, page } = await matchRoles(ctx);
+  return {
+    props: {
+      rejected,
+      isPublic,
+      page,
+    },
+  };
 };
 
-export default index;
+const AppIndex: NextPage = () => {
+  return <div>Wanda Internal panel. Expect more things here soon 😎</div>;
+};
+
+export default AppIndex;
