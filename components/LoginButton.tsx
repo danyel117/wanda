@@ -13,14 +13,16 @@ const LoginButton = () => {
   if (session) {
     return (
       <Link href='/app'>
-        <button className='primary'>Take me there!</button>
+        <button type='button' className='primary'>
+          Take me there!
+        </button>
       </Link>
     );
   }
 
   return (
     <>
-      <button className='primary' onClick={() => setOpen(true)}>
+      <button type='button' className='primary' onClick={() => setOpen(true)}>
         Take me there!
       </button>
       <LoginModal open={open} setOpen={setOpen} />

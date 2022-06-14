@@ -17,3 +17,11 @@ button.primary {
 button.secondary {
   @apply bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded;
 }
+
+.recorder > div {
+  width: 500px;
+}
+
+audio {
+  height: 35px;
+}

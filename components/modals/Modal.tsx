@@ -1,4 +1,9 @@
-import { Dialog as MuiDialog, DialogTitle, DialogContent, IconButton } from '@mui/material';
+import {
+  Dialog as MuiDialog,
+  DialogTitle,
+  DialogContent,
+  IconButton,
+} from '@mui/material';
 import { Dispatch, SetStateAction, ReactNode } from 'react';
 import { MdClose } from 'react-icons/md';
 
@@ -32,7 +37,11 @@ const Modal = ({ open, setOpen, children, title = '' }: ComponentProps) => {
               </div>
             </div>
 
-            <IconButton aria-label='close' onClick={handleClose} sx={{ outline: 'none' }}>
+            <IconButton
+              aria-label='close'
+              onClick={handleClose}
+              sx={{ outline: 'none' }}
+            >
               <MdClose />
             </IconButton>
           </div>

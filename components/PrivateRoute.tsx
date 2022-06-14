@@ -1,11 +1,11 @@
-import { useSession, signIn } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import Loading from '@components/Loading';
 import PrivateLayout from '@layouts/PrivateLayout';
 import Link from 'next/link';
 // import LayoutPublic from '@layouts/LayoutPublic';
 
 interface PrivateRouteProps {
-  children: React.ReactNode;
+  children: JSX.Element;
   rejected?: boolean;
   isPublic?: boolean;
 }
@@ -14,7 +14,7 @@ const PrivateRoute = ({ children, rejected, isPublic }: PrivateRouteProps) => {
   const { status } = useSession();
 
   if (status === 'loading') return <Loading />;
-  if (isPublic) return <>{children}</>;
+  if (isPublic) return children;
 
   if (!rejected) return <PrivateLayout>{children}</PrivateLayout>;
 

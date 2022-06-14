@@ -1,9 +1,9 @@
 interface PrivateLayoutProps {
-  children: React.ReactNode;
+  children: JSX.Element;
 }
 
-const PrivateLayout = ({ children }: PrivateLayoutProps) => {
-  return <>{children}</>;
-};
+function PrivateLayout({ children }: PrivateLayoutProps) {
+  return children;
+}
 
 export default PrivateLayout;
