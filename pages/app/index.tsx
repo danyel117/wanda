@@ -13,7 +13,11 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 };
 
 const AppIndex: NextPage = () => {
-  return <div>Wanda Internal panel. Expect more things here soon 😎</div>;
+  return (
+    <div>
+      <span>Wanda Internal panel. Expect more things here soon 😎</span>
+    </div>
+  );
 };
 
 export default AppIndex;

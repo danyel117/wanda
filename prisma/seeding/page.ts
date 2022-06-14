@@ -1,12 +1,12 @@
 const pages = [
   {
-    name: 'Home | Wanda',
+    name: 'Home',
     route: '/',
     roles: ['ADMIN', 'USER', 'EXPERT'],
     isPublic: true,
   },
   {
-    name: 'App | Wanda',
+    name: 'App',
     route: '/app',
     roles: ['ADMIN', 'EXPERT'],
     isPublic: false,
