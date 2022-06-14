@@ -18,7 +18,7 @@ const Modal = ({ open, setOpen, children, title = '' }: ComponentProps) => {
       open={open}
       onClose={handleClose}
       aria-labelledby='form-dialog-title'
-      className='hidden lg:block overflow-y-visible'
+      className='block overflow-y-visible'
       PaperProps={{ sx: { overflowY: 'visible' } }}
     >
       {title && (
