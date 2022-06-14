@@ -17,11 +17,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 const Home: NextPage = () => {
   return (
     <div className='flex h-screen w-screen'>
-      <Head>
-        <title>Wanda</title>
-        <meta name='description' content='Think Aloud made easy' />
-        <link rel='icon' href='/favicon.ico' />
-      </Head>
+
 
       <main className='flex flex-col w-full h-full justify-center items-center gap-4'>
         <div className='flex flex-col gap-2 items-center'>

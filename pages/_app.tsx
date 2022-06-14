@@ -8,7 +8,9 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   return (
     <SessionProvider session={session}>
       <Head>
-        <title>{`${pageProps?.page?.name} | Wanda`}</title>
+        <title>{`${pageProps?.page?.name ?? 'Home'} | Wanda`}</title>
+        <meta name='description' content='Think Aloud made easy' />
+        <link rel='icon' href='/favicon.ico' />
       </Head>
       <PrivateRoute rejected={pageProps.rejected} isPublic={pageProps.isPublic}>
         <Component {...pageProps} />;
