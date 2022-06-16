@@ -1,6 +1,10 @@
-import VoiceRecorder from '@components/voice-recorder/VoiceRecorder';
 import { GetServerSideProps, NextPage } from 'next';
+// import dynamic from 'next/dynamic';
 import matchRoles from 'utils/matchRoles';
+
+// const VoiceRecorder = dynamic(() =>
+//   import('@components/voice-recorder/VoiceRecorder')
+// );
 
 export const getServerSideProps: GetServerSideProps = async ctx => {
   const { rejected, isPublic, page } = await matchRoles(ctx);
@@ -14,11 +18,9 @@ export const getServerSideProps: GetServerSideProps = async ctx => {
 };
 
 const AppIndex: NextPage = () => (
-  <div className='flex flex-col h-full w-full'>
-    <span>Wanda Internal panel. Expect more things here soon 😎</span>
-    <div className='flex w-full h-full justify-center'>
-      <VoiceRecorder />
-    </div>
+  <div className='flex'>
+    <div className='h-44 w-44 border-2 border-red-400'>data 1</div>
+    <div className='h-44 w-44 border-2 border-red-400'>data 1</div>
   </div>
 );
 

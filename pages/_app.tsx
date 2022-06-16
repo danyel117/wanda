@@ -1,9 +1,9 @@
 /* eslint-disable react/jsx-no-useless-fragment */
-import 'styles/globals.css';
 import { AppProps } from 'next/app';
 import { SessionProvider } from 'next-auth/react';
 import Head from 'next/head';
 import PrivateRoute from '@components/PrivateRoute';
+import 'styles/globals.css';
 
 const MyApp = ({
   Component,
