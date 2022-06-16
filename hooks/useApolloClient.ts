@@ -7,10 +7,18 @@ import { useCallback, useEffect, useState } from 'react';
 import { CachePersistor, LocalStorageWrapper } from 'apollo3-cache-persist';
 
 const useApolloClient = () => {
-  const [client, setClient] = useState<ApolloClient<NormalizedCacheObject>>();
+  const [client, setClient] = useState<ApolloClient<NormalizedCacheObject>>(
+    new ApolloClient({
+      uri: '/api/graphql',
+      credentials: 'same-origin',
+      cache: new InMemoryCache(),
+    })
+  );
+
   const [persistor, setPersistor] = useState<
     CachePersistor<NormalizedCacheObject>
   >();
+
   useEffect(() => {
     async function init() {
       const cache = new InMemoryCache();
