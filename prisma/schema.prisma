@@ -59,6 +59,30 @@ model Role {
   updatedAt DateTime @updatedAt
 }
 
+model EvaluationSession {
+  id       String @id @default(cuid())
+  expert   User   @relation(fields: [expertId], references: [id], name: "session-expert")
+  expertId String
+  user     User   @relation(fields: [userId], references: [id], name: "session-user")
+  userId   String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+
+}
+
+model Study {
+  id           String @id @default(cuid())
+  site         String
+  createdBy    User   @relation(fields: [userId], references: [id], name: "study-expert")
+  userId       String @unique
+  participants User[] @relation("study-participants")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 model Session {
   id           String   @id @default(cuid())
   sessionToken String   @unique
@@ -77,6 +101,11 @@ model User {
   accounts      Account[]
   sessions      Session[]
   roleId        String?
+
+  isParticipantOf  Study[]             @relation("study-participants")
+  studies          Study[]             @relation("study-expert")
+  sessionsAsExpert EvaluationSession[] @relation("session-expert")
+  sessionsAsUser   EvaluationSession[] @relation("session-user")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
