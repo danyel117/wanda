@@ -11,6 +11,12 @@ const pages = [
     roles: ['ADMIN', 'EXPERT'],
     isPublic: false,
   },
+  {
+    name: 'Session',
+    route: '/app/session/[id]',
+    roles: ['ADMIN', 'EXPERT', 'USER'],
+    isPublic: true,
+  },
 ];
 
 export { pages };
