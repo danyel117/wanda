@@ -12,7 +12,7 @@ type ComponentProps = {
   setOpen: Dispatch<SetStateAction<boolean>>;
   children: ReactNode;
   title?: string | '';
-  preventClose: boolean;
+  preventClose?: boolean;
 };
 
 const Modal = ({
