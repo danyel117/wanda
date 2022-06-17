@@ -1,6 +1,5 @@
 import { GetServerSideProps, NextPage } from 'next';
 import matchRoles from 'utils/matchRoles';
-import script from 'public/img/script.jpg';
 import Image from 'next/image';
 import Link from 'next/link';
 
