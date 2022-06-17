@@ -51,6 +51,8 @@ model Script {
     script    String              @db.Text
     recording String
     sessions  EvaluationSession[]
+    createdBu User                @relation(fields: [userId], references: [id])
+    userId    String
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -87,4 +89,5 @@ model User {
     studies          Study[]             @relation("study-expert")
     sessionsAsExpert EvaluationSession[] @relation("session-expert")
     sessionsAsUser   EvaluationSession[] @relation("session-user")
+    scripts          Script[]
 }
