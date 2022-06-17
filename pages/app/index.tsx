@@ -15,7 +15,7 @@ export const getServerSideProps: GetServerSideProps = async ctx => {
 };
 
 const AppIndex: NextPage = () => (
-  <div className='flex p-10 flex-nowrap gap-5'>
+  <div className='flex p-10 flex-wrap gap-5'>
     <IndexCard
       image='/img/evaluation.jpg'
       title='Study Management'
