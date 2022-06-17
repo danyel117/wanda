@@ -24,6 +24,7 @@ export default NextAuth({
         ...session,
         user: {
           ...session.user,
+          id: newSession?.user.id,
           role: newSession?.user.role,
         },
       };

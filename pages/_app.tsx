@@ -3,9 +3,11 @@ import { AppProps } from 'next/app';
 import { SessionProvider } from 'next-auth/react';
 import Head from 'next/head';
 import PrivateRoute from '@components/PrivateRoute';
-import 'styles/globals.css';
 import useApolloClient from 'hooks/useApolloClient';
 import { ApolloProvider } from '@apollo/client';
+import { ToastContainer } from 'react-toastify';
+import 'styles/globals.css';
+import 'react-toastify/dist/ReactToastify.css';
 
 const MyApp = ({
   Component,
@@ -28,6 +30,7 @@ const MyApp = ({
             <Component {...pageProps} />
           </>
         </PrivateRoute>
+        <ToastContainer />
       </ApolloProvider>
     </SessionProvider>
   );

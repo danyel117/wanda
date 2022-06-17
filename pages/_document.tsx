@@ -12,7 +12,9 @@ class MyDocument extends Document {
   render() {
     return (
       <Html lang='en'>
-        <Head />
+        <Head>
+          <meta charSet='utf-8' />
+        </Head>
         <body style={{ background: '#fff' }}>
           <Main />
           <NextScript />

@@ -21,6 +21,7 @@
   },
   "plugins": ["react", "@typescript-eslint", "prettier", "typescript"],
   "rules": {
+    "jsx-a11y/media-has-caption": "off",
     "no-restricted-imports": [
       "error",
       {
@@ -55,6 +56,14 @@
       }
     ],
     "no-console": "error",
+    "no-unused-vars": [
+      2,
+      { "args": "after-used", "argsIgnorePattern": "^(parent|args)" }
+    ],
+    "@typescript-eslint/no-unused-vars": [
+      2,
+      { "args": "after-used", "argsIgnorePattern": "^(parent|args)" }
+    ],
     "jsx-a11y/anchor-is-valid": [
       "error",
       {

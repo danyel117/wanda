@@ -43,7 +43,7 @@ const Modal = ({
                 <div className=' h-1 w-1 bg-indigo-500 rounded-md mx-1' />
               </div>
             </div>
-            {preventClose && (
+            {!preventClose && (
               <IconButton
                 aria-label='close'
                 onClick={handleClose}

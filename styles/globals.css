@@ -11,7 +11,7 @@ h2 {
 }
 
 button.primary {
-  @apply bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded;
+  @apply bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded disabled:bg-gray-500 disabled:cursor-not-allowed;
 }
 
 button.secondary {
@@ -25,4 +25,16 @@ nav {
 main {
   max-height: 90vh;
   overflow-y: auto;
+}
+
+input {
+  @apply border-2 border-gray-500 rounded-lg p-1 focus:border-indigo-500 outline-none;
+}
+
+label {
+  @apply flex flex-col;
+}
+
+.DraftEditor-root {
+  height: 300px !important;
 }
