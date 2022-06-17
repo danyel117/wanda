@@ -17,7 +17,7 @@ const Navbar = () => {
   const { open, setOpen } = useSidebar();
 
   return (
-    <nav className='flex items-center lg:items-stretch justify-end lg:justify-between bg-white shadow relative z-10'>
+    <nav className='flex items-center lg:items-stretch justify-end lg:justify-between bg-white shadow relative z-10 h-14'>
       <div className='hidden lg:flex w-full pr-6 justify-end'>
         <div className='w-1/2 hidden lg:flex'>
           <div className='w-full flex items-center pl-8 justify-end'>

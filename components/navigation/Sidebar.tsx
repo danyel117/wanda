@@ -3,16 +3,19 @@ import useActiveRoute from 'hooks/useActiveRoute';
 import Link from 'next/link';
 import { nanoid } from 'nanoid';
 import { IconType } from 'react-icons/lib';
-import { MdApps, MdClose } from 'react-icons/md';
+import { MdAssignment, MdClose, MdHome } from 'react-icons/md';
 import { Notifications, UserProfileNav } from '@components/navigation/Navbar';
 
 const Sidebar = () => {
   const { open, setOpen } = useSidebar();
   const sidebarItems = [
-    <SidebarItem key={nanoid()} Icon={MdApps} name='Dashboard' href='/' />,
-    <SidebarItem key={nanoid()} Icon={MdApps} name='Dashboard' href='/tets' />,
-    <SidebarItem key={nanoid()} Icon={MdApps} name='Dashboard' href='/tets3' />,
-    <SidebarItem key={nanoid()} Icon={MdApps} name='Dashboard' href='/wef' />,
+    <SidebarItem key={nanoid()} Icon={MdHome} name='Dashboard' href='/app' />,
+    <SidebarItem
+      key={nanoid()}
+      Icon={MdAssignment}
+      name='Scripts'
+      href='/app/scripts'
+    />,
   ];
   return (
     <>

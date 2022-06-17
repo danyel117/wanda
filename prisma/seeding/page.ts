@@ -12,6 +12,12 @@ const pages = [
     isPublic: false,
   },
   {
+    name: 'Script management',
+    route: '/app/scripts',
+    roles: ['ADMIN', 'EXPERT'],
+    isPublic: false,
+  },
+  {
     name: 'Session',
     route: '/app/session/[id]',
     roles: ['ADMIN', 'EXPERT', 'USER'],

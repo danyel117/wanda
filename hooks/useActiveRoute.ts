@@ -5,7 +5,7 @@ const useActiveRoute = (href: string) => {
   const [active, setActive] = useState<boolean>(false);
   const router = useRouter();
   useEffect(() => {
-    if (router.pathname.includes(`${href}`)) {
+    if (router.pathname === href) {
       setActive(true);
     } else {
       setActive(false);
