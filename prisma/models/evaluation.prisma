@@ -1,0 +1,82 @@
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+enum Enum_EvaluationStatus {
+    CREATED
+    STARTED
+    COMPLETED
+    FINISHED
+}
+
+model EvaluationSession {
+    id       String                   @id @default(cuid())
+    script   Script                   @relation(fields: [scriptId], references: [id])
+    scriptId String
+    study    Study                    @relation(fields: [studyId], references: [id])
+    studyId  String
+    expert   User                     @relation(fields: [expertId], references: [id], name: "session-expert")
+    expertId String
+    user     User                     @relation(fields: [userId], references: [id], name: "session-user")
+    userId   String
+    tasks    Task[]
+    states   EvaluationSessionState[]
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model EvaluationSessionState {
+    id                  String                @id @default(cuid())
+    status              Enum_EvaluationStatus @default(CREATED)
+    task                Task?                 @relation(fields: [taskId], references: [id])
+    taskId              String?
+    session             EvaluationSession     @relation(fields: [evaluationSessionId], references: [id])
+    evaluationSessionId String
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model Script {
+    id        String              @id @default(cuid())
+    script    String              @db.Text
+    recording String
+    sessions  EvaluationSession[]
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model Task {
+    id                  String                   @id @default(cuid())
+    description         String                   @db.Text
+    evaluation          EvaluationSession        @relation(fields: [evaluationSessionId], references: [id])
+    evaluationSessionId String
+    states              EvaluationSessionState[]
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model Study {
+    id           String              @id @default(cuid())
+    name         String
+    site         String
+    createdBy    User                @relation(fields: [userId], references: [id], name: "study-expert")
+    userId       String              @unique
+    participants User[]              @relation("study-participants")
+    sessions     EvaluationSession[]
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model User {
+    id               String              @id @default(cuid())
+    isParticipantOf  Study[]             @relation("study-participants")
+    studies          Study[]             @relation("study-expert")
+    sessionsAsExpert EvaluationSession[] @relation("session-expert")
+    sessionsAsUser   EvaluationSession[] @relation("session-user")
+}

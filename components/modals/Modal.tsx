@@ -12,9 +12,16 @@ type ComponentProps = {
   setOpen: Dispatch<SetStateAction<boolean>>;
   children: ReactNode;
   title?: string | '';
+  preventClose: boolean;
 };
 
-const Modal = ({ open, setOpen, children, title = '' }: ComponentProps) => {
+const Modal = ({
+  open,
+  setOpen,
+  children,
+  title = '',
+  preventClose = false,
+}: ComponentProps) => {
   const handleClose = () => {
     setOpen(false);
   };
@@ -36,14 +43,15 @@ const Modal = ({ open, setOpen, children, title = '' }: ComponentProps) => {
                 <div className=' h-1 w-1 bg-indigo-500 rounded-md mx-1' />
               </div>
             </div>
-
-            <IconButton
-              aria-label='close'
-              onClick={handleClose}
-              sx={{ outline: 'none' }}
-            >
-              <MdClose />
-            </IconButton>
+            {preventClose && (
+              <IconButton
+                aria-label='close'
+                onClick={handleClose}
+                sx={{ outline: 'none' }}
+              >
+                <MdClose />
+              </IconButton>
+            )}
           </div>
         </DialogTitle>
       )}
