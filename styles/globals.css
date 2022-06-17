@@ -38,3 +38,15 @@ label {
 .DraftEditor-root {
   height: 300px !important;
 }
+
+.sidebar-item {
+  @apply text-white m-2 border-b border-gray-300 cursor-pointer text-sm leading-3 tracking-normal p-2 focus:outline-none hover:border-indigo-300 hover:text-indigo-300;
+}
+
+.sidebar-item-active {
+  @apply bg-indigo-700 focus:text-indigo-700;
+}
+
+aside {
+  @apply text-white;
+}

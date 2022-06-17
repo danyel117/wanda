@@ -65,7 +65,7 @@ const Scripts: NextPage = () => {
             </button>
           </div>
         </div>
-        <div className='p-6 flex gap-4 flex-wrap justify-between'>
+        <div className='w-full p-6 grid grid-cols-3 gap-6 justify-items-center'>
           {data.getScripts?.map((script: Script) => (
             <ScriptCard key={script.id} script={script} />
           ))}
