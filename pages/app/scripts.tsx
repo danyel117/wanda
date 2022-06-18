@@ -14,6 +14,7 @@ import { toast } from 'react-toastify';
 import { GET_SCRIPTS } from 'graphql/queries/script';
 import Loading from '@components/Loading';
 import { Script } from '@prisma/client';
+import { nanoid } from 'nanoid';
 
 const RichText = dynamic(() => import('@components/RichText/RichTextEditor'), {
   ssr: false,
@@ -47,7 +48,7 @@ export const getServerSideProps: GetServerSideProps = async ctx => {
 const Scripts: NextPage = () => {
   const [openNew, setOpenNew] = useState<boolean>(false);
   const { data, loading } = useQuery(GET_SCRIPTS, {
-    fetchPolicy: 'network-only',
+    fetchPolicy: 'cache-and-network',
   });
   if (loading) return <Loading />;
   return (
@@ -161,10 +162,10 @@ const NewScript = ({ setOpen }: NewScriptProps) => {
         content: content?.toString('markdown') ?? '',
         recording,
       };
-
+      const id = nanoid();
       const uploadedFormData = await uploadFormFiles(
         fd,
-        `${session?.user.id}/scripts`
+        `${session?.user.id}/scripts/${id}`
       );
       try {
         await mutateScript({

@@ -2,12 +2,6 @@ import aws from 'aws-sdk';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getSession } from 'next-auth/react';
 
-const s3 = new aws.S3({
-  accessKeyId: process.env.AWS_ACCESS_KEY_ID_UPLOAD,
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY_UPLOAD,
-  region: 'eu-west-2',
-});
-
 export const getObjectInBucket = async (
   Bucket: string,
   path: string,
@@ -17,8 +11,14 @@ export const getObjectInBucket = async (
     Bucket,
     Key: decodeURIComponent(path),
     ResponseContentType: responseType,
-    Expires: 60 * 60 * 24, // 1 day,
+    Expires: 60 * 60 * 48, // 2 days,
   };
+
+  const s3 = new aws.S3({
+    accessKeyId: process.env.AWS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET,
+    region: 'eu-west-2',
+  });
 
   return s3.getSignedUrl('getObject', bucketParams);
 };

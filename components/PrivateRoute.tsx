@@ -2,6 +2,7 @@ import { useSession } from 'next-auth/react';
 import Loading from '@components/Loading';
 import PrivateLayout from '@layouts/PrivateLayout';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 // import LayoutPublic from '@layouts/LayoutPublic';
 
 interface PrivateRouteProps {
@@ -11,10 +12,16 @@ interface PrivateRouteProps {
 }
 
 const PrivateRoute = ({ children, rejected, isPublic }: PrivateRouteProps) => {
-  const { status } = useSession();
+  const { data: session, status } = useSession();
+  const router = useRouter();
 
   if (status === 'loading') return <Loading />;
   if (isPublic) return children;
+
+  if (!session) {
+    router.push('/');
+    return null;
+  }
 
   if (!rejected) return <PrivateLayout>{children}</PrivateLayout>;
 

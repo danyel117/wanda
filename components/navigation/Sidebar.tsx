@@ -3,7 +3,12 @@ import useActiveRoute from 'hooks/useActiveRoute';
 import Link from 'next/link';
 import { nanoid } from 'nanoid';
 import { IconType } from 'react-icons/lib';
-import { MdAssignment, MdClose, MdHome } from 'react-icons/md';
+import {
+  MdAssignment,
+  MdClose,
+  MdHome,
+  MdLightbulbOutline,
+} from 'react-icons/md';
 import { Notifications, UserProfileNav } from '@components/navigation/Navbar';
 import Image from 'next/image';
 import logo from 'public/img/logo.png';
@@ -12,6 +17,12 @@ const Sidebar = () => {
   const { open, setOpen } = useSidebar();
   const sidebarItems = [
     <SidebarItem key={nanoid()} Icon={MdHome} name='Dashboard' href='/app' />,
+    <SidebarItem
+      key={nanoid()}
+      Icon={MdLightbulbOutline}
+      name='Studies'
+      href='/app/studies'
+    />,
     <SidebarItem
       key={nanoid()}
       Icon={MdAssignment}
