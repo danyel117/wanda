@@ -26,9 +26,7 @@ const MyApp = ({
           rejected={pageProps.rejected}
           isPublic={pageProps.isPublic}
         >
-          <>
-            <Component {...pageProps} />
-          </>
+          <Component {...pageProps} />
         </PrivateRoute>
         <ToastContainer />
       </ApolloProvider>

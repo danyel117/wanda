@@ -1,7 +1,7 @@
 /* eslint-disable arrow-body-style */
 import { GetServerSideProps, NextPage } from 'next';
 import Link from 'next/link';
-import matchRoles from 'utils/matchRoles';
+import matchRoles from '@utils/matchRoles';
 
 export const getServerSideProps: GetServerSideProps = async ctx => {
   const { rejected, isPublic, page } = await matchRoles(ctx);

@@ -1,4 +1,4 @@
-import prisma from 'config/prisma';
+import prisma from '@config/prisma';
 import { EvaluationSession } from '@prisma/client';
 import { Resolver } from 'types';
 

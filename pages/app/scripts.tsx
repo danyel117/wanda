@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import matchRoles from 'utils/matchRoles';
+import matchRoles from '@utils/matchRoles';
 import { GetServerSideProps, NextPage } from 'next';
 import Modal from '@components/modals/Modal';
 import dynamic from 'next/dynamic';

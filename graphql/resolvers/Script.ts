@@ -1,5 +1,5 @@
 import { Script } from '@prisma/client';
-import prisma from 'config/prisma';
+import prisma from '@config/prisma';
 import { getObjectInBucket } from 'pages/api/get-presigned-url';
 import { Resolver } from 'types';
 

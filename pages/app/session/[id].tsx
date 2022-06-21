@@ -7,7 +7,7 @@ import { GET_SESSION } from 'graphql/queries/session';
 import { GetServerSideProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import Draggable from 'react-draggable';
-import matchRoles from 'utils/matchRoles';
+import matchRoles from '@utils/matchRoles';
 
 export const getServerSideProps: GetServerSideProps = async ctx => {
   const { rejected, isPublic, page } = await matchRoles(ctx);

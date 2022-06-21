@@ -16,7 +16,10 @@
     "baseUrl": "./",
     "paths": {
       "@components/*": ["components/*"],
-      "@layouts/*": ["layouts/*"]
+      "@layouts/*": ["layouts/*"],
+      "@config/*": ["config/*"],
+      "@pages/*": ["pages/*"],
+      "@utils/*": ["utils/*"]
     },
     "incremental": true
   },

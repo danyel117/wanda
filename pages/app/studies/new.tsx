@@ -10,7 +10,7 @@ import { GetServerSideProps, NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import { SyntheticEvent, useEffect, useState } from 'react';
 import { MdVisibility } from 'react-icons/md';
-import matchRoles from 'utils/matchRoles';
+import matchRoles from '@utils/matchRoles';
 
 const VoiceRecorder = dynamic(
   () => import('@components/VoiceRecorder/VoiceRecorder'),

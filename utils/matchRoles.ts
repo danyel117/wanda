@@ -1,4 +1,4 @@
-import prisma from 'config/prisma';
+import prisma from '@config/prisma';
 import { getSession } from 'next-auth/react';
 import { GetServerSidePropsContext } from 'next/types';
 
