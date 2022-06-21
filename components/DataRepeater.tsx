@@ -9,8 +9,18 @@ interface ContainerProps {
   children: JSX.Element | JSX.Element[];
 }
 
+export interface RepeatedComponentProps {
+  counter?: number;
+  defaultInput?: any;
+  name?: string;
+}
+
 interface DataRepeaterInterface {
-  RepeatedComponent: () => JSX.Element;
+  RepeatedComponent: ({
+    counter,
+    defaultInput,
+    name,
+  }: RepeatedComponentProps) => JSX.Element;
   Container: ({ children }: ContainerProps) => JSX.Element;
   Title: () => JSX.Element;
   inputName: string;
@@ -25,6 +35,7 @@ interface DataRepeaterInterface {
   minusButtonColorClass?: string;
   minusButtonHoverColorClass?: string;
 }
+
 /**
  *
  * @param RepeatedComponent Componente de React que se repetirá cada que se presione "+"

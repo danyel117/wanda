@@ -1,5 +1,5 @@
 import { useQuery } from '@apollo/client';
-import DataRepeater from '@components/DataRepeater';
+import DataRepeater, { RepeatedComponentProps } from '@components/DataRepeater';
 import Modal from '@components/modals/Modal';
 import { ScriptCard } from '@components/Scritps/ScriptCard';
 import { Tooltip } from '@mui/material';
@@ -38,7 +38,6 @@ const NewStudy: NextPage = () => {
   const { form, formData, updateFormData } = useFormData(null);
   const submitForm = (e: SyntheticEvent) => {
     e.preventDefault();
-    console.log(formData);
   };
 
   useEffect(() => {
@@ -130,12 +129,19 @@ const Container = ({ children }: ContainerProps) => (
   </div>
 );
 
-const TaskDefinition = props => {
-  console.log(props);
+const TaskDefinition = ({ counter }: RepeatedComponentProps) => {
   const [recording, setRecording] = useState<File>();
+
+  useEffect(() => {
+    if (recording) {
+      // eslint-disable-next-line no-console
+      console.log(recording);
+    }
+  }, [recording]);
+
   return (
     <div className='bg-gray-50 p-3 rounded-lg shadow-md'>
-      <h2 className='w-full text-center'>Task #{props.counter + 1}</h2>
+      <h2 className='w-full text-center'>Task #{counter ?? 0 + 1}</h2>
       <label htmlFor='name'>
         <span>Task description</span>
         <textarea name='name' placeholder='Task' required />
