@@ -9,7 +9,7 @@ const useFormData = (initial: HTMLFormElement | null) => {
       const fd = new FormData(<HTMLFormElement>form.current);
       const obj: ParsedFormData = {};
       fd.forEach((value, key) => {
-        obj[key] = value;
+        if (!key.includes('~')) obj[key] = value;
       });
       return obj;
     }

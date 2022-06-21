@@ -30,6 +30,7 @@
     "apollo-server-micro": "^3.9.0",
     "apollo3-cache-persist": "^0.14.0",
     "aws-sdk": "^2.1157.0",
+    "cuid": "^2.1.8",
     "graphql": "^16.5.0",
     "jest-mock-extended": "^2.0.6",
     "micro": "^9.3.4",
