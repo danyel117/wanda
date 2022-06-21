@@ -4,7 +4,7 @@ import { GetServerSideProps, NextPage } from 'next';
 import Modal from '@components/modals/Modal';
 import dynamic from 'next/dynamic';
 import { EditorValue } from 'react-rte';
-import { BsQuestionCircle, BsThreeDotsVertical } from 'react-icons/bs';
+import { BsQuestionCircle } from 'react-icons/bs';
 import { Tooltip } from '@mui/material';
 import { uploadFormFiles } from 'utils/uploadS3';
 import { useMutation, useQuery } from '@apollo/client';
@@ -15,17 +15,11 @@ import { GET_SCRIPTS } from 'graphql/queries/script';
 import Loading from '@components/Loading';
 import { Script } from '@prisma/client';
 import { nanoid } from 'nanoid';
+import { ScriptCard } from '@components/Scritps/ScriptCard';
 
 const RichText = dynamic(() => import('@components/RichText/RichTextEditor'), {
   ssr: false,
 });
-
-const MarkdownRenderer = dynamic(
-  () => import('@components/RichText/MarkdownRenderer'),
-  {
-    ssr: false,
-  }
-);
 
 const VoiceRecorder = dynamic(
   () => import('@components/VoiceRecorder/VoiceRecorder'),
@@ -76,33 +70,6 @@ const Scripts: NextPage = () => {
         <NewScript setOpen={setOpenNew} />
       </Modal>
     </>
-  );
-};
-
-interface ScriptCardProps {
-  script: Script;
-}
-
-const ScriptCard = ({ script }: ScriptCardProps) => {
-  return (
-    <div className='w-80 flex flex-col gap-2 items-center shadow-md bg-gray-50 p-4 rounded-lg'>
-      <div className='border-b p-2 border-indigo-500 w-full'>
-        <div className='flex w-full justify-center items-center'>
-          <span className='w-full text-center'>{script.name}</span>
-          <div className='w-10 flex justify-end hover:text-indigo-500'>
-            <Tooltip title='Manage script'>
-              <button type='button'>
-                <BsThreeDotsVertical />
-              </button>
-            </Tooltip>
-          </div>
-        </div>
-      </div>
-      <div className='h-80 overflow-y-auto p-2'>
-        <MarkdownRenderer md={script.script} />
-      </div>
-      <audio src={script.recording} controls />
-    </div>
   );
 };
 

@@ -24,6 +24,12 @@ const pages = [
     isPublic: false,
   },
   {
+    name: 'New study',
+    route: '/app/studies/new',
+    roles: ['ADMIN', 'EXPERT'],
+    isPublic: false,
+  },
+  {
     name: 'Session',
     route: '/app/session/[id]',
     roles: ['ADMIN', 'EXPERT', 'USER'],

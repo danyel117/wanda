@@ -48,17 +48,17 @@ const VoiceRecorder = ({ setRecordingFile, fileName }: VoiceRecorderProps) => {
       case 'idle':
         return 'Ready to record...';
       case 'recording':
-        return 'Recording...';
+        return 'In process...';
       case 'stopped':
-        return 'Review:';
+        return 'Review';
       default:
         return status;
     }
   };
 
   return (
-    <div className='text-3xl flex flex-col justify-center items-start'>
-      <p>{getStatusText()}</p>
+    <div className='text-xl flex flex-col justify-center items-start w-[400px]'>
+      <p>Recording: {getStatusText()}</p>
       <div className='flex h-14'>
         <button className='mx-2' type='button' onClick={handleRecord}>
           <Tooltip

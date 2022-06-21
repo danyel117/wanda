@@ -27,7 +27,9 @@ main {
   overflow-y: auto;
 }
 
-input {
+input,
+select,
+textarea {
   @apply border-2 border-gray-500 rounded-lg p-1 focus:border-indigo-500 outline-none;
 }
 
