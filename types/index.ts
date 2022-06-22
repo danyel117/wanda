@@ -1,3 +1,4 @@
+import { Study } from '@prisma/client';
 import { Session } from 'next-auth';
 
 interface Context {
@@ -18,3 +19,12 @@ export type ParsedFormData = Record<
   string,
   string | File | number | boolean | { file: File; id: string }
 >;
+
+export interface UserStudy extends Study {
+  taskCount: number;
+  evaluationSummary: {
+    pending: number;
+    completed: number;
+    total: number;
+  };
+}

@@ -7,12 +7,16 @@ const ScriptResolvers: Resolver = {
   Script: {
     recording: async (parent: Script) => {
       const bucket = 'wanda-media';
-      const path = parent?.recording.replace(
+      const path = parent?.recording?.replace(
         `https://${bucket}.s3.amazonaws.com/`,
         ''
       );
-      const audio = await getObjectInBucket(bucket, path, 'audio/mpeg');
-      return audio;
+      if (path) {
+        const audio = await getObjectInBucket(bucket, path, 'audio/mpeg');
+        return audio;
+      }
+
+      return null;
     },
   },
   Query: {

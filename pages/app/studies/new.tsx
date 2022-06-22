@@ -73,9 +73,6 @@ const NewStudy: NextPage = () => {
       })
     );
 
-    console.log(formData);
-    console.log(filesUploaded);
-
     try {
       await createStudy({
         variables: {

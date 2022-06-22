@@ -15,7 +15,7 @@ const MarkdownRenderer = dynamic(
 );
 
 const ScriptCard = ({ script }: ScriptCardProps) => (
-  <div className='w-80 flex flex-col gap-2 items-center shadow-md bg-gray-50 p-4 rounded-lg'>
+  <div className='card w-80'>
     <div className='border-b p-2 border-indigo-500 w-full'>
       <div className='flex w-full justify-center items-center'>
         <span className='w-full text-center'>{script?.name ?? ''}</span>

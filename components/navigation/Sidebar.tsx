@@ -8,6 +8,7 @@ import {
   MdClose,
   MdHome,
   MdLightbulbOutline,
+  MdPsychology,
 } from 'react-icons/md';
 import { Notifications, UserProfileNav } from '@components/navigation/Navbar';
 import Image from 'next/image';
@@ -22,6 +23,12 @@ const Sidebar = () => {
       Icon={MdLightbulbOutline}
       name='Studies'
       href='/app/studies'
+    />,
+    <SidebarItem
+      key={nanoid()}
+      Icon={MdPsychology}
+      name='Evaluations'
+      href='/app/evaluations'
     />,
     <SidebarItem
       key={nanoid()}

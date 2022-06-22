@@ -1,9 +1,44 @@
 import prisma from '@config/prisma';
-import { Task } from '@prisma/client';
+import { Enum_EvaluationSessionStatus, Study, Task } from '@prisma/client';
 import { Resolver } from 'types';
 
 const StudyResolvers: Resolver = {
-  Query: {},
+  Study: {
+    taskCount: async (parent: Study, args) =>
+      await prisma.task.count({
+        where: {
+          studyId: parent.id,
+        },
+      }),
+    evaluationSummary: async (parent: Study, args) => {
+      const evaluationSessions = await prisma.evaluationSession.findMany({
+        where: {
+          studyId: parent.id,
+        },
+      });
+
+      const completed = evaluationSessions.filter(
+        es => es.status === Enum_EvaluationSessionStatus.COMPLETED
+      ).length;
+
+      const total = evaluationSessions.length;
+      return {
+        pending: total - completed,
+        completed,
+        total,
+      };
+    },
+  },
+  Query: {
+    getUserStudies: async (parent, args, context) =>
+      await prisma.study.findMany({
+        where: {
+          userId: {
+            equals: context.session?.user.id ?? '',
+          },
+        },
+      }),
+  },
   Mutation: {
     createStudyWithTasks: async (parent, args, context) =>
       await prisma.study.create({

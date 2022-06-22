@@ -50,9 +50,9 @@ const Scripts: NextPage = () => {
       <div className='flex flex-col h-full w-full p-10'>
         <div className='flex w-full'>
           <h1 className='w-full text-center'>Script management</h1>
-          <div className='w-1/5 flex justify-center'>
+          <div className='flex justify-center whitespace-nowrap'>
             <button
-              className='primary'
+              className='primary flex'
               type='button'
               onClick={() => setOpenNew(true)}
             >
