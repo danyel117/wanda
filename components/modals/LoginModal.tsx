@@ -1,9 +1,10 @@
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction, SyntheticEvent } from 'react';
 import Modal from '@components/modals/Modal';
 import { FcGoogle } from 'react-icons/fc';
 import { FaGithub } from 'react-icons/fa';
 import { IconType } from 'react-icons';
 import { signIn } from 'next-auth/react';
+import useFormData from 'hooks/useFormData';
 
 interface LoginModalProps {
   open: boolean;
@@ -17,10 +18,41 @@ const LoginModal = ({ open, setOpen }: LoginModalProps) => (
       <div className='px-10 flex flex-col gap-3'>
         <LoginButton Icon={FcGoogle} text='Google' provider='google' />
         <LoginButton Icon={FaGithub} text='GitHub' provider='github' />
+        <EmailLogin />
       </div>
     </div>
   </Modal>
 );
+
+const EmailLogin = () => {
+  const { form, formData, updateFormData } = useFormData(null);
+
+  const submitForm = (e: SyntheticEvent) => {
+    e.preventDefault();
+    signIn('email', { email: formData.email, callbackUrl: '/app' });
+  };
+  return (
+    <div className='flex flex-col items-center'>
+      <div className='text-gray-300'>------------- or -------------</div>
+      <form
+        className='flex flex-col justify-center gap-2'
+        ref={form}
+        onChange={updateFormData}
+        onSubmit={submitForm}
+      >
+        <label htmlFor='email'>
+          <span>Login with email</span>
+          <input name='email' type='email' placeholder='Email' />
+        </label>
+        <div className='flex justify-center'>
+          <button className='primary' type='submit'>
+            Send me a link!
+          </button>
+        </div>
+      </form>
+    </div>
+  );
+};
 
 interface LoginButtonProps {
   Icon: IconType;

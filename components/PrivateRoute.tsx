@@ -1,7 +1,7 @@
-import { useSession } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import Loading from '@components/Loading';
 import PrivateLayout from '@layouts/PrivateLayout';
-import Link from 'next/link';
+// import Link from 'next/link';
 import { useRouter } from 'next/router';
 // import LayoutPublic from '@layouts/LayoutPublic';
 
@@ -27,12 +27,17 @@ const PrivateRoute = ({ children, rejected, isPublic }: PrivateRouteProps) => {
 
   return (
     <div>
-      You are not authorized to view this page.{' '}
-      <Link href='/'>
+      You are not authorized to view this page.
+      <button
+        type='button'
+        onClick={() => {
+          signOut();
+        }}
+      >
         <a className='border-b-2 text-blue-500 border-blue-500 hover:border-blue-700 hover:text-blue-700'>
           Take me home
         </a>
-      </Link>
+      </button>
     </div>
   );
 };

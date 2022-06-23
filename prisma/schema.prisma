@@ -74,6 +74,14 @@ model User {
   updatedAt        DateTime            @updatedAt
 }
 
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
 model EvaluationSession {
   id           String                       @id @default(cuid())
   status       Enum_EvaluationSessionStatus @default(NOT_STARTED)

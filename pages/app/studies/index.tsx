@@ -7,6 +7,7 @@ import Loading from '@components/Loading';
 import { UserStudy } from 'types';
 import { MdPsychology, MdTask } from 'react-icons/md';
 import StatCard from '@components/StatCard';
+import PageHeader from '@components/PageHeader';
 
 export const getServerSideProps: GetServerSideProps = async ctx => {
   const { rejected, isPublic, page } = await matchRoles(ctx);
@@ -27,18 +28,15 @@ const Studies: NextPage = () => {
 
   return (
     <div className='flex flex-col h-full w-full p-10'>
-      <div className='flex w-full'>
-        <h1 className='w-full text-center'>Study management</h1>
-        <div className='flex justify-center whitespace-nowrap'>
-          <Link href='/app/studies/new'>
-            <a>
-              <button className='primary' type='button'>
-                Create new
-              </button>
-            </a>
-          </Link>
-        </div>
-      </div>
+      <PageHeader title='Study management'>
+        <Link href='/app/studies/new'>
+          <a>
+            <button className='primary' type='button'>
+              Create new
+            </button>
+          </a>
+        </Link>
+      </PageHeader>
       <div className='my-4 grid grid-cols-2 justify-items-center gap-2'>
         {data.getUserStudies.map((study: UserStudy) => (
           <StudyCard study={study} />

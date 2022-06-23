@@ -16,6 +16,7 @@ import Loading from '@components/Loading';
 import { Script } from '@prisma/client';
 import { nanoid } from 'nanoid';
 import { ScriptCard } from '@components/Scritps/ScriptCard';
+import PageHeader from '@components/PageHeader';
 
 const RichText = dynamic(() => import('@components/RichText/RichTextEditor'), {
   ssr: false,
@@ -48,18 +49,16 @@ const Scripts: NextPage = () => {
   return (
     <>
       <div className='flex flex-col h-full w-full p-10'>
-        <div className='flex w-full'>
-          <h1 className='w-full text-center'>Script management</h1>
-          <div className='flex justify-center whitespace-nowrap'>
-            <button
-              className='primary flex'
-              type='button'
-              onClick={() => setOpenNew(true)}
-            >
-              Create new
-            </button>
-          </div>
-        </div>
+        <PageHeader title='Script management'>
+          <button
+            className='primary flex'
+            type='button'
+            onClick={() => setOpenNew(true)}
+          >
+            Create new
+          </button>
+        </PageHeader>
+
         <div className='w-full p-6 grid grid-cols-3 gap-6 justify-items-center'>
           {data.getScripts?.map((script: Script) => (
             <ScriptCard key={script.id} script={script} />

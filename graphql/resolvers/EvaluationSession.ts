@@ -21,8 +21,36 @@ const EvaluationSessionResolvers: Resolver = {
       return null;
     },
   },
-  Mutation: {},
   Query: {},
+  Mutation: {
+    createEvaluationSessionNoUser: async (parent, args, context) => {
+      await prisma.evaluationSession.create({
+        data: {
+          expert: {
+            connect: {
+              email: context.session.user.email ?? '',
+            },
+          },
+          study: {
+            connect: {
+              id: args.study.connect.id,
+            },
+          },
+          status: 'NOT_STARTED',
+          user: {
+            connectOrCreate: {
+              where: {
+                email: args.participantEmail,
+              },
+              create: {
+                email: args.participantEmail,
+              },
+            },
+          },
+        },
+      });
+    },
+  },
 };
 
 export { EvaluationSessionResolvers };
