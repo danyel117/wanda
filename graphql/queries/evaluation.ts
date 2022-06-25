@@ -18,6 +18,7 @@ const GET_USER_EVALUATIONS = gql`
 const GET_EVALUATION = gql`
   query EvaluationSession($evaluationSessionId: String!) {
     evaluationSession(id: $evaluationSessionId) {
+      id
       study {
         name
       }
@@ -28,14 +29,26 @@ const GET_EVALUATION = gql`
         email
       }
       status
+      data {
+        id
+        currentTask
+        expertConsentBegin
+        participantConsentBegin
+      }
+      taskList {
+        id
+        status
+        task {
+          description
+          url
+          recording
+        }
+      }
       study {
         site
         script {
           script
           recording
-        }
-        tasks {
-          description
         }
       }
     }

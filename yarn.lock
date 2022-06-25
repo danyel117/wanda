@@ -1053,10 +1053,10 @@
   resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.11.5.tgz#db5a11bf66bdab39569719555b0f76e138d7bd64"
   integrity sha512-9X2obfABZuDVLCgPK9aX0a/x4jaOEweTTWE2+9sr0Qqqevj2Uv5XorvusThmc9XGYpS9yI+fhh8RTafBtGposw==
 
-"@prevalentware/prisma-cosmo@0.1.11":
-  version "0.1.11"
-  resolved "https://registry.yarnpkg.com/@prevalentware/prisma-cosmo/-/prisma-cosmo-0.1.11.tgz#13cd16c947bbcdebcb42cea74f663317b2f8f581"
-  integrity sha512-9Kr9pnVf8QJX+EFsmmbH6s8b5nJMPDWT3q1uvKgQHuaktKi9532STmQ/jMlUwv/uOCQ/mf/T+qVD4XpLEqvgrg==
+"@prevalentware/prisma-cosmo@^0.1.12":
+  version "0.1.12"
+  resolved "https://registry.yarnpkg.com/@prevalentware/prisma-cosmo/-/prisma-cosmo-0.1.12.tgz#746195c11f6a52336bb9bdccad920a2eaf8f237e"
+  integrity sha512-HkilL6ZNlyMz3tWvgIMGbCgXjTj0spa9Z4R9cT4EAOBFwrZD5Bu26Vp0Qmd4aX9P7p7x5GPtfh8DsNugfJS/ag==
   dependencies:
     chalk "4.1.2"
     clear "^0.1.0"

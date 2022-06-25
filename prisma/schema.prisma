@@ -82,12 +82,14 @@ model VerificationToken {
 }
 
 model EvaluationSessionData {
-  id                      String   @id @default(cuid())
-  expertConsentBegin      Boolean  @default(false)
-  participantConsentBegin Boolean  @default(false)
+  id                      String            @id @default(cuid())
+  expertConsentBegin      Boolean           @default(false)
+  participantConsentBegin Boolean           @default(false)
   currentTask             Int
-  createdAt               DateTime @default(now())
-  updatedAt               DateTime @updatedAt
+  evaluationSession       EvaluationSession @relation(fields: [evaluationSessionId], references: [id])
+  evaluationSessionId     String            @unique
+  createdAt               DateTime          @default(now())
+  updatedAt               DateTime          @updatedAt
 }
 
 model EvaluationSession {
@@ -99,6 +101,7 @@ model EvaluationSession {
   expertId      String
   participant   User                         @relation(fields: [participantId], references: [id], name: "session-user")
   participantId String
+  data          EvaluationSessionData?
   tasks         EvaluationTask[]
   createdAt     DateTime                     @default(now())
   updatedAt     DateTime                     @updatedAt
@@ -133,6 +136,7 @@ model Script {
 model Task {
   id          String           @id @default(cuid())
   description String           @db.Text
+  order       Int              @default(1)
   url         String
   recording   String?
   study       Study            @relation(fields: [studyId], references: [id])

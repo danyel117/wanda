@@ -139,57 +139,58 @@ const Table = ({
           })}
         </tbody>
       </table>
-      <div
-        className={` ${
-          pageOptions.length === 1 ? 'hidden' : 'flex'
-        } my-10 w-full items-end justify-center space-x-2`}
-      >
-        <button
-          type='button'
-          onClick={() => changePage(0)}
-          disabled={!canPreviousPage || loading}
+      {data.length > 0 && (
+        <div
+          className={` ${
+            pageOptions.length === 1 ? 'hidden' : 'flex'
+          } my-10 w-full items-end justify-center space-x-2`}
         >
-          <i className='fas fa-angle-double-left' />
-        </button>
-        <button
-          type='button'
-          onClick={() => changePage(currentPage - 1)}
-          disabled={!canPreviousPage || loading}
-        >
-          <i className='fas fa-angle-left' />
-        </button>
-        <span className='px-4'>
-          Page{' '}
-          <strong>
-            {pageIndex + 1} of {pageOptions.length}
-          </strong>{' '}
-        </span>
-        <button
-          type='button'
-          onClick={() => changePage(currentPage + 1)}
-          disabled={!canNextPage || loading}
-        >
-          <i className='fas fa-angle-right' />
-        </button>
-        <button
-          type='button'
-          onClick={() => changePage(pageCount - 1)}
-          disabled={!canNextPage || loading}
-        >
-          <i className='fas fa-angle-double-right' />
-        </button>
-        <div className='flex items-start'>
-          <input
-            name='gotopage'
-            placeholder='10'
-            type='number'
-            min={1}
-            max={pageCount}
-            disabled={loading}
-            value={pageNumberInput}
-            onChange={(e) => setPageNumberInput(e.target.value)}
-          />
-          {/* <button
+          <button
+            type='button'
+            onClick={() => changePage(0)}
+            disabled={!canPreviousPage || loading}
+          >
+            <i className='fas fa-angle-double-left' />
+          </button>
+          <button
+            type='button'
+            onClick={() => changePage(currentPage - 1)}
+            disabled={!canPreviousPage || loading}
+          >
+            <i className='fas fa-angle-left' />
+          </button>
+          <span className='px-4'>
+            Page{' '}
+            <strong>
+              {pageIndex + 1} of {pageOptions.length}
+            </strong>{' '}
+          </span>
+          <button
+            type='button'
+            onClick={() => changePage(currentPage + 1)}
+            disabled={!canNextPage || loading}
+          >
+            <i className='fas fa-angle-right' />
+          </button>
+          <button
+            type='button'
+            onClick={() => changePage(pageCount - 1)}
+            disabled={!canNextPage || loading}
+          >
+            <i className='fas fa-angle-double-right' />
+          </button>
+          <div className='flex items-start'>
+            <input
+              name='gotopage'
+              placeholder='10'
+              type='number'
+              min={1}
+              max={pageCount}
+              disabled={loading}
+              value={pageNumberInput}
+              onChange={(e) => setPageNumberInput(e.target.value)}
+            />
+            {/* <button
               type='button'
               className=''
               onClick={() => changePage(parseInt(pageNumberInput, 10) - 1)}
@@ -201,8 +202,9 @@ const Table = ({
               />
             </button>
           </input> */}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };
