@@ -39,6 +39,7 @@ const GET_EVALUATION = gql`
       taskList {
         id
         status
+        expertComments
         task {
           description
           url
