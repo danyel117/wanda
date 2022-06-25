@@ -243,9 +243,7 @@ const TaskDefinition = ({ counter, name }: RepeatedComponentProps) => {
     </div>
   );
 };
-const Title = () => {
-  return <div>Tasks</div>;
-};
+const Title = () => <div>Tasks</div>;
 
 const DR = () =>
   DataRepeater({

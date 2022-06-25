@@ -38,7 +38,7 @@ const uploadFormFiles = async (
 ) => {
   const formDataCopy = { ...formData };
   await Promise.all(
-    Object.keys(formDataCopy).map(async el => {
+    Object.keys(formDataCopy).map(async (el) => {
       if (
         Object.prototype.isPrototypeOf.call(File.prototype, formDataCopy[el])
       ) {

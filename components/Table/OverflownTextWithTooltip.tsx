@@ -9,7 +9,7 @@ const OverFlownTextWithTooltip = ({
 }: OverFlownTextWithTooltipProps) => (
   <Tooltip title={message}>
     <div className='flex w-full justify-center'>
-      <span className='block truncate w-60'>{message}</span>
+      <span className='block w-60 truncate'>{message}</span>
     </div>
   </Tooltip>
 );

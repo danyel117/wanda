@@ -17,7 +17,7 @@ const TableHeader = ({
   const { ordering, setOrdering } = useOrdering();
 
   return (
-    <div className='flex gap-1 justify-center items-center'>
+    <div className='flex items-center justify-center gap-1'>
       {disableOrdering ? (
         <div>{title}</div>
       ) : (

@@ -1,7 +1,5 @@
 import React from 'react';
 
-const StudyTasks = () => {
-  return <div>tasks</div>;
-};
+const StudyTasks = () => <div>tasks</div>;
 
 export default StudyTasks;

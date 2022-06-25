@@ -16,10 +16,10 @@ const MarkdownRenderer = dynamic(
 
 const ScriptCard = ({ script }: ScriptCardProps) => (
   <div className='card w-80'>
-    <div className='border-b p-2 border-indigo-500 w-full'>
-      <div className='flex w-full justify-center items-center'>
+    <div className='w-full border-b border-indigo-500 p-2'>
+      <div className='flex w-full items-center justify-center'>
         <span className='w-full text-center'>{script?.name ?? ''}</span>
-        <div className='w-10 flex justify-end hover:text-indigo-500'>
+        <div className='flex w-10 justify-end hover:text-indigo-500'>
           <Tooltip title='Manage script'>
             <button type='button'>
               <BsThreeDotsVertical />

@@ -34,7 +34,7 @@ const PrivateRoute = ({ children, rejected, isPublic }: PrivateRouteProps) => {
           signOut();
         }}
       >
-        <a className='border-b-2 text-blue-500 border-blue-500 hover:border-blue-700 hover:text-blue-700'>
+        <a className='border-b-2 border-blue-500 text-blue-500 hover:border-blue-700 hover:text-blue-700'>
           Take me home
         </a>
       </button>

@@ -74,6 +74,7 @@ model User {
 }
 
 model VerificationToken {
+  id         Int      @id @default(autoincrement())
   identifier String
   token      String   @unique
   expires    DateTime

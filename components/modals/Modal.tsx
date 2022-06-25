@@ -35,12 +35,12 @@ const Modal = ({
     >
       {title && (
         <DialogTitle>
-          <div className='flex justify-between items-center'>
-            <div className='text-xl lg:text-2xl font-medium'>
+          <div className='flex items-center justify-between'>
+            <div className='text-xl font-medium lg:text-2xl'>
               {title}
               <div className='flex'>
-                <div className=' h-1 w-2/6  bg-indigo-500 rounded-md ' />
-                <div className=' h-1 w-1 bg-indigo-500 rounded-md mx-1' />
+                <div className=' h-1 w-2/6  rounded-md bg-indigo-500 ' />
+                <div className=' mx-1 h-1 w-1 rounded-md bg-indigo-500' />
               </div>
             </div>
             {!preventClose && (

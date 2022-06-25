@@ -2,7 +2,6 @@ import PrivateLayout from '@layouts/PrivateLayout';
 import { useEvaluation } from 'context/evaluation';
 import { useUpdateEvaluationData } from '@components/evaluation/updateEvaluationData';
 import { ExtendedEvaluationTask } from 'types';
-import { useEffect, useState } from 'react';
 import { Enum_TaskEvaluationStatus } from '@prisma/client';
 
 const ExpertView = () => {
@@ -54,7 +53,7 @@ const ExpertView = () => {
 };
 
 const CurrentTaskControls = () => {
-  const { evaluation, currentTask } = useEvaluation();
+  const { currentTask } = useEvaluation();
 
   return (
     <div className='flex justify-center gap-10'>
@@ -80,7 +79,7 @@ const CurrentTaskControls = () => {
       <div className='card w-80 justify-between'>
         <h2>Comments:</h2>
         <textarea className='h-full w-full' placeholder='Some comment...' />
-        <button className='primary'>Save</button>
+        {/* <button className='primary'>Save</button> */}
       </div>
     </div>
   );

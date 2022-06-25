@@ -15,7 +15,7 @@ const LoginModal = ({ open, setOpen }: LoginModalProps) => (
   <Modal open={open} setOpen={setOpen} title='Sign in'>
     <div className='flex flex-col gap-4'>
       <span>Select your preferred login method:</span>
-      <div className='px-10 flex flex-col gap-3'>
+      <div className='flex flex-col gap-3 px-10'>
         <LoginButton Icon={FcGoogle} text='Google' provider='google' />
         <LoginButton Icon={FaGithub} text='GitHub' provider='github' />
         <EmailLogin />
@@ -64,7 +64,7 @@ const LoginButton = ({ Icon, text, provider }: LoginButtonProps) => (
   <button
     type='button'
     onClick={() => signIn(provider, { callbackUrl: '/app' })}
-    className='flex justify-center items-center gap-2 border-2 p-2 rounded-lg shadow-md cursor-pointer hover:border-indigo-500'
+    className='flex cursor-pointer items-center justify-center gap-2 rounded-lg border-2 p-2 shadow-md hover:border-indigo-500'
   >
     <Icon />
     <span>{text}</span>

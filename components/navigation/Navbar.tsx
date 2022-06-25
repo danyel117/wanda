@@ -17,10 +17,10 @@ const Navbar = () => {
   const { open, setOpen } = useSidebar();
 
   return (
-    <nav className='flex items-center lg:items-stretch justify-end lg:justify-between bg-white shadow relative z-10 h-14'>
-      <div className='hidden lg:flex w-full pr-6 justify-end'>
-        <div className='w-1/2 hidden lg:flex'>
-          <div className='w-full flex items-center pl-8 justify-end'>
+    <nav className='relative z-10 flex h-14 items-center justify-end bg-white shadow lg:items-stretch lg:justify-between'>
+      <div className='hidden w-full justify-end pr-6 lg:flex'>
+        <div className='hidden w-1/2 lg:flex'>
+          <div className='flex w-full items-center justify-end pl-8'>
             <Notifications />
             <UserProfileNav />
           </div>
@@ -28,7 +28,7 @@ const Navbar = () => {
       </div>
       <button
         type='button'
-        className='text-gray-600 mr-8 visible lg:hidden relative text-3xl'
+        className='visible relative mr-8 text-3xl text-gray-600 lg:hidden'
         onClick={() => setOpen(!open)}
       >
         {!open && <MdMenu />}
@@ -38,8 +38,8 @@ const Navbar = () => {
 };
 
 const Notifications = () => (
-  <div className='h-full w-20 flex items-center justify-center border-r border-l mx-2'>
-    <div className='relative cursor-pointer text-gray-600 text-2xl'>
+  <div className='mx-2 flex h-full w-20 items-center justify-center border-r border-l'>
+    <div className='relative cursor-pointer text-2xl text-gray-600'>
       <MdOutlineNotifications />
     </div>
   </div>
@@ -56,44 +56,44 @@ const UserProfileNav = () => {
   return (
     <button
       type='button'
-      className='flex items-center relative cursor-pointer'
+      className='relative flex cursor-pointer items-center'
       onClick={() => setProfile(!profile)}
     >
       <div className='rounded-full'>
         {profile && (
-          <ul className='p-2 w-full border-r bg-white absolute rounded left-0 shadow -mt-[70px] md:mt-16'>
-            <li className='flex w-full justify-between text-gray-600 hover:text-indigo-700 cursor-pointer items-center'>
+          <ul className='absolute left-0 -mt-[70px] w-full rounded border-r bg-white p-2 shadow md:mt-16'>
+            <li className='flex w-full cursor-pointer items-center justify-between text-gray-600 hover:text-indigo-700'>
               <Link href='/profile'>
                 <a>
                   <div className='flex items-center'>
                     <MdPersonOutline />
-                    <span className='text-sm ml-2'>My Profile</span>
+                    <span className='ml-2 text-sm'>My Profile</span>
                   </div>
                 </a>
               </Link>
             </li>
-            <li className='flex w-full justify-between text-gray-600 hover:text-indigo-700 cursor-pointer items-center mt-2'>
+            <li className='mt-2 flex w-full cursor-pointer items-center justify-between text-gray-600 hover:text-indigo-700'>
               <button type='button' onClick={() => logOut()}>
                 <div className='flex items-center'>
                   <MdLogout />
-                  <span className='text-sm ml-2'>Sign out</span>
+                  <span className='ml-2 text-sm'>Sign out</span>
                 </div>
               </button>
             </li>
           </ul>
         )}
         <div className='relative'>
-          <div className='rounded-full h-10 w-10 object-cover'>
+          <div className='h-10 w-10 rounded-full object-cover'>
             <Image
               layout='fill'
               src='https://tuk-cdn.s3.amazonaws.com/assets/components/sidebar_layout/sl_1.png'
               alt='avatar'
             />
           </div>
-          <div className='w-2 h-2 rounded-full bg-green-400 border border-white absolute inset-0 mb-0 mr-0 m-auto' />
+          <div className='absolute inset-0 m-auto mb-0 mr-0 h-2 w-2 rounded-full border border-white bg-green-400' />
         </div>
       </div>
-      <p className='text-gray-800 text-sm mx-3'>Jane Doe</p>
+      <p className='mx-3 text-sm text-gray-800'>Jane Doe</p>
       <div className='cursor-pointer text-gray-600'>
         {profile ? <MdExpandLess /> : <MdExpandMore />}
       </div>

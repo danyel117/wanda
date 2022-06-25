@@ -137,7 +137,7 @@ const DataRepeater = ({
 
   return (
     <Container>
-      <div className='flex items-center my-4'>
+      <div className='my-4 flex items-center'>
         <Title />
         <Tooltip title={`Add ${inputName}`} arrow placement='right'>
           <button

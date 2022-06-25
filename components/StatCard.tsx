@@ -10,17 +10,17 @@ interface StatCardProps {
 }
 
 const StatCard = ({ Icon, link, title, stat }: StatCardProps) => (
-  <div className='flex flex-col shadow-md rounded-lg m-2 w-64'>
-    <div className='bg-white flex items-center justify-start p-4 rounded-t-lg'>
-      <div className='text-indigo-700 text-start'>
+  <div className='m-2 flex w-64 flex-col rounded-lg shadow-md'>
+    <div className='flex items-center justify-start rounded-t-lg bg-white p-4'>
+      <div className='text-start text-indigo-700'>
         <Icon size='3rem' />
       </div>
-      <div className='flex flex-col mx-2'>
-        <span className='text-gray-600 text-md'>{title}</span>
+      <div className='mx-2 flex flex-col'>
+        <span className='text-md text-gray-600'>{title}</span>
         <span className='text-xl font-bold'>{stat}</span>
       </div>
     </div>
-    <div className='bg-gray-200 p-4 rounded-b-lg'>
+    <div className='rounded-b-lg bg-gray-200 p-4'>
       <Link href={link}>
         <a>
           <span className='text-indigo-700 hover:text-indigo-400'>
