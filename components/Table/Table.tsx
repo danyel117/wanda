@@ -12,6 +12,10 @@ interface TableProps {
   loading?: boolean;
 }
 
+export interface TableData {
+  [key: string]: string | number | boolean | JSX.Element;
+}
+
 const Table = ({
   columns,
   data,
@@ -67,7 +71,7 @@ const Table = ({
   }, [currentPage]);
 
   return (
-    <div className='w-full flex flex-col'>
+    <div className='flex w-full flex-col'>
       <div className='self-end'>
         <label htmlFor='elements-per-page'>
           Rows per page:
@@ -75,7 +79,7 @@ const Table = ({
             className='mx-2 bg-transparent outline-none'
             name='elements-per-page'
             value={controlledPageSize?.toString() ?? 10}
-            onChange={e => {
+            onChange={(e) => {
               setControlledPageSize(parseInt(e.target.value, 10));
               setCurrentPage(0);
             }}
@@ -89,18 +93,18 @@ const Table = ({
         </label>
       </div>
       <table
-        className='w-full overflow-x-auto  text-bio-gray'
+        className='text-bio-gray w-full  overflow-x-auto'
         {...getTableProps()}
       >
-        <thead className='border-b-2 border-bio-green'>
-          {headerGroups.map(headerGroup => (
+        <thead className='border-bio-green border-b-2'>
+          {headerGroups.map((headerGroup) => (
             <tr
               className='font-montserrat'
               {...headerGroup.getHeaderGroupProps()}
             >
-              {headerGroup.headers.map(column => (
+              {headerGroup.headers.map((column) => (
                 <th
-                  className='px-1 min-w-[6rem] pb-2 text-center'
+                  className='min-w-[6rem] px-1 pb-2 text-center'
                   {...column.getHeaderProps()}
                 >
                   {column.render('Header')}
@@ -113,16 +117,18 @@ const Table = ({
           className={`${loading && 'hover:cursor-wait'}`}
           {...getTableBodyProps()}
         >
-          {page.map(row => {
+          {page.map((row) => {
             prepareRow(row);
             return (
               <tr className='text-center' {...row.getRowProps()}>
                 {row.cells.map((cell: any, idx: number) => (
                   <td
-                    className={`px-2 py-3 ${idx === 0 &&
+                    className={`px-2 py-3 ${
+                      idx === 0 &&
                       `font-bold ${
                         capitalize ? 'capitalize' : ''
-                      } text-bio-darkBlue  `}`}
+                      } text-bio-darkBlue  `
+                    }`}
                     {...cell.getCellProps()}
                   >
                     {cell.render('Cell')}
@@ -136,7 +142,7 @@ const Table = ({
       <div
         className={` ${
           pageOptions.length === 1 ? 'hidden' : 'flex'
-        } w-full justify-center items-end my-10 space-x-2`}
+        } my-10 w-full items-end justify-center space-x-2`}
       >
         <button
           type='button'
@@ -181,7 +187,7 @@ const Table = ({
             max={pageCount}
             disabled={loading}
             value={pageNumberInput}
-            onChange={e => setPageNumberInput(e.target.value)}
+            onChange={(e) => setPageNumberInput(e.target.value)}
           />
           {/* <button
               type='button'

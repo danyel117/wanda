@@ -21,7 +21,25 @@ const EvaluationSessionResolvers: Resolver = {
       return null;
     },
   },
-  Query: {},
+  Query: {
+    getUserEvaluations: async (parent, args, context) =>
+      await prisma.evaluationSession.findMany({
+        where: {
+          OR: [
+            {
+              participantId: {
+                equals: context.session.user.id ?? '',
+              },
+            },
+            {
+              expertId: {
+                equals: context.session.user.id ?? '',
+              },
+            },
+          ],
+        },
+      }),
+  },
   Mutation: {
     createEvaluationSessionNoUser: async (parent, args, context) => {
       await prisma.evaluationSession.create({
@@ -33,17 +51,22 @@ const EvaluationSessionResolvers: Resolver = {
           },
           study: {
             connect: {
-              id: args.study.connect.id,
+              id: args.data.study.connect.id,
             },
           },
           status: 'NOT_STARTED',
-          user: {
+          participant: {
             connectOrCreate: {
               where: {
-                email: args.participantEmail,
+                email: args.data.participantEmail,
               },
               create: {
-                email: args.participantEmail,
+                email: args.data.participantEmail,
+                roles: {
+                  connect: {
+                    name: 'PARTICIPANT',
+                  },
+                },
               },
             },
           },

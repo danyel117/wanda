@@ -13,65 +13,71 @@ import {
 import { Notifications, UserProfileNav } from '@components/navigation/Navbar';
 import Image from 'next/image';
 import logo from 'public/img/logo.png';
+import PrivateComponent from '@components/PrivateComponent';
+import { Enum_RoleName } from '@prisma/client';
 
 const Sidebar = () => {
   const { open, setOpen } = useSidebar();
   const sidebarItems = [
     <SidebarItem key={nanoid()} Icon={MdHome} name='Dashboard' href='/app' />,
-    <SidebarItem
-      key={nanoid()}
-      Icon={MdLightbulbOutline}
-      name='Studies'
-      href='/app/studies'
-    />,
+    <PrivateComponent roleList={[Enum_RoleName.ADMIN, Enum_RoleName.EXPERT]}>
+      <SidebarItem
+        key={nanoid()}
+        Icon={MdLightbulbOutline}
+        name='Studies'
+        href='/app/studies'
+      />
+    </PrivateComponent>,
     <SidebarItem
       key={nanoid()}
       Icon={MdPsychology}
       name='Evaluations'
       href='/app/evaluations'
     />,
-    <SidebarItem
-      key={nanoid()}
-      Icon={MdAssignment}
-      name='Scripts'
-      href='/app/scripts'
-    />,
+    <PrivateComponent roleList={[Enum_RoleName.ADMIN, Enum_RoleName.EXPERT]}>
+      <SidebarItem
+        key={nanoid()}
+        Icon={MdAssignment}
+        name='Scripts'
+        href='/app/scripts'
+      />
+    </PrivateComponent>,
   ];
   return (
     <>
       {/* Sidebar starts */}
-      <aside className='absolute lg:relative w-64 h-screen shadow bg-gray-900 hidden lg:flex lg:flex-col lg:w-64'>
+      <aside className='absolute hidden h-screen w-64 bg-gray-900 shadow lg:relative lg:flex lg:w-64 lg:flex-col'>
         <SidebarImage />
-        <ul className=' py-6'>{sidebarItems.map(el => el)}</ul>
+        <ul className=' py-6'>{sidebarItems.map((el) => el)}</ul>
       </aside>
 
       <aside
         className={
           open
-            ? 'w-full h-full absolute z-40  transform  translate-x-0 '
-            : 'w-full h-full absolute z-40  transform -translate-x-full'
+            ? 'absolute z-40 h-full w-full  translate-x-0  transform '
+            : 'absolute z-40 h-full w-full  -translate-x-full transform'
         }
         id='mobile-nav'
       >
-        <div className='absolute z-40 sm:relative w-64 shadow pb-4 bg-gray-900 lg:hidden transition duration-150 ease-in-out h-full'>
-          <div className='flex flex-col justify-between h-full w-full'>
+        <div className='absolute z-40 h-full w-64 bg-gray-900 pb-4 shadow transition duration-150 ease-in-out sm:relative lg:hidden'>
+          <div className='flex h-full w-full flex-col justify-between'>
             <div>
               <div className='flex items-start justify-between px-8'>
                 <SidebarImage />
                 <button
                   type='button'
                   id='closeSideBar'
-                  className='text-2xl flex items-center justify-center h-10 w-10 hover:text-indigo-300'
+                  className='flex h-10 w-10 items-center justify-center text-2xl hover:text-indigo-300'
                   onClick={() => setOpen(!open)}
                 >
                   <MdClose />
                 </button>
               </div>
-              <ul className=' py-6'>{sidebarItems.map(el => el)}</ul>
+              <ul className=' py-6'>{sidebarItems.map((el) => el)}</ul>
             </div>
             <div className='w-full'>
               <div className='border-t border-gray-300'>
-                <div className='w-full flex items-center justify-between px-6 pt-1'>
+                <div className='flex w-full items-center justify-between px-6 pt-1'>
                   <UserProfileNav />
                   <Notifications />
                 </div>

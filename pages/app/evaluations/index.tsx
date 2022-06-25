@@ -1,15 +1,29 @@
-import { useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import Modal from '@components/modals/Modal';
 import PageHeader from '@components/PageHeader';
-import Table from '@components/Table/Table';
-import { Study } from '@prisma/client';
+import PrivateComponent from '@components/PrivateComponent';
+import Table, { TableData } from '@components/Table/Table';
+import Tooltip from '@mui/material/Tooltip';
+import { Enum_RoleName, Study } from '@prisma/client';
 import { TableContextProvider } from 'context/table';
+import { CREATE_EVALUATION } from 'graphql/mutations/evaluation';
+import { GET_USER_EVALUATIONS } from 'graphql/queries/evaluation';
 import { GET_STUDIES } from 'graphql/queries/study';
 import useFormData from 'hooks/useFormData';
-import { SyntheticEvent, useMemo, useState } from 'react';
+import { useSession } from 'next-auth/react';
+import Link from 'next/link';
+import { SyntheticEvent, useEffect, useMemo, useState } from 'react';
+import { MdLaunch } from 'react-icons/md';
+import { toast } from 'react-toastify';
+import { ExtendedEvaluationSession } from 'types';
 
 const EvaluationIndex = () => {
-  const [openNew, setOpenNew] = useState<boolean>(true);
+  const { data: session } = useSession();
+  const [openNew, setOpenNew] = useState<boolean>(false);
+  const { data: evaluations } = useQuery(GET_USER_EVALUATIONS, {
+    fetchPolicy: 'cache-and-network',
+  });
+  const [tableData, setTableData] = useState<TableData[]>([]);
 
   const columns = useMemo(
     () => [
@@ -22,8 +36,8 @@ const EvaluationIndex = () => {
         accessor: 'study',
       },
       {
-        Header: 'User',
-        accessor: 'user',
+        Header: 'Participant',
+        accessor: 'participant',
       },
       {
         Header: 'Actions',
@@ -33,39 +47,108 @@ const EvaluationIndex = () => {
     []
   );
 
-  const data = useMemo(
-    () => [{ status: 'test', study: 'test', user: 'test', editBtn: 'test' }],
-    []
-  );
+  useEffect(() => {
+    if (evaluations) {
+      setTableData(
+        evaluations.getUserEvaluations.map(
+          (uev: ExtendedEvaluationSession) => ({
+            status: uev.status,
+            study: uev.study.name,
+            participant: uev.participant.email,
+            editBtn: <EvaluationActions id={uev.id} />,
+          })
+        )
+      );
+    }
+  }, [evaluations]);
+
+  const getPageTitle = () => {
+    if (
+      session?.user.roles?.some(
+        (r) => r.name === Enum_RoleName.ADMIN || r.name === Enum_RoleName.EXPERT
+      )
+    ) {
+      return 'Evaluation management';
+    }
+
+    return 'My evaluations';
+  };
 
   return (
     <TableContextProvider>
-      <div className='w-full flex flex-col p-10 gap-4'>
-        <PageHeader title='Evaluation management'>
-          <button
-            onClick={() => setOpenNew(true)}
-            className='primary'
-            type='button'
+      <div className='flex w-full flex-col gap-4 p-10'>
+        <PageHeader title={getPageTitle()}>
+          <PrivateComponent
+            roleList={[Enum_RoleName.ADMIN, Enum_RoleName.EXPERT]}
           >
-            Create new
-          </button>
+            <button
+              onClick={() => setOpenNew(true)}
+              className='primary'
+              type='button'
+            >
+              Create new
+            </button>
+          </PrivateComponent>
         </PageHeader>
 
-        <Table columns={columns} data={data} />
+        <Table columns={columns} data={tableData} />
       </div>
       <Modal open={openNew} setOpen={setOpenNew} title='New evaluation'>
-        <NewEvaluation />
+        <NewEvaluation setOpenNew={setOpenNew} />
       </Modal>
     </TableContextProvider>
   );
 };
 
-const NewEvaluation = () => {
+interface EvaluationActionsProps {
+  id: string;
+}
+
+const EvaluationActions = ({ id }: EvaluationActionsProps) => (
+  <div className='flex'>
+    <Tooltip title='Launch session'>
+      <div>
+        <Link href={`/app/evaluations/${id}`}>
+          <a className='text-lg hover:text-indigo-500'>
+            <MdLaunch />
+          </a>
+        </Link>
+      </div>
+    </Tooltip>
+  </div>
+);
+
+interface NewEvaluationProps {
+  setOpenNew: (open: boolean) => void;
+}
+
+const NewEvaluation = ({ setOpenNew }: NewEvaluationProps) => {
   const { data: studies } = useQuery(GET_STUDIES);
+  const [createEvaluation] = useMutation(CREATE_EVALUATION, {
+    refetchQueries: [GET_USER_EVALUATIONS],
+  });
   const { form, formData, updateFormData } = useFormData(null);
 
-  const submitForm = (e: SyntheticEvent) => {
+  const submitForm = async (e: SyntheticEvent) => {
     e.preventDefault();
+    try {
+      await createEvaluation({
+        variables: {
+          data: {
+            study: {
+              connect: {
+                id: formData.study,
+              },
+            },
+            participantEmail: formData.participantEmail,
+          },
+        },
+      });
+      toast.success('Evaluation session created successfully');
+      setOpenNew(false);
+    } catch (err) {
+      toast.error('Error creating evaluation');
+    }
   };
   return (
     <div>

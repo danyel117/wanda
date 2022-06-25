@@ -1,4 +1,4 @@
-import { Enum_RoleName, Role } from '@prisma/client';
+import { Enum_RoleName } from '@prisma/client';
 
 const roles = [
   {
@@ -8,7 +8,7 @@ const roles = [
     name: Enum_RoleName.EXPERT,
   },
   {
-    name: Enum_RoleName.USER,
+    name: Enum_RoleName.PARTICIPANT,
   },
 ];
 

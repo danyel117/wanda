@@ -1,22 +1,22 @@
-import React from 'react';
+import { Enum_RoleName } from '@prisma/client';
 import { useSession } from 'next-auth/react';
 
 interface PrivateComponentProps {
-  roleList: string[];
+  roleList: Enum_RoleName[];
   children: JSX.Element;
 }
 
 const PrivateComponent = ({ roleList, children }: PrivateComponentProps) => {
   const { data: session } = useSession();
-  const roleCheck = roleList
-    .map(r => r)
-    .filter(ru => session?.user.role?.name === ru);
+  const roleCheck = session?.user?.roles?.some((role) =>
+    roleList.includes(role.name)
+  );
 
-  if (roleCheck.length === 0) {
-    // eslint-disable-next-line react/jsx-no-useless-fragment
-    return <></>;
+  if (roleCheck) {
+    return children;
   }
-  return children;
+
+  return null;
 };
 
 export default PrivateComponent;

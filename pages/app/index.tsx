@@ -2,8 +2,10 @@ import { GetServerSideProps, NextPage } from 'next';
 import matchRoles from '@utils/matchRoles';
 import Image from 'next/image';
 import Link from 'next/link';
+import PrivateComponent from '@components/PrivateComponent';
+import { Enum_RoleName } from '@prisma/client';
 
-export const getServerSideProps: GetServerSideProps = async ctx => {
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { rejected, isPublic, page } = await matchRoles(ctx);
   return {
     props: {
@@ -15,19 +17,29 @@ export const getServerSideProps: GetServerSideProps = async ctx => {
 };
 
 const AppIndex: NextPage = () => (
-  <div className='flex p-10 flex-wrap gap-5'>
-    <IndexCard
-      image='/img/evaluation.jpg'
-      title='Study Management'
-      description='Define new studies and analyze the data on existing ones.'
-      href='/app/studies'
-    />
+  <div className='flex flex-wrap gap-5 p-10'>
+    <PrivateComponent roleList={[Enum_RoleName.ADMIN, Enum_RoleName.EXPERT]}>
+      <IndexCard
+        image='/img/evaluation.jpg'
+        title='Study Management'
+        description='Define new studies and analyze the data on existing ones.'
+        href='/app/studies'
+      />
+    </PrivateComponent>
+    <PrivateComponent roleList={[Enum_RoleName.ADMIN, Enum_RoleName.EXPERT]}>
+      <IndexCard
+        image='/img/script.jpg'
+        title='Script Management'
+        description='Create, update or delete the scripts you will use before your
+          evaluations'
+        href='/app/scripts'
+      />
+    </PrivateComponent>
     <IndexCard
       image='/img/script.jpg'
-      title='Script Management'
-      description='Create, update or delete the scripts you will use before your
-          evaluations'
-      href='/app/scripts'
+      title='Evaluations'
+      description='Review the evaluations you have been invited to.'
+      href='/app/evaluations'
     />
   </div>
 );
@@ -41,8 +53,8 @@ interface IndexCardProps {
 
 const IndexCard = ({ image, title, description, href }: IndexCardProps) => (
   <Link href={href}>
-    <div className='flex bg-gray-900 rounded-lg shadow-lg w-96 cursor-pointer hover:shadow-xl'>
-      <div className='w-64 h-full relative'>
+    <div className='flex w-96 cursor-pointer rounded-lg bg-gray-900 shadow-lg hover:shadow-xl'>
+      <div className='relative h-full w-64'>
         <Image
           className='rounded-l-lg'
           alt='card image'
@@ -51,8 +63,8 @@ const IndexCard = ({ image, title, description, href }: IndexCardProps) => (
           objectFit='cover'
         />
       </div>
-      <div className='w-full flex flex-col p-4 gap-2'>
-        <span className='text-white font-semibold text-lg'>{title}</span>
+      <div className='flex w-full flex-col gap-2 p-4'>
+        <span className='text-lg font-semibold text-white'>{title}</span>
         <span className='text-gray-300'>{description}</span>
       </div>
     </div>

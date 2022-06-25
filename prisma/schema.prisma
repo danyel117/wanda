@@ -66,10 +66,9 @@ model User {
   email            String?             @unique
   emailVerified    DateTime?
   image            String?
-  role             Role?               @relation(fields: [roleId], references: [id])
+  roles            Role[]
   accounts         Account[]
   sessions         Session[]
-  roleId           String?
   createdAt        DateTime            @default(now())
   updatedAt        DateTime            @updatedAt
 }
@@ -82,27 +81,39 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
-model EvaluationSession {
-  id           String                       @id @default(cuid())
-  status       Enum_EvaluationSessionStatus @default(NOT_STARTED)
-  study        Study                        @relation(fields: [studyId], references: [id])
-  studyId      String
-  expert       User                         @relation(fields: [expertId], references: [id], name: "session-expert")
-  expertId     String
-  user         User                         @relation(fields: [userId], references: [id], name: "session-user")
-  userId       String
-  taskStatuses EvaluationTaskStatus[]
-  createdAt    DateTime                     @default(now())
-  updatedAt    DateTime                     @updatedAt
+model EvaluationSessionData {
+  id                      String   @id @default(cuid())
+  expertConsentBegin      Boolean  @default(false)
+  participantConsentBegin Boolean  @default(false)
+  currentTask             Int
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @updatedAt
 }
 
-model EvaluationTaskStatus {
+model EvaluationSession {
+  id            String                       @id @default(cuid())
+  status        Enum_EvaluationSessionStatus @default(NOT_STARTED)
+  study         Study                        @relation(fields: [studyId], references: [id])
+  studyId       String
+  expert        User                         @relation(fields: [expertId], references: [id], name: "session-expert")
+  expertId      String
+  participant   User                         @relation(fields: [participantId], references: [id], name: "session-user")
+  participantId String
+  tasks         EvaluationTask[]
+  createdAt     DateTime                     @default(now())
+  updatedAt     DateTime                     @updatedAt
+}
+
+model EvaluationTask {
   id                  String                    @id @default(cuid())
   status              Enum_TaskEvaluationStatus @default(NOT_STARTED)
   task                Task                      @relation(fields: [taskId], references: [id])
   taskId              String
   session             EvaluationSession         @relation(fields: [evaluationSessionId], references: [id])
   evaluationSessionId String
+  expertComments      String?
+  userRecording       String?
+  expertRecording     String?
   createdAt           DateTime                  @default(now())
   updatedAt           DateTime                  @updatedAt
 }
@@ -112,7 +123,7 @@ model Script {
   name      String   @unique
   script    String   @db.Text
   recording String?
-  createdBu User     @relation(fields: [userId], references: [id])
+  createdBy User     @relation(fields: [userId], references: [id])
   userId    String
   studies   Study[]
   createdAt DateTime @default(now())
@@ -120,15 +131,15 @@ model Script {
 }
 
 model Task {
-  id          String                 @id @default(cuid())
-  description String                 @db.Text
+  id          String           @id @default(cuid())
+  description String           @db.Text
   url         String
   recording   String?
-  study       Study                  @relation(fields: [studyId], references: [id])
+  study       Study            @relation(fields: [studyId], references: [id])
   studyId     String
-  evaluations EvaluationTaskStatus[]
-  createdAt   DateTime               @default(now())
-  updatedAt   DateTime               @updatedAt
+  evaluations EvaluationTask[]
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
 }
 
 model Study {
@@ -150,7 +161,7 @@ model Study {
 enum Enum_RoleName {
   ADMIN
   EXPERT
-  USER
+  PARTICIPANT
 }
 
 enum Enum_TaskEvaluationStatus {

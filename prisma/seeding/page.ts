@@ -2,13 +2,13 @@ const pages = [
   {
     name: 'Home',
     route: '/',
-    roles: ['ADMIN', 'USER', 'EXPERT'],
+    roles: ['ADMIN', 'PARTICIPANT', 'EXPERT'],
     isPublic: true,
   },
   {
     name: 'App',
     route: '/app',
-    roles: ['ADMIN', 'EXPERT'],
+    roles: ['ADMIN', 'EXPERT', 'PARTICIPANT'],
     isPublic: false,
   },
   {
@@ -30,9 +30,9 @@ const pages = [
     isPublic: false,
   },
   {
-    name: 'Session',
-    route: '/app/session/[id]',
-    roles: ['ADMIN', 'EXPERT', 'USER'],
+    name: 'Evaluation',
+    route: '/app/evaluations/[id]',
+    roles: ['ADMIN', 'EXPERT', 'PARTICIPANT'],
     isPublic: true,
   },
 ];

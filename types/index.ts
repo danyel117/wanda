@@ -1,4 +1,4 @@
-import { Study } from '@prisma/client';
+import { EvaluationSession, Script, Study, User } from '@prisma/client';
 import { Session } from 'next-auth';
 
 interface Context {
@@ -27,4 +27,13 @@ export interface UserStudy extends Study {
     completed: number;
     total: number;
   };
+}
+
+export interface ExtendedStudy extends Study {
+  script: Script;
+}
+
+export interface ExtendedEvaluationSession extends EvaluationSession {
+  study: ExtendedStudy;
+  participant: User;
 }

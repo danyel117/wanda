@@ -25,7 +25,7 @@ const getNextAuthOptions = (req: NextApiRequest) =>
           include: {
             user: {
               include: {
-                role: true,
+                roles: true,
               },
             },
           },
@@ -36,7 +36,7 @@ const getNextAuthOptions = (req: NextApiRequest) =>
           user: {
             ...session.user,
             id: newSession?.user.id,
-            role: newSession?.user.role,
+            roles: newSession?.user.roles,
           },
         };
       },

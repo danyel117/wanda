@@ -10,8 +10,14 @@ const EvaluationSessionTypes = gql`
     participantEmail: String
   }
 
-  type Mutation{
-    createEvaluationSessionNoUser():EvaluationSession
+  type Query {
+    getUserEvaluations: [EvaluationSession]
+  }
+
+  type Mutation {
+    createEvaluationSessionNoUser(
+      data: EvaluationSessionNoUserInput
+    ): EvaluationSession
   }
 `;
 
