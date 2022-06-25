@@ -5,6 +5,7 @@ import { useEvaluation } from 'context/evaluation';
 import { useUpdateEvaluationData } from '@components/evaluation/updateEvaluationData';
 import { toast } from 'react-toastify';
 import { useState } from 'react';
+import { StartedState } from '@components/evaluation/user/StartedState';
 
 const MarkdownRenderer = dynamic(
   () => import('@components/RichText/MarkdownRenderer'),

@@ -39,13 +39,13 @@ const EvaluationContextProvider = ({
     }
   );
 
-  // useEffect(() => {
-  //   startPolling(500);
+  useEffect(() => {
+    startPolling(500);
 
-  //   return () => {
-  //     stopPolling();
-  //   };
-  // }, [startPolling, stopPolling]);
+    return () => {
+      stopPolling();
+    };
+  }, [startPolling, stopPolling]);
 
   useEffect(() => {
     if (data?.evaluationSession) {
@@ -65,12 +65,6 @@ const EvaluationContextProvider = ({
     }),
     [data, loading, currentTask]
   );
-
-  useEffect(() => {
-    if (data) {
-      console.log(data.evaluationSession);
-    }
-  }, [data]);
 
   return (
     <EvaluationContext.Provider value={evaluationContext}>

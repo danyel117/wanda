@@ -29,7 +29,7 @@ const VoiceRecorder = dynamic(
   }
 );
 
-export const getServerSideProps: GetServerSideProps = async ctx => {
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { rejected, isPublic, page } = await matchRoles(ctx);
   return {
     props: {
@@ -48,7 +48,7 @@ const Scripts: NextPage = () => {
   if (loading) return <Loading />;
   return (
     <>
-      <div className='flex flex-col h-full w-full p-10'>
+      <div className='flex h-full w-full flex-col p-10'>
         <PageHeader title='Script management'>
           <button
             className='primary flex'
@@ -59,7 +59,7 @@ const Scripts: NextPage = () => {
           </button>
         </PageHeader>
 
-        <div className='w-full p-6 grid grid-cols-3 gap-6 justify-items-center'>
+        <div className='grid w-full grid-cols-3 justify-items-center gap-6 p-6'>
           {data.getScripts?.map((script: Script) => (
             <ScriptCard key={script.id} script={script} />
           ))}
@@ -161,7 +161,7 @@ const NewScript = ({ setOpen }: NewScriptProps) => {
         />
         <input
           value={name}
-          onChange={e => setName(e.target.value)}
+          onChange={(e) => setName(e.target.value)}
           name='name'
           type='text'
           placeholder='My super script'

@@ -23,6 +23,15 @@ interface TaskUpdateFunctionProps {
     status?: {
       set: Enum_TaskEvaluationStatus;
     };
+    userRecording?: {
+      set: string;
+    };
+    expertRecording?: {
+      set: string;
+    };
+    expertComments?: {
+      set: string;
+    };
   };
 }
 

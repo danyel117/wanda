@@ -1,47 +1,11 @@
-/* eslint-disable no-console */
-import { useEffect } from 'react';
-import { useReactMediaRecorder } from 'react-media-recorder';
 import { BsRecordCircle, BsFillTrashFill } from 'react-icons/bs';
 import { Tooltip } from '@mui/material';
-
-interface VoiceRecorderProps {
-  setRecordingFile: (file: File) => void;
-  fileName: string;
-}
+import { useVoiceRecorder, VoiceRecorderProps } from 'hooks/useVoiceRecorder';
 
 const VoiceRecorder = ({ setRecordingFile, fileName }: VoiceRecorderProps) => {
-  const {
-    status,
-    startRecording,
-    stopRecording,
-    clearBlobUrl,
-    mediaBlobUrl,
-  } = useReactMediaRecorder({
-    audio: true,
-    blobPropertyBag: { type: 'audio/wav' },
-  });
-
-  useEffect(() => {
-    const getAudioFile = async (blob: string) => {
-      const audioBlob = await fetch(blob).then(r => r.blob());
-      const audioFile = new File([audioBlob], `${fileName}.wav`, {
-        type: 'audio/wav',
-      });
-      setRecordingFile(audioFile);
-    };
-    if (mediaBlobUrl) {
-      getAudioFile(mediaBlobUrl);
-    }
-  }, [mediaBlobUrl, setRecordingFile]);
-
-  const handleRecord = () => {
-    if (status === 'recording') {
-      stopRecording();
-    } else {
-      clearBlobUrl();
-      startRecording();
-    }
-  };
+  const { status, handleRecord, mediaBlobUrl, clearBlobUrl } = useVoiceRecorder(
+    { setRecordingFile, fileName }
+  );
 
   const getStatusText = () => {
     switch (status) {
@@ -57,7 +21,7 @@ const VoiceRecorder = ({ setRecordingFile, fileName }: VoiceRecorderProps) => {
   };
 
   return (
-    <div className='text-xl flex flex-col justify-center items-start w-[400px]'>
+    <div className='flex w-[400px] flex-col items-start justify-center text-xl'>
       <p>Recording: {getStatusText()}</p>
       <div className='flex h-14'>
         <button className='mx-2' type='button' onClick={handleRecord}>

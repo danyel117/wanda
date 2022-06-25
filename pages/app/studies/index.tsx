@@ -9,7 +9,7 @@ import { MdPsychology, MdTask } from 'react-icons/md';
 import StatCard from '@components/StatCard';
 import PageHeader from '@components/PageHeader';
 
-export const getServerSideProps: GetServerSideProps = async ctx => {
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { rejected, isPublic, page } = await matchRoles(ctx);
   return {
     props: {
@@ -27,7 +27,7 @@ const Studies: NextPage = () => {
   if (loading) return <Loading />;
 
   return (
-    <div className='flex flex-col h-full w-full p-10'>
+    <div className='flex h-full w-full flex-col p-10'>
       <PageHeader title='Study management'>
         <Link href='/app/studies/new'>
           <a>
@@ -51,7 +51,7 @@ interface StudyCardProps {
 }
 const StudyCard = ({ study }: StudyCardProps) => (
   <div className='card flex items-center justify-center gap-3'>
-    <h3 className='font-bold my-3'>{study.name}</h3>
+    <h3 className='my-3 font-bold'>{study.name}</h3>
     <div className='flex flex-col items-center'>
       <span className='text-sm text-gray-600'>Research question</span>
       <span className='text-lg'>{study.researchQuestion}</span>

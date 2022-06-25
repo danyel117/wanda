@@ -25,7 +25,7 @@ const VoiceRecorder = dynamic(
   }
 );
 
-export const getServerSideProps: GetServerSideProps = async ctx => {
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { rejected, isPublic, page } = await matchRoles(ctx);
   return {
     props: {
@@ -56,7 +56,7 @@ const NewStudy: NextPage = () => {
     e.preventDefault();
     const studyId = cuid();
     const filesUploaded = await Promise.all(
-      Object.keys(files).map(f => {
+      Object.keys(files).map((f) => {
         const id = cuid();
         const uploadedFormData = uploadFormFiles(
           {
@@ -88,7 +88,7 @@ const NewStudy: NextPage = () => {
                 },
               },
             },
-            tasks: filesUploaded.map(fu => ({
+            tasks: filesUploaded.map((fu) => ({
               id: fu.id,
               description: fu.description,
               recording: fu.file,
@@ -105,13 +105,13 @@ const NewStudy: NextPage = () => {
 
   return (
     <NewTaskContext.Provider value={newTaskContext}>
-      <div className='p-10 flex flex-col items-center justify-start gap-4'>
+      <div className='flex flex-col items-center justify-start gap-4 p-10'>
         <h1>New Study</h1>
         <form
           ref={form}
           onChange={updateFormData}
           onSubmit={submitForm}
-          className='flex flex-col gap-3 items-center'
+          className='flex flex-col items-center gap-3'
         >
           <div className='grid grid-cols-2  gap-4'>
             <label htmlFor='name'>
@@ -139,7 +139,7 @@ const NewStudy: NextPage = () => {
 
             <label htmlFor='script'>
               <span>Script</span>
-              <div className='flex gap-2 w-full'>
+              <div className='flex w-full gap-2'>
                 <select name='script' className='w-full' defaultValue=''>
                   <option disabled value=''>
                     Select a script
@@ -211,13 +211,13 @@ const TaskDefinition = ({ counter, name }: RepeatedComponentProps) => {
   }, [taskData]);
 
   return (
-    <div className='bg-gray-50 p-3 rounded-lg shadow-md'>
+    <div className='rounded-lg bg-gray-50 p-3 shadow-md'>
       <h2 className='w-full text-center'>Task #{(counter ?? 0) + 1}</h2>
       <label htmlFor={`~${name}-description`}>
         <span>Task description</span>
         <textarea
           value={taskData.description}
-          onChange={e =>
+          onChange={(e) =>
             setTaskData({ ...taskData, description: e.target.value })
           }
           name={`~${name}-description`}
@@ -229,7 +229,7 @@ const TaskDefinition = ({ counter, name }: RepeatedComponentProps) => {
         <span>Task url</span>
         <input
           value={taskData.url}
-          onChange={e => setTaskData({ ...taskData, url: e.target.value })}
+          onChange={(e) => setTaskData({ ...taskData, url: e.target.value })}
           name={`'~${name}-url`}
           placeholder='https://www.ux-wanda.com'
           required

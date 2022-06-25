@@ -20,6 +20,7 @@ const GET_EVALUATION = gql`
     evaluationSession(id: $evaluationSessionId) {
       id
       study {
+        id
         name
       }
       expert {
