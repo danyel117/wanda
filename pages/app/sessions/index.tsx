@@ -6,8 +6,8 @@ import Table, { TableData } from '@components/Table/Table';
 import Tooltip from '@mui/material/Tooltip';
 import { Enum_RoleName, Study } from '@prisma/client';
 import { TableContextProvider } from 'context/table';
-import { CREATE_EVALUATION } from 'graphql/mutations/evaluation';
-import { GET_USER_EVALUATIONS } from 'graphql/queries/evaluation';
+import { CREATE_STUDY_SESSION } from 'graphql/mutations/studySession';
+import { GET_USER_STUDY_SESSIONS } from 'graphql/queries/studySession';
 import { GET_STUDIES } from 'graphql/queries/study';
 import useFormData from 'hooks/useFormData';
 import { useSession } from 'next-auth/react';
@@ -20,7 +20,7 @@ import { ExtendedEvaluationSession } from 'types';
 const EvaluationIndex = () => {
   const { data: session } = useSession();
   const [openNew, setOpenNew] = useState<boolean>(false);
-  const { data: evaluations } = useQuery(GET_USER_EVALUATIONS, {
+  const { data: evaluations } = useQuery(GET_USER_STUDY_SESSIONS, {
     fetchPolicy: 'cache-and-network',
   });
   const [tableData, setTableData] = useState<TableData[]>([]);
@@ -124,8 +124,8 @@ interface NewEvaluationProps {
 
 const NewEvaluation = ({ setOpenNew }: NewEvaluationProps) => {
   const { data: studies } = useQuery(GET_STUDIES);
-  const [createEvaluation] = useMutation(CREATE_EVALUATION, {
-    refetchQueries: [GET_USER_EVALUATIONS],
+  const [createEvaluation] = useMutation(CREATE_STUDY_SESSION, {
+    refetchQueries: [GET_USER_STUDY_SESSIONS],
   });
   const { form, formData, updateFormData } = useFormData(null);
 

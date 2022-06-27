@@ -21,8 +21,8 @@ const AppIndex: NextPage = () => (
     <PrivateComponent roleList={[Enum_RoleName.ADMIN, Enum_RoleName.EXPERT]}>
       <IndexCard
         image='/img/evaluation.jpg'
-        title='Study Management'
-        description='Define new studies and analyze the data on existing ones.'
+        title='Evaluation Study Management'
+        description='Define new evaluation studies and analyze the data on existing ones.'
         href='/app/studies'
       />
     </PrivateComponent>
@@ -37,9 +37,9 @@ const AppIndex: NextPage = () => (
     </PrivateComponent>
     <IndexCard
       image='/img/script.jpg'
-      title='Evaluations'
-      description='Review the evaluations you have been invited to.'
-      href='/app/evaluations'
+      title='Study Sessions'
+      description='Review the sessions you have been invited to.'
+      href='/app/sessions'
     />
   </div>
 );

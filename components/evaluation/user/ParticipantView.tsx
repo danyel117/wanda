@@ -1,8 +1,8 @@
 import Modal from '@components/modals/Modal';
 import dynamic from 'next/dynamic';
-import { Enum_EvaluationSessionStatus } from '@prisma/client';
-import { useEvaluation } from 'context/evaluation';
-import { useUpdateEvaluationData } from '@components/evaluation/updateEvaluationData';
+import { Enum_StudySessionStatus } from '@prisma/client';
+import { useStudySession } from 'context/studySession';
+import { useUpdateStudySessionData } from '@components/evaluation/updateStudySessionData';
 import { toast } from 'react-toastify';
 import { useState } from 'react';
 import { StartedState } from '@components/evaluation/user/StartedState';
@@ -13,12 +13,12 @@ const MarkdownRenderer = dynamic(
 );
 
 const ParticipantView = () => {
-  const { evaluation } = useEvaluation();
+  const { session } = useStudySession();
   return (
     <div className='h-screen w-screen'>
       <iframe
         className='absolute top-0 left-0 z-20 h-full w-full'
-        src={`${evaluation.study.site}`}
+        src={`${session.study.site}`}
         title='page'
       />
       <div className='absolute top-0 left-0 z-10 h-screen w-screen overflow-hidden'>
@@ -31,13 +31,13 @@ const ParticipantView = () => {
 };
 
 const ParticipantStatuses = () => {
-  const { evaluation } = useEvaluation();
+  const { session } = useStudySession();
 
-  if (evaluation.status === 'NOT_STARTED') {
-    return <CreatedState script={evaluation.study.script.script} />;
+  if (session.status === 'NOT_STARTED') {
+    return <CreatedState script={session.study.script.script} />;
   }
 
-  if (evaluation.status === 'STARTED') {
+  if (session.status === 'STARTED') {
     return <StartedState />;
   }
 
@@ -46,13 +46,14 @@ const ParticipantStatuses = () => {
 
 const CreatedState = ({ script }: { script: string }) => {
   const [open, setOpen] = useState<boolean>(true);
-  const { evaluation } = useEvaluation();
-  const { updateEvaluationData, updateEvaluation } = useUpdateEvaluationData();
+  const { session } = useStudySession();
+  const { updateStudySessionData, updateStudySession } =
+    useUpdateStudySessionData();
 
   const participantConsent = async () => {
     try {
-      await updateEvaluationData({
-        id: evaluation.data.id,
+      await updateStudySessionData({
+        id: session.data.id,
         data: {
           participantConsentBegin: {
             set: true,
@@ -62,11 +63,11 @@ const CreatedState = ({ script }: { script: string }) => {
           },
         },
       });
-      await updateEvaluation({
-        id: evaluation.id,
+      await updateStudySession({
+        id: session.id,
         data: {
           status: {
-            set: Enum_EvaluationSessionStatus.STARTED,
+            set: Enum_StudySessionStatus.STARTED,
           },
         },
       });
@@ -84,7 +85,7 @@ const CreatedState = ({ script }: { script: string }) => {
     >
       <div className='flex flex-col gap-4'>
         <MarkdownRenderer md={script} />
-        {evaluation.data.expertConsentBegin && (
+        {session.data.expertConsentBegin && (
           <div className='flex w-full justify-center'>
             <button
               onClick={participantConsent}

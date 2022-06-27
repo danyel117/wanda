@@ -1,19 +1,19 @@
 import PrivateLayout from '@layouts/PrivateLayout';
-import { useEvaluation } from 'context/evaluation';
-import { useUpdateEvaluationData } from '@components/evaluation/updateEvaluationData';
-import { ExtendedEvaluationTask } from 'types';
-import { Enum_TaskEvaluationStatus } from '@prisma/client';
+import { useStudySession } from 'context/studySession';
+import { useUpdateStudySessionData } from '@components/evaluation/updateStudySessionData';
+import { ExtendedStudySessionTask } from 'types';
+import { Enum_StudySessionTaskStatus } from '@prisma/client';
 import { useEffect, useState } from 'react';
 import { MdCancel, MdOutlineCheckCircle } from 'react-icons/md';
 import Modal from '@components/modals/Modal';
 
 const ExpertView = () => {
-  const { evaluation } = useEvaluation();
-  const { updateEvaluationData } = useUpdateEvaluationData();
+  const { session } = useStudySession();
+  const { updateStudySessionData } = useUpdateStudySessionData();
 
   const expertConsent = async () => {
-    await updateEvaluationData({
-      id: evaluation.data.id,
+    await updateStudySessionData({
+      id: session.data.id,
       data: {
         expertConsentBegin: {
           set: true,
@@ -30,15 +30,15 @@ const ExpertView = () => {
         </div>
         <div className='flex w-full justify-center gap-4'>
           <span>
-            Study: <strong>{evaluation.study.name}</strong>
+            Study: <strong>{session.study.name}</strong>
           </span>
           <span>
-            Participant: <strong>{evaluation.participant.email}</strong>
+            Participant: <strong>{session.participant.email}</strong>
           </span>
         </div>
         <div className='flex items-center gap-4'>
           <button
-            disabled={evaluation.data.expertConsentBegin}
+            disabled={session.data.expertConsentBegin}
             onClick={expertConsent}
             type='button'
             className='primary'
@@ -46,18 +46,18 @@ const ExpertView = () => {
             Begin session
           </button>
         </div>
-        {!evaluation.data.participantConsentBegin &&
-          evaluation.data.expertConsentBegin && (
+        {!session.data.participantConsentBegin &&
+          session.data.expertConsentBegin && (
             <div>Please wait for the user to be ready.</div>
           )}
-        {evaluation.status === 'STARTED' && <CurrentTaskControls />}
+        {session.status === 'STARTED' && <CurrentTaskControls />}
       </div>
     </PrivateLayout>
   );
 };
 
 const CurrentTaskControls = () => {
-  const { currentTask } = useEvaluation();
+  const { currentTask } = useStudySession();
 
   return (
     <div className='flex justify-center gap-10'>
@@ -90,9 +90,9 @@ const CurrentTaskControls = () => {
 const TaskStatuses = ({
   currentTask,
 }: {
-  currentTask: ExtendedEvaluationTask | undefined;
+  currentTask: ExtendedStudySessionTask | undefined;
 }) => {
-  if (currentTask?.status === Enum_TaskEvaluationStatus.NOT_STARTED) {
+  if (currentTask?.status === Enum_StudySessionTaskStatus.NOT_STARTED) {
     return (
       <>
         <span>{currentTask?.status}</span>
@@ -101,7 +101,7 @@ const TaskStatuses = ({
     );
   }
 
-  if (currentTask?.status === Enum_TaskEvaluationStatus.STARTED) {
+  if (currentTask?.status === Enum_StudySessionTaskStatus.STARTED) {
     return (
       <>
         <span>{currentTask?.status}</span>
@@ -114,9 +114,9 @@ const TaskStatuses = ({
 };
 
 const NotStartedTaskStatus = ({ currentTask }: { currentTask: string }) => {
-  const { updateEvaluationTask } = useUpdateEvaluationData();
+  const { updateStudySessionTask } = useUpdateStudySessionData();
   const startTask = async () => {
-    await updateEvaluationTask({
+    await updateStudySessionTask({
       id: currentTask,
       data: {
         status: {
@@ -133,14 +133,14 @@ const NotStartedTaskStatus = ({ currentTask }: { currentTask: string }) => {
 };
 
 const StartedTaskStatus = ({ currentTask }: { currentTask: string }) => {
-  const [status, setStatus] = useState<Enum_TaskEvaluationStatus>(
-    Enum_TaskEvaluationStatus.STARTED
+  const [status, setStatus] = useState<Enum_StudySessionTaskStatus>(
+    Enum_StudySessionTaskStatus.STARTED
   );
   const [openModal, setOpenModal] = useState<boolean>(false);
-  const { updateEvaluationTask } = useUpdateEvaluationData();
+  const { updateStudySessionTask } = useUpdateStudySessionData();
 
-  const updateEvaluationStatus = async () => {
-    await updateEvaluationTask({
+  const updateStudySessionStatus = async () => {
+    await updateStudySessionTask({
       id: currentTask,
       data: {
         status: {
@@ -156,7 +156,7 @@ const StartedTaskStatus = ({ currentTask }: { currentTask: string }) => {
         <button
           onClick={() => {
             setOpenModal(true);
-            setStatus(Enum_TaskEvaluationStatus.COMPLETED);
+            setStatus(Enum_StudySessionTaskStatus.COMPLETED);
           }}
           type='button'
           className='flex justify-between gap-2 rounded-lg border border-green-500 bg-white p-2 shadow-lg hover:scale-105 hover:text-green-700'
@@ -169,7 +169,7 @@ const StartedTaskStatus = ({ currentTask }: { currentTask: string }) => {
         <button
           onClick={() => {
             setOpenModal(true);
-            setStatus(Enum_TaskEvaluationStatus.FAILED);
+            setStatus(Enum_StudySessionTaskStatus.FAILED);
           }}
           type='button'
           className='flex justify-between gap-2 rounded-lg border border-red-500 bg-white p-2 shadow-lg hover:scale-105 hover:text-red-700'
@@ -201,7 +201,7 @@ const StartedTaskStatus = ({ currentTask }: { currentTask: string }) => {
           <div className='flex gap-3'>
             <button
               type='button'
-              onClick={updateEvaluationStatus}
+              onClick={updateStudySessionStatus}
               className='primary'
             >
               Yes
@@ -223,9 +223,9 @@ const StartedTaskStatus = ({ currentTask }: { currentTask: string }) => {
 const AddComments = () => {
   const [firstLoad, setFirstLoad] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(false);
-  const { currentTask } = useEvaluation();
+  const { currentTask } = useStudySession();
   const [comment, setComment] = useState<string>();
-  const { updateEvaluationTask } = useUpdateEvaluationData();
+  const { updateStudySessionTask } = useUpdateStudySessionData();
 
   useEffect(() => {
     if (currentTask?.expertComments && !comment && firstLoad) {
@@ -236,7 +236,7 @@ const AddComments = () => {
 
   const addComment = async () => {
     setLoading(true);
-    await updateEvaluationTask({
+    await updateStudySessionTask({
       id: currentTask?.id ?? '',
       data: {
         expertComments: {

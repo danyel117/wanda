@@ -24,15 +24,15 @@ const Sidebar = () => {
       <SidebarItem
         key={nanoid()}
         Icon={MdLightbulbOutline}
-        name='Studies'
+        name='Evaluation Studies'
         href='/app/studies'
       />
     </PrivateComponent>,
     <SidebarItem
       key={nanoid()}
       Icon={MdPsychology}
-      name='Evaluations'
-      href='/app/evaluations'
+      name='Study Sessions'
+      href='/app/sessions'
     />,
     <PrivateComponent roleList={[Enum_RoleName.ADMIN, Enum_RoleName.EXPERT]}>
       <SidebarItem

@@ -1,11 +1,11 @@
 import {
-  EvaluationSession,
-  EvaluationSessionData,
-  EvaluationTask,
+  StudySession,
+  StudySessionData,
   Script,
-  Study,
+  EvaluationStudy,
   Task,
   User,
+  StudySessionTask,
 } from '@prisma/client';
 import { Session } from 'next-auth';
 
@@ -28,7 +28,7 @@ export type ParsedFormData = Record<
   string | File | number | boolean | { file: File; id: string }
 >;
 
-export interface UserStudy extends Study {
+export interface UserStudy extends EvaluationStudy {
   taskCount: number;
   evaluationSummary: {
     pending: number;
@@ -37,18 +37,18 @@ export interface UserStudy extends Study {
   };
 }
 
-export interface ExtendedStudy extends Study {
+export interface ExtendedStudy extends EvaluationStudy {
   script: Script;
 }
 
-export interface ExtendedEvaluationTask extends EvaluationTask {
+export interface ExtendedStudySessionTask extends StudySessionTask {
   task: Task;
 }
 
-export interface ExtendedEvaluationSession extends EvaluationSession {
+export interface ExtendedStudySession extends StudySession {
   study: ExtendedStudy;
   participant: User;
   expert: User;
-  data: EvaluationSessionData;
-  taskList: ExtendedEvaluationTask[];
+  data: StudySessionData;
+  taskList: ExtendedStudySessionTask[];
 }

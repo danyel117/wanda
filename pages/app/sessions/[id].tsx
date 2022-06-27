@@ -3,7 +3,7 @@ import { GetServerSideProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import matchRoles from '@utils/matchRoles';
 import { useSession } from 'next-auth/react';
-import { EvaluationContextProvider, useEvaluation } from 'context/evaluation';
+import { EvaluationContextProvider, useEvaluation } from 'context/studySession';
 import { ParticipantView } from '@components/evaluation/user/ParticipantView';
 import { ExpertView } from '@components/evaluation/expert/ExpertView';
 

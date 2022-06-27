@@ -6,42 +6,42 @@ import {
 } from 'react-icons/md';
 import Draggable from 'react-draggable';
 import { Tooltip } from '@mui/material';
-import { ExtendedEvaluationTask } from 'types';
-import { useEvaluation } from 'context/evaluation';
+import { ExtendedStudySessionTask } from 'types';
+import { useStudySession } from 'context/studySession';
 import Modal from '@components/modals/Modal';
 import { useEffect, useState } from 'react';
 import { useVoiceRecorder } from 'hooks/useVoiceRecorder';
-import { Enum_TaskEvaluationStatus } from '@prisma/client';
+import { Enum_StudySessionTaskStatus } from '@prisma/client';
 import { uploadFormFiles } from '@utils/uploadS3';
-import { useUpdateEvaluationData } from '@components/evaluation/updateEvaluationData';
+import { useUpdateStudySessionData } from '@components/evaluation/updateStudySessionData';
 import { useSession } from 'next-auth/react';
 
 const StartedState = () => {
-  const { data: session } = useSession();
+  const { data: userSession } = useSession();
   const [taskFinished, setTaskFinished] = useState<boolean>(false);
   const [currentStatus, setCurrentStatus] =
-    useState<Enum_TaskEvaluationStatus>();
-  const { evaluation, currentTask } = useEvaluation();
+    useState<Enum_StudySessionTaskStatus>();
+  const { session, currentTask } = useStudySession();
   const [recordingFile, setRecordingFile] = useState<File>();
   const { handleRecord, clearBlobUrl } = useVoiceRecorder({
-    fileName: 'evaluation-task',
+    fileName: 'session-task',
     setRecordingFile,
   });
-  const { updateEvaluationData, updateEvaluationTask } =
-    useUpdateEvaluationData();
+  const { updateStudySessionData, updateStudySessionTask } =
+    useUpdateStudySessionData();
 
   useEffect(() => {
     if (
-      currentStatus === Enum_TaskEvaluationStatus.NOT_STARTED &&
-      currentTask?.status === Enum_TaskEvaluationStatus.STARTED
+      currentStatus === Enum_StudySessionTaskStatus.NOT_STARTED &&
+      currentTask?.status === Enum_StudySessionTaskStatus.STARTED
     ) {
       // transition from not started to started
       clearBlobUrl(); // clear the blob if it existis
       handleRecord(); // begin audio recording
     } else if (
-      currentStatus === Enum_TaskEvaluationStatus.STARTED &&
-      (currentTask?.status === Enum_TaskEvaluationStatus.COMPLETED ||
-        currentTask?.status === Enum_TaskEvaluationStatus.FAILED)
+      currentStatus === Enum_StudySessionTaskStatus.STARTED &&
+      (currentTask?.status === Enum_StudySessionTaskStatus.COMPLETED ||
+        currentTask?.status === Enum_StudySessionTaskStatus.FAILED)
     ) {
       // transition from started to either failed or completed
       handleRecord(); // finish audio recording
@@ -56,12 +56,12 @@ const StartedState = () => {
         {
           recording: recordingFile as File,
         },
-        `${session?.user.id}/studies/${evaluation.study.id}/evaluations/${
-          evaluation.id
+        `${userSession?.user.id}/studies/${session.study.id}/sessions/${
+          session.id
         }/audio/${currentTask?.id ?? ''}`
       );
 
-      await updateEvaluationTask({
+      await updateStudySessionTask({
         id: currentTask?.id ?? '',
         data: {
           userRecording: {
@@ -70,11 +70,11 @@ const StartedState = () => {
         },
       });
 
-      await updateEvaluationData({
-        id: evaluation.data.id,
+      await updateStudySessionData({
+        id: session.data.id,
         data: {
           currentTask: {
-            set: evaluation.data.currentTask + 1,
+            set: session.data.currentTask + 1,
           },
         },
       });
@@ -89,7 +89,7 @@ const StartedState = () => {
       <Modal open setOpen={() => {}}>
         <div className='flex flex-col gap-3'>
           <span className='font-bold text-gray-900'>
-            You are about to start the task # {evaluation.data.currentTask}
+            You are about to start the task # {session.data.currentTask}
           </span>
           <span>Task description:</span>
           <div className='max-h-36 overflow-y-auto'>
@@ -103,16 +103,16 @@ const StartedState = () => {
   }
 
   if (currentTask?.status === 'STARTED') {
-    return <TaskEvaluationControls currentTask={currentTask} />;
+    return <StudySessionTaskControls currentTask={currentTask} />;
   }
 
   return null;
 };
 
-const TaskEvaluationControls = ({
+const StudySessionTaskControls = ({
   currentTask,
 }: {
-  currentTask: ExtendedEvaluationTask;
+  currentTask: ExtendedStudySessionTask;
 }) => {
   const [showOptions, setShowOptions] = useState<boolean>(false);
   return (

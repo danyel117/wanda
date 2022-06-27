@@ -1,19 +1,19 @@
 import { useMutation } from '@apollo/client';
 import {
-  Enum_EvaluationSessionStatus,
-  Enum_TaskEvaluationStatus,
+  Enum_StudySessionStatus,
+  Enum_StudySessionTaskStatus,
 } from '@prisma/client';
 import {
-  UPDATE_EVALUATION_SESSION,
-  UPDATE_EVALUATION_SESSION_DATA,
-  UPDATE_EVALUATION_SESSION_TASK,
-} from 'graphql/mutations/evaluation';
+  UPDATE_STUDY_SESSION,
+  UPDATE_STUDY_SESSION_DATA,
+  UPDATE_STUDY_SESSION_TASK,
+} from 'graphql/mutations/studySession';
 
-interface EvaluationUpdateFunctionProps {
+interface StudySessionUpdateFunctionProps {
   id: string;
   data: {
     status?: {
-      set: Enum_EvaluationSessionStatus;
+      set: Enum_StudySessionStatus;
     };
   };
 }
@@ -21,7 +21,7 @@ interface TaskUpdateFunctionProps {
   id: string;
   data: {
     status?: {
-      set: Enum_TaskEvaluationStatus;
+      set: Enum_StudySessionTaskStatus;
     };
     userRecording?: {
       set: string;
@@ -50,20 +50,20 @@ interface DataUpdateFunctionProps {
   };
 }
 
-const useUpdateEvaluationData = () => {
-  const [updateEvaluationSession] = useMutation(UPDATE_EVALUATION_SESSION);
-  const [updateEvaluationSessionData] = useMutation(
-    UPDATE_EVALUATION_SESSION_DATA
+const useUpdateStudySessionData = () => {
+  const [updateStudySessionSession] = useMutation(UPDATE_STUDY_SESSION);
+  const [updateStudySessionSessionData] = useMutation(
+    UPDATE_STUDY_SESSION_DATA
   );
-  const [updateEvaluationSessionTask] = useMutation(
-    UPDATE_EVALUATION_SESSION_TASK
+  const [updateStudySessionSessionTask] = useMutation(
+    UPDATE_STUDY_SESSION_TASK
   );
 
-  const updateEvaluationData = async ({
+  const updateStudySessionData = async ({
     id,
     data,
   }: DataUpdateFunctionProps) => {
-    await updateEvaluationSessionData({
+    await updateStudySessionSessionData({
       variables: {
         where: {
           id,
@@ -73,11 +73,11 @@ const useUpdateEvaluationData = () => {
     });
   };
 
-  const updateEvaluation = async ({
+  const updateStudySession = async ({
     id,
     data,
-  }: EvaluationUpdateFunctionProps) => {
-    await updateEvaluationSession({
+  }: StudySessionUpdateFunctionProps) => {
+    await updateStudySessionSession({
       variables: {
         where: {
           id,
@@ -87,11 +87,11 @@ const useUpdateEvaluationData = () => {
     });
   };
 
-  const updateEvaluationTask = async ({
+  const updateStudySessionTask = async ({
     id,
     data,
   }: TaskUpdateFunctionProps) => {
-    await updateEvaluationSessionTask({
+    await updateStudySessionSessionTask({
       variables: {
         where: {
           id,
@@ -102,10 +102,10 @@ const useUpdateEvaluationData = () => {
   };
 
   return {
-    updateEvaluation,
-    updateEvaluationData,
-    updateEvaluationTask,
+    updateStudySession,
+    updateStudySessionData,
+    updateStudySessionTask,
   };
 };
 
-export { useUpdateEvaluationData };
+export { useUpdateStudySessionData };

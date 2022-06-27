@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
 
-const GET_USER_EVALUATIONS = gql`
+const GET_USER_STUDY_SESSIONS = gql`
   query GetUserEvaluations {
     getUserEvaluations {
       id
@@ -15,13 +15,18 @@ const GET_USER_EVALUATIONS = gql`
   }
 `;
 
-const GET_EVALUATION = gql`
-  query EvaluationSession($evaluationSessionId: String!) {
-    evaluationSession(id: $evaluationSessionId) {
+const GET_STUDY_SESSION = gql`
+  query StudySession($studySessionId: String!) {
+    studySession(id: $studySessionId) {
       id
-      study {
+      evaluationStudy {
         id
         name
+        site
+        script {
+          script
+          recording
+        }
       }
       expert {
         email
@@ -46,15 +51,8 @@ const GET_EVALUATION = gql`
           recording
         }
       }
-      study {
-        site
-        script {
-          script
-          recording
-        }
-      }
     }
   }
 `;
 
-export { GET_USER_EVALUATIONS, GET_EVALUATION };
+export { GET_USER_STUDY_SESSIONS, GET_STUDY_SESSION };
