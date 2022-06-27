@@ -1,6 +1,6 @@
 import PrivateLayout from '@layouts/PrivateLayout';
 import { useStudySession } from 'context/studySession';
-import { useUpdateStudySessionData } from '@components/evaluation/updateStudySessionData';
+import { useUpdateStudySessionData } from '@components/StudySession/updateStudySessionData';
 import { ExtendedStudySessionTask } from 'types';
 import { Enum_StudySessionTaskStatus } from '@prisma/client';
 import { useEffect, useState } from 'react';

@@ -3,9 +3,12 @@ import { GetServerSideProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import matchRoles from '@utils/matchRoles';
 import { useSession } from 'next-auth/react';
-import { EvaluationContextProvider, useEvaluation } from 'context/studySession';
-import { ParticipantView } from '@components/evaluation/user/ParticipantView';
-import { ExpertView } from '@components/evaluation/expert/ExpertView';
+import {
+  StudySessionContextProvider,
+  useStudySession,
+} from 'context/studySession';
+import { ParticipantView } from '@components/StudySession/user/ParticipantView';
+import { ExpertView } from '@components/StudySession/expert/ExpertView';
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { rejected, isPublic, page } = await matchRoles(ctx);
@@ -18,37 +21,37 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   };
 };
 
-const EvaluationPage: NextPage = () => {
+const StudySessionPage: NextPage = () => {
   const router = useRouter();
   const id: string = router.query.id as string;
 
   return (
-    <EvaluationContextProvider id={id}>
-      <EvaluationRouter />
-    </EvaluationContextProvider>
+    <StudySessionContextProvider id={id}>
+      <SessionRouter />
+    </StudySessionContextProvider>
   );
 };
 
-const EvaluationRouter = () => {
-  const { data: session } = useSession();
-  const { evaluation, loading } = useEvaluation();
+const SessionRouter = () => {
+  const { data: userSession } = useSession();
+  const { session, loading } = useStudySession();
 
   if (loading) return <Loading />;
 
   return (
     <>
-      {evaluation.participant.email === session?.user.email && (
+      {session.participant.email === userSession?.user.email && (
         <ParticipantView />
       )}
 
-      {evaluation.expert.email === session?.user.email && <ExpertView />}
+      {session.expert.email === userSession?.user.email && <ExpertView />}
 
-      {evaluation.expert.email !== session?.user.email &&
-        evaluation.participant.email !== session?.user.email && (
-          <div>You are not authorized to enter this evaluation.</div>
+      {session.expert.email !== userSession?.user.email &&
+        session.participant.email !== userSession?.user.email && (
+          <div>You are not authorized to enter this session.</div>
         )}
     </>
   );
 };
 
-export default EvaluationPage;
+export default StudySessionPage;

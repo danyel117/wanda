@@ -1,8 +1,8 @@
 import { gql } from 'apollo-server-micro';
 import { DocumentNode } from 'graphql';
-import { EvaluationSessionTypes } from 'graphql/types/EvaluationSession';
+import { StudySessionTypes } from 'graphql/types/StudySession';
 import { ScriptTypes } from 'graphql/types/Script';
-import { StudyTypes } from 'graphql/types/Study';
+import { StudyTypes } from 'graphql/types/EvaluationStudy';
 
 const GlobalTypes = gql`
   scalar Date
@@ -26,7 +26,7 @@ const GlobalTypes = gql`
 
 const customTypes: DocumentNode[] = [
   GlobalTypes,
-  EvaluationSessionTypes,
+  StudySessionTypes,
   ScriptTypes,
   StudyTypes,
 ];

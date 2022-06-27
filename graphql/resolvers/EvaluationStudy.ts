@@ -1,27 +1,27 @@
 import prisma from '@config/prisma';
-import { Enum_EvaluationSessionStatus, Study, Task } from '@prisma/client';
+import { Enum_StudySessionStatus, EvaluationStudy, Task } from '@prisma/client';
 import { Resolver } from 'types';
 
-const StudyResolvers: Resolver = {
-  Study: {
-    taskCount: async (parent: Study, args) =>
+const EvaluationStudyResolvers: Resolver = {
+  EvaluationStudy: {
+    taskCount: async (parent: EvaluationStudy, args) =>
       await prisma.task.count({
         where: {
           studyId: parent.id,
         },
       }),
-    evaluationSummary: async (parent: Study, args) => {
-      const evaluationSessions = await prisma.evaluationSession.findMany({
+    evaluationSummary: async (parent: EvaluationStudy, args) => {
+      const studySessions = await prisma.studySession.findMany({
         where: {
           studyId: parent.id,
         },
       });
 
-      const completed = evaluationSessions.filter(
-        es => es.status === Enum_EvaluationSessionStatus.COMPLETED
+      const completed = studySessions.filter(
+        (es) => es.status === Enum_StudySessionStatus.COMPLETED
       ).length;
 
-      const total = evaluationSessions.length;
+      const total = studySessions.length;
       return {
         pending: total - completed,
         completed,
@@ -31,7 +31,7 @@ const StudyResolvers: Resolver = {
   },
   Query: {
     getUserStudies: async (parent, args, context) =>
-      await prisma.study.findMany({
+      await prisma.evaluationStudy.findMany({
         where: {
           userId: {
             equals: context.session?.user.id ?? '',
@@ -40,16 +40,16 @@ const StudyResolvers: Resolver = {
       }),
   },
   Mutation: {
-    createStudyWithTasks: async (parent, args, context) =>
-      await prisma.study.create({
+    createEvaluationStudyWithTasks: async (parent, args, context) =>
+      await prisma.evaluationStudy.create({
         data: {
-          id: args.data.study.id,
-          name: args.data.study.name,
-          site: args.data.study.site,
-          researchQuestion: args.data.study.researchQuestion,
+          id: args.data.EvaluationStudy.id,
+          name: args.data.EvaluationStudy.name,
+          site: args.data.EvaluationStudy.site,
+          researchQuestion: args.data.EvaluationStudy.researchQuestion,
           script: {
             connect: {
-              id: args.data.study.script.connect.id,
+              id: args.data.EvaluationStudy.script.connect.id,
             },
           },
           createdBy: {
@@ -72,4 +72,4 @@ const StudyResolvers: Resolver = {
   },
 };
 
-export { StudyResolvers };
+export { EvaluationStudyResolvers };

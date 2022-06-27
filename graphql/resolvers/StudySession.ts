@@ -1,13 +1,13 @@
 import prisma from '@config/prisma';
-import { EvaluationSession, Task } from '@prisma/client';
+import { StudySession, Task } from '@prisma/client';
 import { Resolver } from 'types';
 
-const EvaluationSessionResolvers: Resolver = {
-  EvaluationSession: {
-    taskList: async (parent: EvaluationSession) => {
-      const tasks = await prisma.evaluationTask.findMany({
+const StudySessionResolvers: Resolver = {
+  StudySession: {
+    taskList: async (parent: StudySession) => {
+      const tasks = await prisma.studySessionTask.findMany({
         where: {
-          evaluationSessionId: parent.id,
+          studySessionId: parent.id,
         },
         orderBy: {
           task: {
@@ -20,8 +20,8 @@ const EvaluationSessionResolvers: Resolver = {
     },
   },
   Query: {
-    getUserEvaluations: async (parent, args, context) =>
-      await prisma.evaluationSession.findMany({
+    getUserStudySessions: async (parent, args, context) =>
+      await prisma.studySession.findMany({
         where: {
           OR: [
             {
@@ -39,8 +39,8 @@ const EvaluationSessionResolvers: Resolver = {
       }),
   },
   Mutation: {
-    createEvaluationSessionNoUser: async (parent, args, context) => {
-      const study = await prisma.study.findUnique({
+    createStudySessionNoUser: async (parent, args, context) => {
+      const study = await prisma.evaluationStudy.findUnique({
         where: {
           id: args.data.study.connect.id,
         },
@@ -48,7 +48,7 @@ const EvaluationSessionResolvers: Resolver = {
           tasks: true,
         },
       });
-      await prisma.evaluationSession.create({
+      await prisma.studySession.create({
         data: {
           expert: {
             connect: {
@@ -92,4 +92,4 @@ const EvaluationSessionResolvers: Resolver = {
   },
 };
 
-export { EvaluationSessionResolvers };
+export { StudySessionResolvers };

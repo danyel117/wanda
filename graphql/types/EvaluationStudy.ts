@@ -1,18 +1,18 @@
 import { gql } from 'apollo-server-micro';
 
 const StudyTypes = gql`
-  type StudyEvaluationSummary {
+  type EvaluationStudyEvaluationSummary {
     pending: Int
     completed: Int
     total: Int
   }
 
-  type Study {
+  type EvaluationStudy {
     taskCount: Int
-    evaluationSummary: StudyEvaluationSummary
+    evaluationSummary: EvaluationStudyEvaluationSummary
   }
 
-  input CustomStudyCreateInput {
+  input CustomEvaluationStudyCreateInput {
     id: String
     name: String
     researchQuestion: String
@@ -27,17 +27,19 @@ const StudyTypes = gql`
     recording: String
   }
 
-  input StudyCreateInputWithTasks {
-    study: CustomStudyCreateInput
+  input EvaluationStudyCreateInputWithTasks {
+    evaluationStudy: CustomEvaluationStudyCreateInput
     tasks: [CustomTaskCreateInput]
   }
 
   type Query {
-    getUserStudies: [Study]
+    getUserStudies: [EvaluationStudy]
   }
 
   type Mutation {
-    createStudyWithTasks(data: StudyCreateInputWithTasks): Study
+    createEvaluationStudyWithTasks(
+      data: EvaluationStudyCreateInputWithTasks
+    ): EvaluationStudy
   }
 `;
 

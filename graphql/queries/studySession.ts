@@ -4,7 +4,7 @@ const GET_USER_STUDY_SESSIONS = gql`
   query GetUserEvaluations {
     getUserEvaluations {
       id
-      study {
+      evaluationStudy {
         name
       }
       participant {

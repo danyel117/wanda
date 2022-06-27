@@ -21,8 +21,8 @@ model StudySessionData {
     expertConsentBegin      Boolean      @default(false)
     participantConsentBegin Boolean      @default(false)
     currentTask             Int
-    evaluationSession       StudySession @relation(fields: [evaluationSessionId], references: [id])
-    evaluationSessionId     String       @unique
+    studySession            StudySession @relation(fields: [studySessionId], references: [id])
+    studySessionId          String       @unique
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -45,15 +45,15 @@ model StudySession {
 }
 
 model StudySessionTask {
-    id                  String                      @id @default(cuid())
-    status              Enum_StudySessionTaskStatus @default(NOT_STARTED)
-    task                Task                        @relation(fields: [taskId], references: [id])
-    taskId              String
-    session             StudySession                @relation(fields: [evaluationSessionId], references: [id])
-    evaluationSessionId String
-    expertComments      String?
-    userRecording       String?
-    expertRecording     String?
+    id              String                      @id @default(cuid())
+    status          Enum_StudySessionTaskStatus @default(NOT_STARTED)
+    task            Task                        @relation(fields: [taskId], references: [id])
+    taskId          String
+    session         StudySession                @relation(fields: [studySessionId], references: [id])
+    studySessionId  String
+    expertComments  String?
+    userRecording   String?
+    expertRecording String?
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt

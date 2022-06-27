@@ -13,7 +13,7 @@ import { useEffect, useState } from 'react';
 import { useVoiceRecorder } from 'hooks/useVoiceRecorder';
 import { Enum_StudySessionTaskStatus } from '@prisma/client';
 import { uploadFormFiles } from '@utils/uploadS3';
-import { useUpdateStudySessionData } from '@components/evaluation/updateStudySessionData';
+import { useUpdateStudySessionData } from '@components/StudySession/updateStudySessionData';
 import { useSession } from 'next-auth/react';
 
 const StartedState = () => {

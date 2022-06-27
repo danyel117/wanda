@@ -4,23 +4,23 @@ import PageHeader from '@components/PageHeader';
 import PrivateComponent from '@components/PrivateComponent';
 import Table, { TableData } from '@components/Table/Table';
 import Tooltip from '@mui/material/Tooltip';
-import { Enum_RoleName, Study } from '@prisma/client';
+import { Enum_RoleName, EvaluationStudy } from '@prisma/client';
 import { TableContextProvider } from 'context/table';
 import { CREATE_STUDY_SESSION } from 'graphql/mutations/studySession';
 import { GET_USER_STUDY_SESSIONS } from 'graphql/queries/studySession';
-import { GET_STUDIES } from 'graphql/queries/study';
+import { GET_STUDIES } from 'graphql/queries/evaluationStudy';
 import useFormData from 'hooks/useFormData';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { SyntheticEvent, useEffect, useMemo, useState } from 'react';
 import { MdLaunch } from 'react-icons/md';
 import { toast } from 'react-toastify';
-import { ExtendedEvaluationSession } from 'types';
+import { ExtendedStudySession } from 'types';
 
-const EvaluationIndex = () => {
+const StudySessionIndex = () => {
   const { data: session } = useSession();
   const [openNew, setOpenNew] = useState<boolean>(false);
-  const { data: evaluations } = useQuery(GET_USER_STUDY_SESSIONS, {
+  const { data: studySessions } = useQuery(GET_USER_STUDY_SESSIONS, {
     fetchPolicy: 'cache-and-network',
   });
   const [tableData, setTableData] = useState<TableData[]>([]);
@@ -32,8 +32,8 @@ const EvaluationIndex = () => {
         accessor: 'status',
       },
       {
-        Header: 'Study',
-        accessor: 'study',
+        Header: 'Evaluation study',
+        accessor: 'EvaluationStudy',
       },
       {
         Header: 'Participant',
@@ -48,19 +48,17 @@ const EvaluationIndex = () => {
   );
 
   useEffect(() => {
-    if (evaluations) {
+    if (studySessions) {
       setTableData(
-        evaluations.getUserEvaluations.map(
-          (uev: ExtendedEvaluationSession) => ({
-            status: uev.status,
-            study: uev.study.name,
-            participant: uev.participant.email,
-            editBtn: <EvaluationActions id={uev.id} />,
-          })
-        )
+        studySessions.getUserStudySessions.map((uev: ExtendedStudySession) => ({
+          status: uev.status,
+          EvaluationStudy: uev.study.name,
+          participant: uev.participant.email,
+          editBtn: <StudySessionActions id={uev.id} />,
+        }))
       );
     }
-  }, [evaluations]);
+  }, [studySessions]);
 
   const getPageTitle = () => {
     if (
@@ -68,10 +66,10 @@ const EvaluationIndex = () => {
         (r) => r.name === Enum_RoleName.ADMIN || r.name === Enum_RoleName.EXPERT
       )
     ) {
-      return 'Evaluation management';
+      return 'Study session management';
     }
 
-    return 'My evaluations';
+    return 'My study sessions';
   };
 
   return (
@@ -93,22 +91,22 @@ const EvaluationIndex = () => {
 
         <Table columns={columns} data={tableData} />
       </div>
-      <Modal open={openNew} setOpen={setOpenNew} title='New evaluation'>
-        <NewEvaluation setOpenNew={setOpenNew} />
+      <Modal open={openNew} setOpen={setOpenNew} title='New study session'>
+        <NewStudySession setOpenNew={setOpenNew} />
       </Modal>
     </TableContextProvider>
   );
 };
 
-interface EvaluationActionsProps {
+interface StudySessionActionsProps {
   id: string;
 }
 
-const EvaluationActions = ({ id }: EvaluationActionsProps) => (
+const StudySessionActions = ({ id }: StudySessionActionsProps) => (
   <div className='flex'>
     <Tooltip title='Launch session'>
       <div>
-        <Link href={`/app/evaluations/${id}`}>
+        <Link href={`/app/sessions/${id}`}>
           <a className='text-lg hover:text-indigo-500'>
             <MdLaunch />
           </a>
@@ -118,13 +116,13 @@ const EvaluationActions = ({ id }: EvaluationActionsProps) => (
   </div>
 );
 
-interface NewEvaluationProps {
+interface NewStudySessionProps {
   setOpenNew: (open: boolean) => void;
 }
 
-const NewEvaluation = ({ setOpenNew }: NewEvaluationProps) => {
+const NewStudySession = ({ setOpenNew }: NewStudySessionProps) => {
   const { data: studies } = useQuery(GET_STUDIES);
-  const [createEvaluation] = useMutation(CREATE_STUDY_SESSION, {
+  const [createStudySession] = useMutation(CREATE_STUDY_SESSION, {
     refetchQueries: [GET_USER_STUDY_SESSIONS],
   });
   const { form, formData, updateFormData } = useFormData(null);
@@ -132,22 +130,22 @@ const NewEvaluation = ({ setOpenNew }: NewEvaluationProps) => {
   const submitForm = async (e: SyntheticEvent) => {
     e.preventDefault();
     try {
-      await createEvaluation({
+      await createStudySession({
         variables: {
           data: {
-            study: {
+            evaluationStudy: {
               connect: {
-                id: formData.study,
+                id: formData.evaluationStudy,
               },
             },
             participantEmail: formData.participantEmail,
           },
         },
       });
-      toast.success('Evaluation session created successfully');
+      toast.success('Study session session created successfully');
       setOpenNew(false);
     } catch (err) {
-      toast.error('Error creating evaluation');
+      toast.error('Error creating Studys ession');
     }
   };
   return (
@@ -158,13 +156,13 @@ const NewEvaluation = ({ setOpenNew }: NewEvaluationProps) => {
         onSubmit={submitForm}
         className='flex flex-col gap-3'
       >
-        <label htmlFor='study'>
-          <span>Study</span>
-          <select name='study' defaultValue='' required>
+        <label htmlFor='evaluationStudy'>
+          <span>Evaluation study</span>
+          <select name='evaluationStudy' defaultValue='' required>
             <option value='' disabled>
-              Select a study
+              Select a evaluation study
             </option>
-            {studies.getUserStudies.map((study: Study) => (
+            {studies.getUserStudies.map((study: EvaluationStudy) => (
               <option key={study.id} value={study.id}>
                 {study.name}
               </option>
@@ -185,4 +183,4 @@ const NewEvaluation = ({ setOpenNew }: NewEvaluationProps) => {
   );
 };
 
-export default EvaluationIndex;
+export default StudySessionIndex;

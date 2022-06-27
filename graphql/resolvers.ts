@@ -1,13 +1,13 @@
-import { EvaluationSessionResolvers } from 'graphql/resolvers/EvaluationSession';
+import { StudySessionResolvers } from 'graphql/resolvers/StudySession';
 import { Resolver } from 'types';
 import { ScriptResolvers } from 'graphql/resolvers/Script';
-import { StudyResolvers } from 'graphql/resolvers/Study';
+import { EvaluationStudyResolvers } from 'graphql/resolvers/EvaluationStudy';
 import { TaskResolvers } from 'graphql/resolvers/Task';
 
 const customResolvers: Resolver[] = [
-  EvaluationSessionResolvers,
+  StudySessionResolvers,
   ScriptResolvers,
-  StudyResolvers,
+  EvaluationStudyResolvers,
   TaskResolvers,
 ];
 

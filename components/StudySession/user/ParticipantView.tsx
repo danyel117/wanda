@@ -2,10 +2,10 @@ import Modal from '@components/modals/Modal';
 import dynamic from 'next/dynamic';
 import { Enum_StudySessionStatus } from '@prisma/client';
 import { useStudySession } from 'context/studySession';
-import { useUpdateStudySessionData } from '@components/evaluation/updateStudySessionData';
+import { useUpdateStudySessionData } from '@components/StudySession/updateStudySessionData';
 import { toast } from 'react-toastify';
 import { useState } from 'react';
-import { StartedState } from '@components/evaluation/user/StartedState';
+import { StartedState } from '@components/StudySession/user/StartedState';
 
 const MarkdownRenderer = dynamic(
   () => import('@components/RichText/MarkdownRenderer'),

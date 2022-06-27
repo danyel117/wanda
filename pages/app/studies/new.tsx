@@ -15,7 +15,7 @@ import { NewTaskContext, TaskInput, useNewTaskContext } from 'context/newTasks';
 import cuid from 'cuid';
 import { uploadFormFiles } from '@utils/uploadS3';
 import { useSession } from 'next-auth/react';
-import { CREATE_STUDY } from 'graphql/mutations/study';
+import { CREATE_EVALUATION_STUDY } from 'graphql/mutations/evaluationStudy';
 import { toast } from 'react-toastify';
 
 const VoiceRecorder = dynamic(
@@ -36,7 +36,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   };
 };
 const NewStudy: NextPage = () => {
-  const [createStudy] = useMutation(CREATE_STUDY);
+  const [createStudy] = useMutation(CREATE_EVALUATION_STUDY);
   const { data: session } = useSession();
   const [files, setFiles] = useState<{ [key: string]: TaskInput }>({});
   const [showScriptModal, setShowScriptModal] = useState<boolean>(false);

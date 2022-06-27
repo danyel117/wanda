@@ -2,7 +2,7 @@ import { GetServerSideProps, NextPage } from 'next';
 import Link from 'next/link';
 import matchRoles from '@utils/matchRoles';
 import { useQuery } from '@apollo/client';
-import { GET_STUDIES } from 'graphql/queries/study';
+import { GET_STUDIES } from 'graphql/queries/evaluationStudy';
 import Loading from '@components/Loading';
 import { UserStudy } from 'types';
 import { MdPsychology, MdTask } from 'react-icons/md';
