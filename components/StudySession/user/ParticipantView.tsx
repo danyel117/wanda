@@ -21,8 +21,8 @@ const ParticipantView = () => {
         src={`${session.study.site}`}
         title='page'
       />
-      <div className='absolute top-0 left-0 z-10 h-screen w-screen overflow-hidden'>
-        <div className='relative flex h-screen w-screen'>
+      <div className='absolute top-0 left-0 z-30'>
+        <div className='relative'>
           <ParticipantStatuses />
         </div>
       </div>

@@ -43,13 +43,13 @@ const EvaluationStudyResolvers: Resolver = {
     createEvaluationStudyWithTasks: async (parent, args, context) =>
       await prisma.evaluationStudy.create({
         data: {
-          id: args.data.EvaluationStudy.id,
-          name: args.data.EvaluationStudy.name,
-          site: args.data.EvaluationStudy.site,
-          researchQuestion: args.data.EvaluationStudy.researchQuestion,
+          id: args.data.evaluationStudy.id,
+          name: args.data.evaluationStudy.name,
+          site: args.data.evaluationStudy.site,
+          researchQuestion: args.data.evaluationStudy.researchQuestion,
           script: {
             connect: {
-              id: args.data.EvaluationStudy.script.connect.id,
+              id: args.data.evaluationStudy.script.connect.id,
             },
           },
           createdBy: {

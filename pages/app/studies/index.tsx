@@ -28,7 +28,7 @@ const Studies: NextPage = () => {
 
   return (
     <div className='flex h-full w-full flex-col p-10'>
-      <PageHeader title='Study management'>
+      <PageHeader title='Evaluation study management'>
         <Link href='/app/studies/new'>
           <a>
             <button className='primary' type='button'>

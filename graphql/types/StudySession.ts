@@ -6,7 +6,7 @@ const StudySessionTypes = gql`
   }
 
   input StudySessionNoUserInput {
-    study: Connect
+    evaluationStudy: Connect
     participantEmail: String
   }
 

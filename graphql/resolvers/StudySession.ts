@@ -42,7 +42,7 @@ const StudySessionResolvers: Resolver = {
     createStudySessionNoUser: async (parent, args, context) => {
       const study = await prisma.evaluationStudy.findUnique({
         where: {
-          id: args.data.study.connect.id,
+          id: args.data.evaluationStudy.connect.id,
         },
         include: {
           tasks: true,

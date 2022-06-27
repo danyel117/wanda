@@ -77,7 +77,7 @@ const NewStudy: NextPage = () => {
       await createStudy({
         variables: {
           data: {
-            study: {
+            evaluationStudy: {
               id: studyId,
               name: formData.name,
               site: formData.webiste,
@@ -106,7 +106,7 @@ const NewStudy: NextPage = () => {
   return (
     <NewTaskContext.Provider value={newTaskContext}>
       <div className='flex flex-col items-center justify-start gap-4 p-10'>
-        <h1>New Study</h1>
+        <h1>New Evaluation Study</h1>
         <form
           ref={form}
           onChange={updateFormData}

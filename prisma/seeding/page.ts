@@ -31,7 +31,7 @@ const pages = [
   },
   {
     name: 'Session',
-    route: '/app/session/[id]',
+    route: '/app/sessions/[id]',
     roles: ['ADMIN', 'EXPERT', 'PARTICIPANT'],
     isPublic: true,
   },

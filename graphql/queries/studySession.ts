@@ -1,10 +1,10 @@
 import { gql } from '@apollo/client';
 
 const GET_USER_STUDY_SESSIONS = gql`
-  query GetUserEvaluations {
-    getUserEvaluations {
+  query GetUserStudySessions {
+    getUserStudySessions {
       id
-      evaluationStudy {
+      study {
         name
       }
       participant {
@@ -19,7 +19,7 @@ const GET_STUDY_SESSION = gql`
   query StudySession($studySessionId: String!) {
     studySession(id: $studySessionId) {
       id
-      evaluationStudy {
+      study {
         id
         name
         site

@@ -20,11 +20,11 @@ const UPDATE_STUDY_SESSION = gql`
 `;
 
 const UPDATE_STUDY_SESSION_TASK = gql`
-  mutation UpdateEvaluationTask(
-    $where: EvaluationTaskWhereUniqueInput!
-    $data: EvaluationTaskUpdateInput
+  mutation UpdateStudySessionTask(
+    $where: StudySessionTaskWhereUniqueInput!
+    $data: StudySessionTaskUpdateInput
   ) {
-    updateEvaluationTask(where: $where, data: $data) {
+    updateStudySessionTask(where: $where, data: $data) {
       id
     }
   }

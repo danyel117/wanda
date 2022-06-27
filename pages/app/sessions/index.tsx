@@ -145,7 +145,7 @@ const NewStudySession = ({ setOpenNew }: NewStudySessionProps) => {
       toast.success('Study session session created successfully');
       setOpenNew(false);
     } catch (err) {
-      toast.error('Error creating Studys ession');
+      toast.error('Error creating the study session');
     }
   };
   return (

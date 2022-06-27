@@ -92,7 +92,7 @@ const StartedState = () => {
             You are about to start the task # {session.data.currentTask}
           </span>
           <span>Task description:</span>
-          <div className='max-h-36 overflow-y-auto'>
+          <div className='max-h-36 overflow-y-auto bg-gray-50 p-4'>
             <p>{currentTask.task.description}</p>
           </div>
           <span>Hear your expert explaining you the task:</span>
@@ -117,9 +117,11 @@ const StudySessionTaskControls = ({
   const [showOptions, setShowOptions] = useState<boolean>(false);
   return (
     <Draggable>
-      <div className='flex h-24 flex-col items-start justify-center'>
+      <div className='flex flex-col items-start justify-center rounded-xl border-2 border-indigo-500 bg-white p-2 shadow-xl'>
         <div className='flex items-center'>
-          <div className='cursor-move font-bold'>Task controls</div>
+          <div className='nowrap m-2 flex cursor-move flex-nowrap font-bold'>
+            Task controls
+          </div>
           <button type='button' onClick={() => setShowOptions(!showOptions)}>
             {showOptions ? (
               <MdOutlineKeyboardArrowUp />
