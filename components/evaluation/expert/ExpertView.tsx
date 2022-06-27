@@ -46,10 +46,11 @@ const ExpertView = () => {
             Begin session
           </button>
         </div>
-        {!evaluation.data.participantConsentBegin && (
-          <div>Please wait for the user to be ready.</div>
-        )}
-        <CurrentTaskControls />
+        {!evaluation.data.participantConsentBegin &&
+          evaluation.data.expertConsentBegin && (
+            <div>Please wait for the user to be ready.</div>
+          )}
+        {evaluation.status === 'STARTED' && <CurrentTaskControls />}
       </div>
     </PrivateLayout>
   );

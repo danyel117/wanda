@@ -17,11 +17,11 @@ const ParticipantView = () => {
   return (
     <div className='h-screen w-screen'>
       <iframe
-        className='h-full w-full'
+        className='absolute top-0 left-0 z-20 h-full w-full'
         src={`${evaluation.study.site}`}
         title='page'
       />
-      <div className='absolute top-0 left-0 h-screen w-screen overflow-hidden'>
+      <div className='absolute top-0 left-0 z-10 h-screen w-screen overflow-hidden'>
         <div className='relative flex h-screen w-screen'>
           <ParticipantStatuses />
         </div>

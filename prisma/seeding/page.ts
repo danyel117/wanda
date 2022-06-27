@@ -30,8 +30,8 @@ const pages = [
     isPublic: false,
   },
   {
-    name: 'Evaluation',
-    route: '/app/evaluations/[id]',
+    name: 'Session',
+    route: '/app/session/[id]',
     roles: ['ADMIN', 'EXPERT', 'PARTICIPANT'],
     isPublic: true,
   },

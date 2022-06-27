@@ -56,7 +56,9 @@ const StartedState = () => {
         {
           recording: recordingFile as File,
         },
-        `${session?.user.id}/studies/${evaluation.study.id}/evaluations/${evaluation.id}/audio`
+        `${session?.user.id}/studies/${evaluation.study.id}/evaluations/${
+          evaluation.id
+        }/audio/${currentTask?.id ?? ''}`
       );
 
       await updateEvaluationTask({
