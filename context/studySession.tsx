@@ -1,5 +1,6 @@
 import { useQuery } from '@apollo/client';
 import { GET_STUDY_SESSION } from 'graphql/queries/studySession';
+import { GET_TASK } from 'graphql/queries/task';
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { ExtendedStudySession, ExtendedStudySessionTask } from 'types';
 
@@ -7,6 +8,7 @@ interface StudySessionContextInterface {
   session: ExtendedStudySession;
   loading: boolean;
   currentTask: ExtendedStudySessionTask | undefined;
+  taskAudio: string;
 }
 
 export const StudySessionContext = createContext<StudySessionContextInterface>(
@@ -39,6 +41,12 @@ const StudySessionContextProvider = ({
     }
   );
 
+  const { data: task } = useQuery(GET_TASK, {
+    variables: {
+      taskId: currentTask?.task.id,
+    },
+  });
+
   useEffect(() => {
     startPolling(500);
 
@@ -62,8 +70,9 @@ const StudySessionContextProvider = ({
       session: data?.studySession,
       loading,
       currentTask,
+      taskAudio: task?.task.recording ?? '',
     }),
-    [data, loading, currentTask]
+    [data, loading, currentTask, task]
   );
 
   return (

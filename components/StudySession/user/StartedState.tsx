@@ -21,7 +21,7 @@ const StartedState = () => {
   const [taskFinished, setTaskFinished] = useState<boolean>(false);
   const [currentStatus, setCurrentStatus] =
     useState<Enum_StudySessionTaskStatus>();
-  const { session, currentTask } = useStudySession();
+  const { session, currentTask, taskAudio } = useStudySession();
   const [recordingFile, setRecordingFile] = useState<File>();
   const { handleRecord, clearBlobUrl } = useVoiceRecorder({
     fileName: 'session-task',
@@ -96,24 +96,20 @@ const StartedState = () => {
             <p>{currentTask.task.description}</p>
           </div>
           <span>Hear your expert explaining you the task:</span>
-          <audio src={currentTask?.task.recording ?? ''} controls />
+          <audio src={taskAudio ?? ''} controls />
         </div>
       </Modal>
     );
   }
 
   if (currentTask?.status === 'STARTED') {
-    return <StudySessionTaskControls currentTask={currentTask} />;
+    return <StudySessionTaskControls taskAudio={taskAudio} />;
   }
 
   return null;
 };
 
-const StudySessionTaskControls = ({
-  currentTask,
-}: {
-  currentTask: ExtendedStudySessionTask;
-}) => {
+const StudySessionTaskControls = ({ taskAudio }: { taskAudio: string }) => {
   const [showOptions, setShowOptions] = useState<boolean>(false);
   return (
     <Draggable>
@@ -132,7 +128,7 @@ const StudySessionTaskControls = ({
         </div>
         {showOptions && (
           <div className='flex items-center gap-3'>
-            <audio src={currentTask?.task.recording ?? ''} controls />
+            <audio src={taskAudio} controls />
             <Tooltip title='Mark task as finished'>
               <div className='cursor-pointer text-2xl text-green-500 hover:text-green-700'>
                 <MdOutlineCheckCircle />

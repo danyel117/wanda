@@ -46,9 +46,9 @@ const GET_STUDY_SESSION = gql`
         status
         expertComments
         task {
+          id
           description
           url
-          recording
         }
       }
     }
