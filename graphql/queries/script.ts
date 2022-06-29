@@ -14,4 +14,14 @@ const GET_SCRIPTS = gql`
   }
 `;
 
-export { GET_SCRIPTS };
+const GET_SCRIPT = gql`
+  query Script($scriptId: String!) {
+    script(id: $scriptId) {
+      id
+      script
+      recording
+    }
+  }
+`;
+
+export { GET_SCRIPTS, GET_SCRIPT };

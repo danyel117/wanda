@@ -6,6 +6,8 @@ import { useUpdateStudySessionData } from '@components/StudySession/updateStudyS
 import { toast } from 'react-toastify';
 import { useState } from 'react';
 import { StartedState } from '@components/StudySession/user/StartedState';
+import Loading from '@components/Loading';
+import Link from 'next/link';
 
 const MarkdownRenderer = dynamic(
   () => import('@components/RichText/MarkdownRenderer'),
@@ -34,17 +36,22 @@ const ParticipantStatuses = () => {
   const { session } = useStudySession();
 
   if (session.status === 'NOT_STARTED') {
-    return <CreatedState script={session.study.script.script} />;
+    return <CreatedState />;
   }
 
   if (session.status === 'STARTED') {
     return <StartedState />;
   }
 
+  if (session.status === 'COMPLETED') {
+    return <CompletedState />;
+  }
+
   return null;
 };
 
-const CreatedState = ({ script }: { script: string }) => {
+const CreatedState = () => {
+  const { script } = useStudySession();
   const [open, setOpen] = useState<boolean>(true);
   const { session } = useStudySession();
   const { updateStudySessionData, updateStudySession } =
@@ -77,6 +84,9 @@ const CreatedState = ({ script }: { script: string }) => {
       toast.error('Error starting session...');
     }
   };
+
+  if (!script) return <Loading />;
+
   return (
     <Modal
       open={open}
@@ -84,7 +94,11 @@ const CreatedState = ({ script }: { script: string }) => {
       title='Welcome and thank you for participating!'
     >
       <div className='flex flex-col gap-4'>
-        <MarkdownRenderer md={script} />
+        <MarkdownRenderer md={script?.script ?? ''} />
+        <div>
+          <span>Hear your expert explainig you the session</span>
+          <audio src={script?.recording ?? ''} controls />
+        </div>
         {session.data.expertConsentBegin && (
           <div className='flex w-full justify-center'>
             <button
@@ -100,5 +114,23 @@ const CreatedState = ({ script }: { script: string }) => {
     </Modal>
   );
 };
+
+const CompletedState = () => (
+  <Modal open setOpen={() => {}}>
+    <div className='flex flex-col items-center gap-3'>
+      <h2>This evaluation is finished</h2>
+      <span>
+        Thank you very much for participating, we appreciate your support
+      </span>
+      <Link href='/app/sessions'>
+        <a>
+          <button className='primary' type='button'>
+            Go to my evaluations
+          </button>
+        </a>
+      </Link>
+    </div>
+  </Modal>
+);
 
 export { ParticipantView };

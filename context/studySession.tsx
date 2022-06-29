@@ -1,4 +1,6 @@
 import { useQuery } from '@apollo/client';
+import { Script } from '@prisma/client';
+import { GET_SCRIPT } from 'graphql/queries/script';
 import { GET_STUDY_SESSION } from 'graphql/queries/studySession';
 import { GET_TASK } from 'graphql/queries/task';
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
@@ -9,6 +11,7 @@ interface StudySessionContextInterface {
   loading: boolean;
   currentTask: ExtendedStudySessionTask | undefined;
   taskAudio: string;
+  script: Script | undefined;
 }
 
 export const StudySessionContext = createContext<StudySessionContextInterface>(
@@ -47,6 +50,12 @@ const StudySessionContextProvider = ({
     },
   });
 
+  const { data: script } = useQuery(GET_SCRIPT, {
+    variables: {
+      scriptId: data?.studySession.study.script.id ?? '',
+    },
+  });
+
   useEffect(() => {
     startPolling(500);
 
@@ -71,8 +80,9 @@ const StudySessionContextProvider = ({
       loading,
       currentTask,
       taskAudio: task?.task.recording ?? '',
+      script: script?.script,
     }),
-    [data, loading, currentTask, task]
+    [data, loading, currentTask, task, script]
   );
 
   return (

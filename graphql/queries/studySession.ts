@@ -24,8 +24,7 @@ const GET_STUDY_SESSION = gql`
         name
         site
         script {
-          script
-          recording
+          id
         }
       }
       expert {
