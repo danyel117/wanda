@@ -6,7 +6,6 @@ import {
 } from 'react-icons/md';
 import Draggable from 'react-draggable';
 import { Tooltip } from '@mui/material';
-import { ExtendedStudySessionTask } from 'types';
 import { useStudySession } from 'context/studySession';
 import Modal from '@components/modals/Modal';
 import { useEffect, useState } from 'react';
