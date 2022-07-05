@@ -16,12 +16,18 @@ const MarkdownRenderer = dynamic(
 );
 
 const ParticipantView = () => {
-  const { session } = useStudySession();
+  const { session, currentTask } = useStudySession();
   return (
     <div className='h-screen w-screen'>
       <iframe
         className='absolute top-0 left-0 z-20 h-full w-full'
-        src={`${session.study.site}`}
+        src={`${
+          session.data.currentTask === 0 ||
+          session.status === Enum_StudySessionStatus.QUESTIONNAIRE ||
+          session.status === Enum_StudySessionStatus.COMPLETED
+            ? session.study.site
+            : currentTask?.task.url
+        }`}
         title='page'
       />
       <div className='absolute top-0 left-0 z-30'>

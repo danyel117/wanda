@@ -4,6 +4,7 @@ const GET_TASK = gql`
   query Task($taskId: String!) {
     task(id: $taskId) {
       recording
+      url
     }
   }
 `;
