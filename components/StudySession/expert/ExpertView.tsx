@@ -1,11 +1,12 @@
 import PrivateLayout from '@layouts/PrivateLayout';
 import { useStudySession } from 'context/studySession';
-import { useUpdateStudySessionData } from '@components/StudySession/updateStudySessionData';
+import { useUpdateStudySessionData } from '@components/StudySession/common/updateStudySessionData';
 import { ExtendedStudySessionTask } from 'types';
 import { Enum_StudySessionTaskStatus } from '@prisma/client';
 import { useEffect, useState } from 'react';
 import { MdCancel, MdOutlineCheckCircle } from 'react-icons/md';
 import Modal from '@components/modals/Modal';
+import { StartTaskButton } from '@components/StudySession/common/StartTaskButton';
 
 const ExpertView = () => {
   const { session } = useStudySession();
@@ -96,7 +97,7 @@ const TaskStatuses = ({
     return (
       <>
         <span>{currentTask?.status}</span>
-        <NotStartedTaskStatus currentTask={currentTask?.id ?? ''} />
+        <StartTaskButton />
       </>
     );
   }
@@ -111,25 +112,6 @@ const TaskStatuses = ({
   }
 
   return null;
-};
-
-const NotStartedTaskStatus = ({ currentTask }: { currentTask: string }) => {
-  const { updateStudySessionTask } = useUpdateStudySessionData();
-  const startTask = async () => {
-    await updateStudySessionTask({
-      id: currentTask,
-      data: {
-        status: {
-          set: 'STARTED',
-        },
-      },
-    });
-  };
-  return (
-    <button type='button' onClick={startTask} className='primary'>
-      Start Task
-    </button>
-  );
 };
 
 const StartedTaskStatus = ({ currentTask }: { currentTask: string }) => {

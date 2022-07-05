@@ -13,7 +13,64 @@ enum Enum_StudySessionTaskStatus {
 enum Enum_StudySessionStatus {
     NOT_STARTED
     STARTED
+    QUESTIONNAIRE
     COMPLETED
+}
+
+model EvaluationStudy {
+    id               String         @id @default(cuid())
+    name             String
+    site             String
+    researchQuestion String
+    script           Script         @relation(fields: [scriptId], references: [id])
+    scriptId         String
+    createdBy        User           @relation(fields: [userId], references: [id], name: "study-expert")
+    userId           String         @unique
+    participants     User[]         @relation("study-participants")
+    sessions         StudySession[]
+    tasks            Task[]
+    questionnaire    Questionnaire?
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model Questionnaire {
+    id                String           @id @default(cuid())
+    evaluationStudy   EvaluationStudy? @relation(fields: [evaluationStudyId], references: [id])
+    evaluationStudyId String?          @unique
+    questions         Question[]
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+}
+
+model Question {
+    id              String             @id @default(cuid())
+    position        Int
+    sus             Boolean            @default(false)
+    question        String
+    questionnaire   Questionnaire?     @relation(fields: [questionnaireId], references: [id])
+    questionnaireId String?
+    responses       QuestionResponse[]
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model QuestionResponse {
+    id             String       @id @default(cuid())
+    responseAudio  String?
+    responseText   String?
+    responseNumber Int?
+    session        StudySession @relation(fields: [studySessionId], references: [id])
+    studySessionId String
+    question       Question     @relation(fields: [questionId], references: [id])
+    questionId     String
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }
 
 model StudySessionData {
@@ -29,16 +86,17 @@ model StudySessionData {
 }
 
 model StudySession {
-    id            String                  @id @default(cuid())
-    status        Enum_StudySessionStatus @default(NOT_STARTED)
-    study         EvaluationStudy         @relation(fields: [studyId], references: [id])
-    studyId       String
-    expert        User                    @relation(fields: [expertId], references: [id], name: "session-expert")
-    expertId      String
-    participant   User                    @relation(fields: [participantId], references: [id], name: "session-user")
-    participantId String
-    data          StudySessionData?
-    tasks         StudySessionTask[]
+    id                String                  @id @default(cuid())
+    status            Enum_StudySessionStatus @default(NOT_STARTED)
+    study             EvaluationStudy         @relation(fields: [studyId], references: [id])
+    studyId           String
+    expert            User                    @relation(fields: [expertId], references: [id], name: "session-expert")
+    expertId          String
+    participant       User                    @relation(fields: [participantId], references: [id], name: "session-user")
+    participantId     String
+    data              StudySessionData?
+    tasks             StudySessionTask[]
+    questionResponses QuestionResponse[]
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -81,23 +139,6 @@ model Task {
     study         EvaluationStudy    @relation(fields: [studyId], references: [id])
     studyId       String
     studySessions StudySessionTask[]
-
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-}
-
-model EvaluationStudy {
-    id               String         @id @default(cuid())
-    name             String
-    site             String
-    researchQuestion String
-    script           Script         @relation(fields: [scriptId], references: [id])
-    scriptId         String
-    createdBy        User           @relation(fields: [userId], references: [id], name: "study-expert")
-    userId           String         @unique
-    participants     User[]         @relation("study-participants")
-    sessions         StudySession[]
-    tasks            Task[]
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt

@@ -54,6 +54,7 @@ const StudySessionContextProvider = ({
     variables: {
       scriptId: data?.studySession.study.script.id ?? '',
     },
+    fetchPolicy: 'network-only',
   });
 
   useEffect(() => {

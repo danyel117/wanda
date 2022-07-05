@@ -2,12 +2,13 @@ import Modal from '@components/modals/Modal';
 import dynamic from 'next/dynamic';
 import { Enum_StudySessionStatus } from '@prisma/client';
 import { useStudySession } from 'context/studySession';
-import { useUpdateStudySessionData } from '@components/StudySession/updateStudySessionData';
+import { useUpdateStudySessionData } from '@components/StudySession/common/updateStudySessionData';
 import { toast } from 'react-toastify';
 import { useState } from 'react';
 import { StartedState } from '@components/StudySession/user/StartedState';
 import Loading from '@components/Loading';
 import Link from 'next/link';
+import { ModalQuestionnaireState } from '@components/StudySession/user/QuestionnaireState';
 
 const MarkdownRenderer = dynamic(
   () => import('@components/RichText/MarkdownRenderer'),
@@ -43,6 +44,10 @@ const ParticipantStatuses = () => {
     return <StartedState />;
   }
 
+  if (session.status === 'QUESTIONNAIRE') {
+    return <ModalQuestionnaireState />;
+  }
+
   if (session.status === 'COMPLETED') {
     return <CompletedState />;
   }
@@ -51,9 +56,8 @@ const ParticipantStatuses = () => {
 };
 
 const CreatedState = () => {
-  const { script } = useStudySession();
+  const { script, session } = useStudySession();
   const [open, setOpen] = useState<boolean>(true);
-  const { session } = useStudySession();
   const { updateStudySessionData, updateStudySession } =
     useUpdateStudySessionData();
 

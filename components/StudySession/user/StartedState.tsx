@@ -15,9 +15,10 @@ import {
   Enum_StudySessionTaskStatus,
 } from '@prisma/client';
 import { uploadFormFiles } from '@utils/uploadS3';
-import { useUpdateStudySessionData } from '@components/StudySession/updateStudySessionData';
+import { useUpdateStudySessionData } from '@components/StudySession/common/updateStudySessionData';
 import { useSession } from 'next-auth/react';
 import { toast } from 'react-toastify';
+import { StartTaskButton } from '@components/StudySession/common/StartTaskButton';
 
 const StartedState = () => {
   const { data: userSession } = useSession();
@@ -78,7 +79,7 @@ const StartedState = () => {
           id: session.id,
           data: {
             status: {
-              set: Enum_StudySessionStatus.COMPLETED,
+              set: Enum_StudySessionStatus.QUESTIONNAIRE,
             },
           },
         });
@@ -111,6 +112,9 @@ const StartedState = () => {
           </div>
           <span>Hear your expert explaining you the task:</span>
           <audio src={taskAudio ?? ''} controls />
+          <div className='flex w-full justify-center'>
+            <StartTaskButton />
+          </div>
         </div>
       </Modal>
     );
