@@ -163,7 +163,9 @@ const StudySessionTaskControls = ({ taskAudio }: { taskAudio: string }) => {
         </div>
         {showOptions && (
           <div className='flex items-center gap-3'>
+            <span className='w-48'>{currentTask?.task.description}</span>
             <audio src={taskAudio} controls />
+
             <Tooltip title='Mark task as finished'>
               <button
                 onClick={() => updateStudySessionStatus('COMPLETED')}
