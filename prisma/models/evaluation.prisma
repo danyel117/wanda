@@ -25,7 +25,7 @@ model EvaluationStudy {
     script           Script         @relation(fields: [scriptId], references: [id])
     scriptId         String
     createdBy        User           @relation(fields: [userId], references: [id], name: "study-expert")
-    userId           String         @unique
+    userId           String         
     participants     User[]         @relation("study-participants")
     sessions         StudySession[]
     tasks            Task[]

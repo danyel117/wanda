@@ -6,13 +6,7 @@ import { Enum_StudySessionStatus, Question } from '@prisma/client';
 import { useStudySession } from 'context/studySession';
 import { CREATE_QUESTION_RESPONSE } from 'graphql/mutations/questionResponse';
 import { GET_STUDY_QUESTIONNAIRE } from 'graphql/queries/questionnaire';
-import {
-  Dispatch,
-  SetStateAction,
-  SyntheticEvent,
-  useEffect,
-  useState,
-} from 'react';
+import { Dispatch, SetStateAction, SyntheticEvent, useState } from 'react';
 import { MdNavigateBefore, MdNavigateNext } from 'react-icons/md';
 import { toast } from 'react-toastify';
 import { useUpdateStudySessionData } from '@components/StudySession/common/updateStudySessionData';
@@ -78,11 +72,6 @@ const QuestionnaireState = () => {
       );
     }
   };
-
-  useEffect(() => {
-    console.log(currentQuestion);
-    console.log(lastQuestion);
-  }, [currentQuestion, lastQuestion]);
 
   if (loading) {
     return <Loading />;
