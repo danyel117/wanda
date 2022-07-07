@@ -19,6 +19,7 @@ import { useUpdateStudySessionData } from '@components/StudySession/common/updat
 import { useSession } from 'next-auth/react';
 import { toast } from 'react-toastify';
 import { StartTaskButton } from '@components/StudySession/common/StartTaskButton';
+import Image from 'next/image';
 
 const StartedState = () => {
   const { data: userSession } = useSession();
@@ -40,7 +41,7 @@ const StartedState = () => {
       currentTask?.status === Enum_StudySessionTaskStatus.STARTED
     ) {
       // transition from not started to started
-      clearBlobUrl(); // clear the blob if it existis
+      clearBlobUrl(); // clear the blob if it exists
       handleRecord(); // begin audio recording
     } else if (
       currentStatus === Enum_StudySessionTaskStatus.STARTED &&
@@ -124,12 +125,16 @@ const StartedState = () => {
     return <StudySessionTaskControls taskAudio={taskAudio} />;
   }
 
-  return null;
+  return (
+    <Modal open setOpen={() => {}}>
+      <span>Loading the next task...</span>
+    </Modal>
+  );
 };
 
 const StudySessionTaskControls = ({ taskAudio }: { taskAudio: string }) => {
   const { currentTask } = useStudySession();
-  const [showOptions, setShowOptions] = useState<boolean>(false);
+  const [showOptions, setShowOptions] = useState<boolean>(true);
   const { updateStudySessionTask } = useUpdateStudySessionData();
 
   const updateStudySessionStatus = async (
@@ -148,10 +153,23 @@ const StudySessionTaskControls = ({ taskAudio }: { taskAudio: string }) => {
 
   return (
     <Draggable>
-      <div className='flex flex-col items-start justify-center rounded-xl border-2 border-indigo-500 bg-white p-2 shadow-xl'>
+      <div
+        className={`flex flex-col items-start justify-center rounded-xl border-4 border-yellow-500 p-2   ${
+          showOptions
+            ? 'bg-gray-50 text-gray-900'
+            : 'bg-gray-500 p-2 text-white opacity-95'
+        } cursor-move shadow-xl`}
+      >
         <div className='flex items-center'>
-          <div className='nowrap m-2 flex cursor-move flex-nowrap font-bold'>
-            Task controls
+          <div className='flex items-center'>
+            {showOptions ? (
+              <Image src='/img/logo-no-text.png' width={30} height={30} />
+            ) : (
+              <Image src='/img/logo-no-text-white.png' width={30} height={30} />
+            )}
+            <div className='nowrap m-2 flex cursor-move flex-nowrap text-2xl font-bold '>
+              Task controls
+            </div>
           </div>
           <button type='button' onClick={() => setShowOptions(!showOptions)}>
             {showOptions ? (
@@ -162,28 +180,31 @@ const StudySessionTaskControls = ({ taskAudio }: { taskAudio: string }) => {
           </button>
         </div>
         {showOptions && (
-          <div className='flex items-center gap-3'>
-            <span className='w-48'>{currentTask?.task.description}</span>
-            <audio src={taskAudio} controls />
-
-            <Tooltip title='Mark task as finished'>
-              <button
-                onClick={() => updateStudySessionStatus('COMPLETED')}
-                type='button'
-                className='cursor-pointer text-2xl text-green-500 hover:text-green-700'
-              >
-                <MdOutlineCheckCircle />
-              </button>
-            </Tooltip>
-            <Tooltip title='Mark task as failed'>
-              <button
-                onClick={() => updateStudySessionStatus('FAILED')}
-                type='button'
-                className='cursor-pointer text-2xl text-red-500 hover:text-red-700'
-              >
-                <MdCancel />
-              </button>
-            </Tooltip>
+          <div className='flex flex-col items-start gap-3'>
+            <span className=''>
+              Task {currentTask?.task.order}: {currentTask?.task.description}
+            </span>
+            <div className='flex gap-3'>
+              <audio src={taskAudio} controls />
+              <Tooltip title='Mark task as finished'>
+                <button
+                  onClick={() => updateStudySessionStatus('COMPLETED')}
+                  type='button'
+                  className='cursor-pointer text-4xl text-green-500 hover:text-green-700'
+                >
+                  <MdOutlineCheckCircle />
+                </button>
+              </Tooltip>
+              <Tooltip title='Mark task as failed'>
+                <button
+                  onClick={() => updateStudySessionStatus('FAILED')}
+                  type='button'
+                  className='cursor-pointer text-4xl text-red-500 hover:text-red-700'
+                >
+                  <MdCancel />
+                </button>
+              </Tooltip>
+            </div>
           </div>
         )}
       </div>

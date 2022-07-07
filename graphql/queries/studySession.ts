@@ -48,6 +48,7 @@ const GET_STUDY_SESSION = gql`
           id
           description
           url
+          order
         }
       }
     }

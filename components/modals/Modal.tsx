@@ -4,6 +4,7 @@ import {
   DialogContent,
   IconButton,
 } from '@mui/material';
+import Image from 'next/image';
 import { Dispatch, SetStateAction, ReactNode } from 'react';
 import { MdClose } from 'react-icons/md';
 
@@ -36,6 +37,7 @@ const Modal = ({
       {title && (
         <DialogTitle>
           <div className='flex items-center justify-between'>
+            <Image src='/img/logo-no-text.png' height={30} width={30} />
             <div className='text-xl font-medium lg:text-2xl'>
               {title}
               <div className='flex'>
