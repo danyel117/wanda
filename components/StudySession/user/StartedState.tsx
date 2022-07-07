@@ -134,7 +134,7 @@ const StartedState = () => {
 
 const StudySessionTaskControls = ({ taskAudio }: { taskAudio: string }) => {
   const { currentTask } = useStudySession();
-  const [showOptions, setShowOptions] = useState<boolean>(true);
+  const [showOptions, setShowOptions] = useState<boolean>(false);
   const { updateStudySessionTask } = useUpdateStudySessionData();
 
   const updateStudySessionStatus = async (
