@@ -1,4 +1,4 @@
-import aws from 'aws-sdk';
+import { s3 } from '@config/aws';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getSession } from 'next-auth/react';
 
@@ -13,12 +13,6 @@ export const getObjectInBucket = async (
     ResponseContentType: responseType,
     Expires: 60 * 60 * 48, // 2 days,
   };
-
-  const s3 = new aws.S3({
-    accessKeyId: process.env.AWS_KEY_ID,
-    secretAccessKey: process.env.AWS_SECRET,
-    region: 'eu-west-2',
-  });
 
   return s3.getSignedUrl('getObject', bucketParams);
 };

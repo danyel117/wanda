@@ -6,7 +6,7 @@ import { Resolver } from 'types';
 const ScriptResolvers: Resolver = {
   Script: {
     recording: async (parent: Script) => {
-      const bucket = 'wanda-media';
+      const bucket = process.env.NEXT_PUBLIC_MEDIA_BUCKET_NAME ?? '';
       const path = parent?.recording?.replace(
         `https://${bucket}.s3.amazonaws.com/`,
         ''

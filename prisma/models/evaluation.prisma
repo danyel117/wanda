@@ -25,7 +25,7 @@ model EvaluationStudy {
     script           Script         @relation(fields: [scriptId], references: [id])
     scriptId         String
     createdBy        User           @relation(fields: [userId], references: [id], name: "study-expert")
-    userId           String         
+    userId           String
     participants     User[]         @relation("study-participants")
     sessions         StudySession[]
     tasks            Task[]
@@ -103,15 +103,17 @@ model StudySession {
 }
 
 model StudySessionTask {
-    id              String                      @id @default(cuid())
-    status          Enum_StudySessionTaskStatus @default(NOT_STARTED)
-    task            Task                        @relation(fields: [taskId], references: [id])
-    taskId          String
-    session         StudySession                @relation(fields: [studySessionId], references: [id])
-    studySessionId  String
-    expertComments  String?
-    userRecording   String?
-    expertRecording String?
+    id                              String                      @id @default(cuid())
+    status                          Enum_StudySessionTaskStatus @default(NOT_STARTED)
+    task                            Task                        @relation(fields: [taskId], references: [id])
+    taskId                          String
+    session                         StudySession                @relation(fields: [studySessionId], references: [id])
+    studySessionId                  String
+    expertComments                  String?
+    userRecording                   String?
+    userRecordingTranscription      String?
+    userRecordingTranscriptionJobId String?
+    expertRecording                 String?
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt

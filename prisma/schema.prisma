@@ -161,17 +161,19 @@ model StudySession {
 }
 
 model StudySessionTask {
-  id              String                      @id @default(cuid())
-  status          Enum_StudySessionTaskStatus @default(NOT_STARTED)
-  task            Task                        @relation(fields: [taskId], references: [id])
-  taskId          String
-  session         StudySession                @relation(fields: [studySessionId], references: [id])
-  studySessionId  String
-  expertComments  String?
-  userRecording   String?
-  expertRecording String?
-  createdAt       DateTime                    @default(now())
-  updatedAt       DateTime                    @updatedAt
+  id                              String                      @id @default(cuid())
+  status                          Enum_StudySessionTaskStatus @default(NOT_STARTED)
+  task                            Task                        @relation(fields: [taskId], references: [id])
+  taskId                          String
+  session                         StudySession                @relation(fields: [studySessionId], references: [id])
+  studySessionId                  String
+  expertComments                  String?
+  userRecording                   String?
+  userRecordingTranscription      String?
+  userRecordingTranscriptionJobId String?
+  expertRecording                 String?
+  createdAt                       DateTime                    @default(now())
+  updatedAt                       DateTime                    @updatedAt
 }
 
 model Script {

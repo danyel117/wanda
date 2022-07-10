@@ -1,5 +1,5 @@
-import aws from 'aws-sdk';
 import { NextApiRequest, NextApiResponse } from 'next';
+import { s3 } from '@config/aws';
 
 // first we need to disable the default body parser
 export const config = {
@@ -12,15 +12,6 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  aws.config.update({
-    accessKeyId: process.env.AWS_KEY_ID,
-    secretAccessKey: process.env.AWS_SECRET,
-    region: 'eu-west-2',
-    signatureVersion: 'v4',
-  });
-
-  const s3 = new aws.S3();
-
   if (req.method === 'GET') {
     const fileSize = Array.isArray(req.query.size)
       ? req.query.size[0]

@@ -47,7 +47,7 @@ const uploadFormFiles = async (
           routeUpload = await uploadFile(
             path,
             formDataCopy[el] as File,
-            'wanda-media'
+            process.env.NEXT_PUBLIC_MEDIA_BUCKET_NAME ?? ''
           );
         } else {
           routeUpload = await uploadFile(
