@@ -74,7 +74,7 @@ const StudySessionIndex = () => {
 
   return (
     <TableContextProvider>
-      <div className='flex w-full flex-col gap-4 p-10'>
+      <div className='flex w-full flex-col gap-4 p-10 '>
         <PageHeader title={getPageTitle()}>
           <PrivateComponent
             roleList={[Enum_RoleName.ADMIN, Enum_RoleName.EXPERT]}
@@ -88,8 +88,9 @@ const StudySessionIndex = () => {
             </button>
           </PrivateComponent>
         </PageHeader>
-
-        <Table columns={columns} data={tableData} />
+        <div className='card'>
+          <Table columns={columns} data={tableData} />
+        </div>
       </div>
       <Modal open={openNew} setOpen={setOpenNew} title='New study session'>
         <NewStudySession setOpenNew={setOpenNew} />

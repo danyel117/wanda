@@ -19,6 +19,7 @@ const GET_STUDY_SESSION = gql`
   query StudySession($studySessionId: String!) {
     studySession(id: $studySessionId) {
       id
+      updatedAt
       study {
         id
         name
@@ -45,12 +46,22 @@ const GET_STUDY_SESSION = gql`
         status
         expertComments
         userRecordingTranscription
+        userRecording
         task {
           id
           description
           url
           order
         }
+      }
+      questionResponses {
+        question {
+          position
+          question
+          sus
+        }
+        responseNumber
+        responseText
       }
     }
   }

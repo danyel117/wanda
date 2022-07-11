@@ -1,4 +1,5 @@
 import { s3, transcribe } from '@config/aws';
+import { getObjectInBucket } from '@pages/api/get-presigned-url';
 import { StudySessionTask } from '@prisma/client';
 import prisma from 'config/prisma';
 import { nanoid } from 'nanoid';
@@ -24,6 +25,19 @@ const StudySessionTaskResolvers: Resolver = {
       }
 
       return '';
+    },
+    userRecording: async (parent: StudySessionTask, args) => {
+      const bucket = process.env.NEXT_PUBLIC_MEDIA_BUCKET_NAME ?? '';
+      const path = parent?.userRecording?.replace(
+        `https://${bucket}.s3.amazonaws.com/`,
+        ''
+      );
+      if (path) {
+        const audio = await getObjectInBucket(bucket, path, 'audio/mpeg');
+        return audio;
+      }
+
+      return null;
     },
   },
   Query: {},

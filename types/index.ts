@@ -6,6 +6,8 @@ import {
   Task,
   User,
   StudySessionTask,
+  QuestionResponse,
+  Question,
 } from '@prisma/client';
 import { Session } from 'next-auth';
 
@@ -44,6 +46,9 @@ export interface ExtendedStudy extends EvaluationStudy {
 export interface ExtendedStudySessionTask extends StudySessionTask {
   task: Task;
 }
+export interface ExtendedQuestionResponse extends QuestionResponse {
+  question: Question;
+}
 
 export interface ExtendedStudySession extends StudySession {
   study: ExtendedStudy;
@@ -51,4 +56,5 @@ export interface ExtendedStudySession extends StudySession {
   expert: User;
   data: StudySessionData;
   taskList: ExtendedStudySessionTask[];
+  questionResponses: ExtendedQuestionResponse[];
 }
