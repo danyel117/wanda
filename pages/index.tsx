@@ -15,7 +15,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 };
 
 const Home: NextPage = () => (
-  <div className='flex h-screen w-screen'>
+  <div className='flex h-screen w-screen bg-white'>
     <main className='flex h-full w-full flex-col items-center justify-center gap-4'>
       <div className='flex flex-col items-center gap-2'>
         <h1>Welcome to Wanda!</h1>
