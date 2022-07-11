@@ -23,6 +23,7 @@ import { uploadFormFiles } from '@utils/uploadS3';
 import { useSession } from 'next-auth/react';
 import { CREATE_EVALUATION_STUDY } from 'graphql/mutations/evaluationStudy';
 import { toast } from 'react-toastify';
+import { useRouter } from 'next/router';
 
 const VoiceRecorder = dynamic(
   () => import('@components/VoiceRecorder/VoiceRecorder'),
@@ -50,6 +51,7 @@ const NewStudy: NextPage = () => {
   const { data: scripts } = useQuery(GET_SCRIPTS, {
     fetchPolicy: 'cache-and-network',
   });
+  const router = useRouter();
   const { form, formData, updateFormData } = useFormData(null);
 
   useEffect(() => {
@@ -79,6 +81,29 @@ const NewStudy: NextPage = () => {
       })
     );
 
+    const questions = Object.keys(formData)
+      .filter(
+        (f) =>
+          formData[f] &&
+          formData[f] !== '' &&
+          (f.includes('sus') || f.includes('Question'))
+      )
+      .map((f) => {
+        if (f.includes('sus')) {
+          return {
+            question: formData[f],
+            sus: true,
+            position: parseInt(f.split('sus')[1], 10),
+          };
+        }
+
+        return {
+          question: formData[f],
+          sus: false,
+          position: parseInt(f.split('Question')[1], 10),
+        };
+      });
+
     try {
       await createStudy({
         variables: {
@@ -87,7 +112,7 @@ const NewStudy: NextPage = () => {
               id: studyId,
               name: formData.name,
               site: formData.webiste,
-              researchQuestion: formData.researchQuestion,
+              researchQuestion: formData.research,
               script: {
                 connect: {
                   id: formData.script,
@@ -100,10 +125,12 @@ const NewStudy: NextPage = () => {
               recording: fu.file,
               url: fu.url,
             })),
+            questions,
           },
         },
       });
       toast.success('Study created successfully');
+      router.push('/app/studies');
     } catch (err) {
       toast.error(`Error creating the study: ${err}`);
     }
@@ -124,10 +151,10 @@ const NewStudy: NextPage = () => {
               <span>Study name</span>
               <input name='name' type='text' placeholder='MyWebsite' required />
             </label>
-            <label htmlFor='researchQuestion'>
+            <label htmlFor='research'>
               <span>Research question</span>
               <input
-                name='researchQuestion'
+                name='research'
                 type='text'
                 placeholder='What do I want to find?'
                 required

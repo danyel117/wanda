@@ -27,9 +27,16 @@ const StudyTypes = gql`
     recording: String
   }
 
+  input CustomQuestionCreateInput {
+    question: String
+    position: Int
+    sus: Boolean
+  }
+
   input EvaluationStudyCreateInputWithTasks {
     evaluationStudy: CustomEvaluationStudyCreateInput
     tasks: [CustomTaskCreateInput]
+    questions: [CustomQuestionCreateInput]
   }
 
   type Query {

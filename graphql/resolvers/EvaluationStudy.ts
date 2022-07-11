@@ -1,5 +1,10 @@
 import prisma from '@config/prisma';
-import { Enum_StudySessionStatus, EvaluationStudy, Task } from '@prisma/client';
+import {
+  Enum_StudySessionStatus,
+  EvaluationStudy,
+  Question,
+  Task,
+} from '@prisma/client';
 import { Resolver } from 'types';
 
 const EvaluationStudyResolvers: Resolver = {
@@ -65,6 +70,19 @@ const EvaluationStudyResolvers: Resolver = {
                 id: t.id,
                 recording: t.recording,
               })),
+            },
+          },
+          questionnaire: {
+            create: {
+              questions: {
+                createMany: {
+                  data: args.data.questions.map((q: Question) => ({
+                    question: q.question,
+                    position: q.position,
+                    sus: q.sus,
+                  })),
+                },
+              },
             },
           },
         },
