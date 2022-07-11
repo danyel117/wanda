@@ -13,7 +13,7 @@ import useFormData from 'hooks/useFormData';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { SyntheticEvent, useEffect, useMemo, useState } from 'react';
-import { MdLaunch } from 'react-icons/md';
+import { MdBarChart, MdLaunch } from 'react-icons/md';
 import { toast } from 'react-toastify';
 import { ExtendedStudySession } from 'types';
 
@@ -54,7 +54,7 @@ const StudySessionIndex = () => {
           status: uev.status,
           EvaluationStudy: uev.study.name,
           participant: uev.participant.email,
-          editBtn: <StudySessionActions id={uev.id} />,
+          editBtn: <StudySessionActions session={uev} />,
         }))
       );
     }
@@ -99,20 +99,53 @@ const StudySessionIndex = () => {
 };
 
 interface StudySessionActionsProps {
-  id: string;
+  session: ExtendedStudySession;
 }
 
-const StudySessionActions = ({ id }: StudySessionActionsProps) => (
-  <div className='flex'>
-    <Tooltip title='Launch session'>
+const StudySessionActions = ({ session }: StudySessionActionsProps) => (
+  <div className='flex w-full justify-center gap-2'>
+    <Tooltip
+      title={
+        session.status === 'COMPLETED'
+          ? 'This session has already been completed.'
+          : ''
+      }
+    >
       <div>
-        <Link href={`/app/sessions/${id}`}>
-          <a className='text-lg hover:text-indigo-500'>
+        <Link href={`/app/sessions/${session.id}`}>
+          <button
+            disabled={session.status === 'COMPLETED'}
+            type='button'
+            className='primary flex items-center gap-3'
+          >
+            <span>Launch session</span>
             <MdLaunch />
-          </a>
+          </button>
         </Link>
       </div>
     </Tooltip>
+    <PrivateComponent roleList={['ADMIN', 'EXPERT']}>
+      <Tooltip
+        title={`${
+          session.status !== 'COMPLETED'
+            ? 'This session has not been completed.'
+            : ''
+        }`}
+      >
+        <div>
+          <Link href={`/app/sessions/${session.id}/results`}>
+            <button
+              disabled={session.status !== 'COMPLETED'}
+              type='button'
+              className='primary flex items-center gap-2'
+            >
+              <span>View results</span>
+              <MdBarChart />
+            </button>
+          </Link>
+        </div>
+      </Tooltip>
+    </PrivateComponent>
   </div>
 );
 

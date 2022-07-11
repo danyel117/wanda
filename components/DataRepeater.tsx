@@ -3,10 +3,10 @@ import { Tooltip } from '@mui/material';
 import { nanoid } from 'nanoid';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { MdAddCircleOutline, MdRemoveCircleOutline } from 'react-icons/md';
+import { MdRemoveCircleOutline } from 'react-icons/md';
 
 interface ContainerProps {
-  children: JSX.Element | JSX.Element[];
+  children: JSX.Element[];
 }
 
 export interface RepeatedComponentProps {
@@ -30,8 +30,7 @@ interface DataRepeaterInterface {
   maxRepetitions?: number;
   errorMessage?: string;
   reversed?: boolean;
-  plusButtonColorClass?: string;
-  plusButtonHoverColorClass?: string;
+  addElementInstruction: string;
   minusButtonColorClass?: string;
   minusButtonHoverColorClass?: string;
 }
@@ -57,8 +56,7 @@ const DataRepeater = ({
   errorMessage = '',
   updateArrayDefault = () => {},
   reversed = false,
-  plusButtonColorClass = 'text-green-500',
-  plusButtonHoverColorClass = 'text-green-700',
+  addElementInstruction,
   minusButtonColorClass = 'text-red-500',
   minusButtonHoverColorClass = 'text-red-700',
 }: DataRepeaterInterface) => {
@@ -144,9 +142,9 @@ const DataRepeater = ({
             onClick={increaseOption}
             onKeyPress={increaseOption}
             type='button'
-            className={`mx-1 cursor-pointer text-3xl  ${plusButtonColorClass} hover:${plusButtonHoverColorClass}`}
+            className='primary'
           >
-            <MdAddCircleOutline />
+            {addElementInstruction}
           </button>
         </Tooltip>
       </div>

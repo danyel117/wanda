@@ -35,6 +35,12 @@ const pages = [
     roles: ['ADMIN', 'EXPERT', 'PARTICIPANT'],
     isPublic: true,
   },
+  {
+    name: 'Session results',
+    route: '/app/sessions/[id]/results',
+    roles: ['ADMIN', 'EXPERT'],
+    isPublic: false,
+  },
 ];
 
 export { pages };

@@ -44,6 +44,7 @@ const GET_STUDY_SESSION = gql`
         id
         status
         expertComments
+        userRecordingTranscription
         task {
           id
           description

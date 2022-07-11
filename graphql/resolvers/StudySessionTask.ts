@@ -1,9 +1,31 @@
-import { transcribe } from '@config/aws';
+import { s3, transcribe } from '@config/aws';
+import { StudySessionTask } from '@prisma/client';
 import prisma from 'config/prisma';
 import { nanoid } from 'nanoid';
 import { Resolver } from 'types';
 
 const StudySessionTaskResolvers: Resolver = {
+  StudySessionTask: {
+    userRecordingTranscription: async (parent: StudySessionTask, args) => {
+      if (parent.status === 'COMPLETED') {
+        const key = parent.userRecordingTranscription?.replace(
+          'https://wanda-media.s3.amazonaws.com/',
+          ''
+        );
+        const data = await s3
+          .getObject({
+            Bucket: process.env.NEXT_PUBLIC_MEDIA_BUCKET_NAME ?? '',
+            Key: key ?? '',
+          })
+          .promise();
+
+        const transcription = JSON.parse(data?.Body?.toString('utf-8') ?? '');
+        return transcription.results.transcripts[0].transcript;
+      }
+
+      return '';
+    },
+  },
   Query: {},
   Mutation: {
     updateStudySessionTaskWithTranscription: async (parent, args) => {

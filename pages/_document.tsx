@@ -15,7 +15,7 @@ class MyDocument extends Document {
         <Head>
           <meta charSet='utf-8' />
         </Head>
-        <body style={{ background: '#fff' }}>
+        <body style={{ background: '#eee' }}>
           <Main />
           <NextScript />
         </body>

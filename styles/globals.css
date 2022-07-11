@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 h1 {
-  @apply font-bold text-3xl text-gray-900;
+  @apply text-3xl font-bold text-gray-900;
 }
 
 h2 {
@@ -17,11 +17,11 @@ h4 {
 }
 
 button.primary {
-  @apply bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded disabled:bg-gray-500 disabled:cursor-not-allowed;
+  @apply rounded bg-indigo-500 py-2 px-4 font-bold text-white hover:bg-indigo-700 disabled:cursor-not-allowed disabled:bg-gray-400;
 }
 
 button.secondary {
-  @apply bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded;
+  @apply rounded bg-gray-500 py-2 px-4 font-bold text-white hover:bg-gray-700;
 }
 
 nav {
@@ -36,7 +36,7 @@ main {
 input,
 select,
 textarea {
-  @apply border-2 border-gray-500 rounded-lg p-1 focus:border-indigo-500 outline-none;
+  @apply rounded-lg border-2 border-gray-500 p-1 outline-none focus:border-indigo-500;
 }
 
 label {
@@ -48,7 +48,7 @@ label {
 }
 
 .sidebar-item {
-  @apply text-white m-2 border-b border-gray-300 cursor-pointer text-sm leading-3 tracking-normal p-2 focus:outline-none hover:border-indigo-300 hover:text-indigo-300;
+  @apply m-2 cursor-pointer border-b border-gray-300 p-2 text-sm leading-3 tracking-normal text-white hover:border-indigo-300 hover:text-indigo-300 focus:outline-none;
 }
 
 .sidebar-item-active {
@@ -67,5 +67,5 @@ a.external:visited {
 }
 
 .card {
-  @apply flex flex-col gap-2 items-center shadow-md bg-gray-50 p-4 rounded-lg;
+  @apply flex flex-col items-center gap-2 rounded-lg bg-gray-50 p-4 shadow-md;
 }
