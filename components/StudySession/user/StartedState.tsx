@@ -146,6 +146,9 @@ const StudySessionTaskControls = ({ taskAudio }: { taskAudio: string }) => {
         status: {
           set: status,
         },
+        endTime: {
+          set: new Date(),
+        },
       },
     });
     toast.success('Task status updated successfully');

@@ -32,6 +32,12 @@ interface TaskUpdateFunctionProps {
     expertComments?: {
       set: string;
     };
+    startTime?: {
+      set: Date;
+    };
+    endTime?: {
+      set: Date;
+    };
   };
 }
 

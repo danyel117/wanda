@@ -11,6 +11,9 @@ const StartTaskButton = () => {
         status: {
           set: 'STARTED',
         },
+        startTime: {
+          set: new Date(),
+        },
       },
     });
   };
