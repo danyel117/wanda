@@ -9,19 +9,28 @@ const StudySessionTaskResolvers: Resolver = {
   StudySessionTask: {
     userRecordingTranscription: async (parent: StudySessionTask, args) => {
       if (parent.status === 'COMPLETED' && parent.userRecordingTranscription) {
-        const key = parent.userRecordingTranscription?.replace(
-          'https://wanda-media.s3.amazonaws.com/',
-          ''
-        );
-        const data = await s3
-          .getObject({
-            Bucket: process.env.NEXT_PUBLIC_MEDIA_BUCKET_NAME ?? '',
-            Key: key ?? '',
-          })
-          .promise();
+        const sessionStatus = await prisma.studySession.findFirst({
+          where: {
+            id: parent.studySessionId,
+          },
+        });
+        if (sessionStatus?.status === 'COMPLETED') {
+          const key = parent.userRecordingTranscription?.replace(
+            'https://wanda-media.s3.amazonaws.com/',
+            ''
+          );
+          const data = await s3
+            .getObject({
+              Bucket: process.env.NEXT_PUBLIC_MEDIA_BUCKET_NAME ?? '',
+              Key: key ?? '',
+            })
+            .promise();
 
-        const transcription = JSON.parse(data?.Body?.toString('utf-8') ?? '');
-        return transcription.results.transcripts[0].transcript;
+          const transcription = JSON.parse(data?.Body?.toString('utf-8') ?? '');
+          return transcription.results.transcripts[0].transcript;
+        }
+
+        return null;
       }
 
       return null;

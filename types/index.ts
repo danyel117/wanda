@@ -45,6 +45,7 @@ export interface ExtendedStudy extends EvaluationStudy {
 
 export interface ExtendedStudySessionTask extends StudySessionTask {
   task: Task;
+  session: StudySession;
 }
 export interface ExtendedQuestionResponse extends QuestionResponse {
   question: Question;
