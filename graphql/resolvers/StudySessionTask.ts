@@ -8,7 +8,7 @@ import { Resolver } from 'types';
 const StudySessionTaskResolvers: Resolver = {
   StudySessionTask: {
     userRecordingTranscription: async (parent: StudySessionTask, args) => {
-      if (parent.status === 'COMPLETED') {
+      if (parent.status === 'COMPLETED' && parent.userRecordingTranscription) {
         const key = parent.userRecordingTranscription?.replace(
           'https://wanda-media.s3.amazonaws.com/',
           ''
@@ -24,17 +24,19 @@ const StudySessionTaskResolvers: Resolver = {
         return transcription.results.transcripts[0].transcript;
       }
 
-      return '';
+      return null;
     },
     userRecording: async (parent: StudySessionTask, args) => {
-      const bucket = process.env.NEXT_PUBLIC_MEDIA_BUCKET_NAME ?? '';
-      const path = parent?.userRecording?.replace(
-        `https://${bucket}.s3.amazonaws.com/`,
-        ''
-      );
-      if (path) {
-        const audio = await getObjectInBucket(bucket, path, 'audio/mpeg');
-        return audio;
+      if (parent.status === 'COMPLETED') {
+        const bucket = process.env.NEXT_PUBLIC_MEDIA_BUCKET_NAME ?? '';
+        const path = parent?.userRecording?.replace(
+          `https://${bucket}.s3.amazonaws.com/`,
+          ''
+        );
+        if (path) {
+          const audio = await getObjectInBucket(bucket, path, 'audio/mpeg');
+          return audio;
+        }
       }
 
       return null;
