@@ -7,9 +7,16 @@ interface StatCardProps {
   link: string;
   title: string;
   stat: string;
+  linkText?: string;
 }
 
-const StatCard = ({ Icon, link, title, stat }: StatCardProps) => (
+const StatCard = ({
+  Icon,
+  link,
+  title,
+  stat,
+  linkText = 'View all',
+}: StatCardProps) => (
   <div className='m-2 flex w-64 flex-col rounded-lg shadow-md'>
     <div className='flex items-center justify-start rounded-t-lg bg-white p-4'>
       <div className='text-start text-indigo-700'>
@@ -24,7 +31,7 @@ const StatCard = ({ Icon, link, title, stat }: StatCardProps) => (
       <Link href={link}>
         <a>
           <span className='text-indigo-700 hover:text-indigo-400'>
-            View all
+            {linkText}
           </span>
         </a>
       </Link>

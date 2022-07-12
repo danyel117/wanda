@@ -51,6 +51,7 @@ const EvaluationStudyResolvers: Resolver = {
           id: args.data.evaluationStudy.id,
           name: args.data.evaluationStudy.name,
           site: args.data.evaluationStudy.site,
+          participantTarget: 10,
           researchQuestion: args.data.evaluationStudy.researchQuestion,
           script: {
             connect: {

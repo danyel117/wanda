@@ -77,9 +77,10 @@ const StudyCard = ({ study }: StudyCardProps) => (
       />
       <StatCard
         Icon={MdPsychology}
-        link={`/app/sessions/?id=${study.id}`}
+        link={`/app/studies/${study.id}/results`}
         title='Sessions completed'
         stat={`${study.evaluationSummary.completed.toString()} out of ${study.evaluationSummary.total.toString()}`}
+        linkText='View results'
       />
     </div>
   </div>
