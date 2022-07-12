@@ -15,19 +15,27 @@ const StudySessionTaskResolvers: Resolver = {
           },
         });
         if (sessionStatus?.status === 'COMPLETED') {
-          const key = parent.userRecordingTranscription?.replace(
-            'https://wanda-media.s3.amazonaws.com/',
-            ''
-          );
-          const data = await s3
-            .getObject({
-              Bucket: process.env.NEXT_PUBLIC_MEDIA_BUCKET_NAME ?? '',
-              Key: key ?? '',
-            })
-            .promise();
+          try {
+            const key = parent.userRecordingTranscription?.replace(
+              'https://wanda-media.s3.amazonaws.com/',
+              ''
+            );
+            const data = await s3
+              .getObject({
+                Bucket: process.env.NEXT_PUBLIC_MEDIA_BUCKET_NAME ?? '',
+                Key: key ?? '',
+              })
+              .promise();
 
-          const transcription = JSON.parse(data?.Body?.toString('utf-8') ?? '');
-          return transcription.results.transcripts[0].transcript;
+            const transcription = JSON.parse(
+              data?.Body?.toString('utf-8') ?? ''
+            );
+            return transcription.results.transcripts[0].transcript;
+          } catch (e) {
+            // eslint-disable-next-line no-console
+            console.error('Error getting transcript:', e);
+            return '';
+          }
         }
 
         return null;
