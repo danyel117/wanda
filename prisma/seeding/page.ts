@@ -41,6 +41,12 @@ const pages = [
     roles: ['ADMIN', 'EXPERT'],
     isPublic: false,
   },
+  {
+    name: 'Evaluation study results',
+    route: '/app/studies/[id]/results',
+    roles: ['ADMIN', 'EXPERT'],
+    isPublic: false,
+  },
 ];
 
 export { pages };

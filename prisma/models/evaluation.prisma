@@ -18,18 +18,19 @@ enum Enum_StudySessionStatus {
 }
 
 model EvaluationStudy {
-    id               String         @id @default(cuid())
-    name             String
-    site             String
-    researchQuestion String
-    script           Script         @relation(fields: [scriptId], references: [id])
-    scriptId         String
-    createdBy        User           @relation(fields: [userId], references: [id], name: "study-expert")
-    userId           String
-    participants     User[]         @relation("study-participants")
-    sessions         StudySession[]
-    tasks            Task[]
-    questionnaire    Questionnaire?
+    id                String         @id @default(cuid())
+    name              String
+    site              String
+    researchQuestion  String
+    participantTarget Int?
+    script            Script         @relation(fields: [scriptId], references: [id])
+    scriptId          String
+    createdBy         User           @relation(fields: [userId], references: [id], name: "study-expert")
+    userId            String
+    participants      User[]         @relation("study-participants")
+    sessions          StudySession[]
+    tasks             Task[]
+    questionnaire     Questionnaire?
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -114,6 +115,8 @@ model StudySessionTask {
     userRecordingTranscription      String?
     userRecordingTranscriptionJobId String?
     expertRecording                 String?
+    startTime                       DateTime?
+    endTime                         DateTime?
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt

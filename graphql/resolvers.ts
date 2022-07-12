@@ -5,6 +5,7 @@ import { EvaluationStudyResolvers } from 'graphql/resolvers/EvaluationStudy';
 import { TaskResolvers } from 'graphql/resolvers/Task';
 import { QuestionnaireResolvers } from 'graphql/resolvers/Questionnaire';
 import { StudySessionTaskResolvers } from 'graphql/resolvers/StudySessionTask';
+import { EvaluationStudyResultResolvers } from 'graphql/resolvers/EvaluationStudyResult';
 
 const customResolvers: Resolver[] = [
   StudySessionResolvers,
@@ -13,6 +14,7 @@ const customResolvers: Resolver[] = [
   TaskResolvers,
   QuestionnaireResolvers,
   StudySessionTaskResolvers,
+  EvaluationStudyResultResolvers,
 ];
 
 export { customResolvers };
