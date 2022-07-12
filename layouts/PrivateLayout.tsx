@@ -13,13 +13,13 @@ const PrivateLayout = ({ children }: PrivateLayoutProps) => {
 
   return (
     <SidebarContext.Provider value={sidebarContext}>
-      <div className='flex flex-no-wrap w-full'>
+      <div className='flex-no-wrap flex w-full'>
         <Sidebar />
-        <div className='flex flex-col w-full'>
+        <div className='flex w-full flex-col'>
           <Navbar />
-          <div className='container mx-auto py-10 md:w-4/5 w-11/12'>
-            <main className='w-full'>
-              <div className='w-full'>{children}</div>
+          <div className='container mx-auto h-full w-11/12 py-10 md:w-4/5'>
+            <main className='h-full w-full'>
+              <div className='h-full w-full'>{children}</div>
             </main>
           </div>
         </div>

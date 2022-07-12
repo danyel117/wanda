@@ -15,7 +15,7 @@ const EvaluationStudyResultResolvers: Resolver = {
         where esr.id = ${args.id};
       `;
 
-      const participantStatus:any = await prisma.$queryRaw`
+      const participantStatus: any = await prisma.$queryRaw`
       select 
       count(*) FILTER (WHERE ss.status = 'COMPLETED') AS "completed",
       count(*) FILTER (WHERE ss.status = 'NOT_STARTED') AS "notStarted",

@@ -1,12 +1,25 @@
-import { useQuery } from '@apollo/client';
+import { useLazyQuery, useQuery } from '@apollo/client';
 import Loading from '@components/Loading';
+import PageHeader from '@components/PageHeader';
 import { Tooltip } from '@mui/material';
 import matchRoles from '@utils/matchRoles';
-import { GET_EVALUATION_STUDY_RESULT } from 'graphql/queries/evaluationStudyResult';
+import {
+  GET_EVALUATION_STUDY_RESULT,
+  GET_EXPORT_DATA,
+} from 'graphql/queries/evaluationStudyResult';
 import { GetServerSideProps, NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import ReactLoading from 'react-loading';
+import ExcelJS from 'exceljs';
+import { saveAs } from 'file-saver';
+import _ from 'lodash';
+import {
+  ExtendedQuestionResponse,
+  ExtendedStudySession,
+  ExtendedStudySessionTask,
+} from 'types';
 
 const Chart: any = dynamic(() => import('react-apexcharts'), { ssr: false });
 
@@ -20,7 +33,135 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     },
   };
 };
+
+interface DownloadTask {
+  participant: string;
+  task: string;
+  status: string;
+  startTime?: Date;
+  endTime?: Date;
+}
+
+interface DownloadQuestion {
+  participant: string;
+  question: string;
+  sus: boolean;
+  responseText?: string;
+  responseNumber?: number;
+}
+
+interface DownloaDataInterface {
+  tasks: DownloadTask[];
+  questions: DownloadQuestion[];
+}
+
 const EvaluationStudyResults: NextPage = () => {
+  const [loading, setLoading] = useState<boolean>(false);
+  const router = useRouter();
+  const id: string = router.query.id as string;
+  const [fetch, { data, loading: queryLoading }] = useLazyQuery(
+    GET_EXPORT_DATA,
+    {
+      variables: {
+        evaluationStudyId: id,
+      },
+      fetchPolicy: 'cache-and-network',
+    }
+  );
+
+  const generateCSV = async (
+    name: string,
+    downloadData: DownloaDataInterface
+  ) => {
+    const wb = new ExcelJS.Workbook();
+    const sheet = wb.addWorksheet('Tasks');
+    sheet.columns = _.map(Object.keys(downloadData.tasks[0]), (key) => ({
+      header: key,
+      key,
+      width: 10,
+      outlineLevel: 1,
+    }));
+
+    _.forEach(downloadData.tasks, (row) => {
+      sheet.addRow({ ...row });
+    });
+
+    const sheet2 = wb.addWorksheet('Questions');
+    sheet2.columns = _.map(Object.keys(downloadData.questions[0]), (key) => ({
+      header: key,
+      key,
+      width: 10,
+      outlineLevel: 1,
+    }));
+
+    _.forEach(downloadData.questions, (row) => {
+      sheet2.addRow({ ...row });
+    });
+
+    const buf = await wb.xlsx.writeBuffer();
+
+    if (buf) {
+      const blob = new Blob([buf]);
+      const file = new File([blob], `${name}.xlsx`, {
+        type: 'application/octet-stream',
+      });
+      saveAs(file);
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (data) {
+      setLoading(true);
+      const downloadData: DownloaDataInterface = {
+        tasks: [],
+        questions: [],
+      };
+      data.evaluationStudy.sessions.forEach((es: ExtendedStudySession) => {
+        es.taskList.forEach((tl: ExtendedStudySessionTask) => {
+          downloadData.tasks.push({
+            participant: es.participant.email ?? '',
+            task: tl.task.description,
+            status: tl.status,
+            startTime: tl.startTime ?? undefined,
+            endTime: tl.endTime ?? undefined,
+          });
+        });
+        es.questionResponses.forEach((q: ExtendedQuestionResponse) => {
+          downloadData.questions.push({
+            participant: es.participant.email ?? '',
+            question: q.question.question ?? '',
+            sus: q.question.sus,
+            responseText: q.responseText ?? undefined,
+            responseNumber: q.responseNumber ?? undefined,
+          });
+        });
+      });
+
+      generateCSV('data-export', downloadData);
+    }
+  }, [data]);
+  return (
+    <div className='flex h-full flex-col p-10'>
+      <PageHeader title='Evaluation study results'>
+        <button
+          onClick={() => fetch()}
+          type='button'
+          className='primary flex h-[40px] w-[125px] items-center justify-center'
+        >
+          {loading || queryLoading ? (
+            <ReactLoading type='spin' height={20} width={20} />
+          ) : (
+            <span>Export data</span>
+          )}
+        </button>
+      </PageHeader>
+      <EvaluationResultsChart />
+    </div>
+  );
+};
+
+const EvaluationResultsChart = () => {
   const router = useRouter();
   const id: string = router.query.id as string;
   const { data, loading } = useQuery(GET_EVALUATION_STUDY_RESULT, {
@@ -222,34 +363,24 @@ const EvaluationStudyResults: NextPage = () => {
   if (loading) return <Loading />;
 
   return (
-    <div className='p-10'>
-      <div className='flex w-full justify-center'>
-        <h1>Evaluation Study Results</h1>
-      </div>
-      <div className='flex items-center justify-center'>
-        <Tooltip
-          title={`Finished: ${data.getEvaluationResults.participantStatus.completed} | Target: ${data.getEvaluationResults.participantStatus.participantTarget}`}
-        >
-          <div className='w-1/4'>
-            <Chart
-              options={radialBarOptions}
-              series={[totalProgress]}
-              type='radialBar'
-              height={350}
-            />
-          </div>
-        </Tooltip>
-        <div className='w-1/2'>
-          <Chart series={series} options={options} type='bar' height={350} />
-        </div>
+    <div className='flex h-full items-center justify-center'>
+      <Tooltip
+        title={`Finished: ${data.getEvaluationResults.participantStatus.completed} | Target: ${data.getEvaluationResults.participantStatus.participantTarget}`}
+      >
         <div className='w-1/4'>
           <Chart
-            options={pieOptions}
-            series={pieData}
-            type='pie'
+            options={radialBarOptions}
+            series={[totalProgress]}
+            type='radialBar'
             height={350}
           />
         </div>
+      </Tooltip>
+      <div className='w-1/2'>
+        <Chart series={series} options={options} type='bar' height={350} />
+      </div>
+      <div className='w-1/4'>
+        <Chart options={pieOptions} series={pieData} type='pie' height={350} />
       </div>
     </div>
   );
