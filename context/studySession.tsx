@@ -72,9 +72,9 @@ const StudySessionContextProvider = ({
           (data?.studySession.data.currentTask ?? 1) - 1
         ]
       );
-      if (data.studySession.status === 'COMPLETED') {
-        stopPolling();
-      }
+      // if (data.studySession.status === 'COMPLETED') {
+      //   stopPolling();
+      // }
     }
   }, [data]);
 
