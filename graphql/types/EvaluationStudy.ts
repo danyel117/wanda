@@ -16,6 +16,7 @@ const StudyTypes = gql`
     id: String
     name: String
     researchQuestion: String
+    target: String
     site: String
     script: Connect
   }

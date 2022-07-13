@@ -113,6 +113,7 @@ const NewStudy: NextPage = () => {
               name: formData.name,
               site: formData.webiste,
               researchQuestion: formData.research,
+              target: formData.target,
               script: {
                 connect: {
                   id: formData.script,
@@ -151,6 +152,16 @@ const NewStudy: NextPage = () => {
               <span>Study name</span>
               <input name='name' type='text' placeholder='MyWebsite' required />
             </label>
+            <label htmlFor='target'>
+              <span>Target number of participants</span>
+              <input
+                name='target'
+                type='number'
+                min={0}
+                required
+                placeholder='10'
+              />
+            </label>
             <label htmlFor='research'>
               <span>Research question</span>
               <input
@@ -170,7 +181,7 @@ const NewStudy: NextPage = () => {
               />
             </label>
 
-            <label htmlFor='script'>
+            <label htmlFor='script' className='col-span-2'>
               <span>Script</span>
               <div className='flex w-full gap-2'>
                 <select name='script' className='w-full' defaultValue=''>
