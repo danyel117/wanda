@@ -20,6 +20,7 @@ import {
   ExtendedStudySession,
   ExtendedStudySessionTask,
 } from 'types';
+import { toast } from 'react-toastify';
 
 const Chart: any = dynamic(() => import('react-apexcharts'), { ssr: false });
 
@@ -117,28 +118,33 @@ const EvaluationStudyResults: NextPage = () => {
         tasks: [],
         questions: [],
       };
-      data.evaluationStudy.sessions.forEach((es: ExtendedStudySession) => {
-        es.taskList.forEach((tl: ExtendedStudySessionTask) => {
-          downloadData.tasks.push({
-            participant: es.participant.email ?? '',
-            task: tl.task.description,
-            status: tl.status,
-            startTime: tl.startTime ?? undefined,
-            endTime: tl.endTime ?? undefined,
+      if (data.evaluationStudy.sessions.length > 0) {
+        data.evaluationStudy.sessions.forEach((es: ExtendedStudySession) => {
+          es.taskList.forEach((tl: ExtendedStudySessionTask) => {
+            downloadData.tasks.push({
+              participant: es.participant.email ?? '',
+              task: tl.task.description,
+              status: tl.status,
+              startTime: tl.startTime ?? undefined,
+              endTime: tl.endTime ?? undefined,
+            });
+          });
+          es.questionResponses.forEach((q: ExtendedQuestionResponse) => {
+            downloadData.questions.push({
+              participant: es.participant.email ?? '',
+              question: q.question.question ?? '',
+              sus: q.question.sus,
+              responseText: q.responseText ?? undefined,
+              responseNumber: q.responseNumber ?? undefined,
+            });
           });
         });
-        es.questionResponses.forEach((q: ExtendedQuestionResponse) => {
-          downloadData.questions.push({
-            participant: es.participant.email ?? '',
-            question: q.question.question ?? '',
-            sus: q.question.sus,
-            responseText: q.responseText ?? undefined,
-            responseNumber: q.responseNumber ?? undefined,
-          });
-        });
-      });
 
-      generateCSV('data-export', downloadData);
+        generateCSV('data-export', downloadData);
+      } else {
+        toast.error('No data to export');
+        setLoading(false);
+      }
     }
   }, [data]);
   return (
@@ -349,13 +355,13 @@ const EvaluationResultsChart = () => {
         },
       });
       setTotalProgress(
-        (data.getEvaluationResults.participantStatus.completed * 100) /
+        ((data.getEvaluationResults.participantStatus?.completed ?? 0) * 100) /
           data.getEvaluationResults.participantStatus.participantTarget
       );
       setPieData([
-        data.getEvaluationResults.participantStatus.completed,
-        data.getEvaluationResults.participantStatus.notStarted,
-        data.getEvaluationResults.participantStatus.missing,
+        data.getEvaluationResults.participantStatus?.completed ?? 0,
+        data.getEvaluationResults.participantStatus?.notStarted ?? 0,
+        data.getEvaluationResults.participantStatus?.missing ?? 0,
       ]);
     }
   }, [data]);

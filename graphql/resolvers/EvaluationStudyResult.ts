@@ -23,12 +23,13 @@ const EvaluationStudyResultResolvers: Resolver = {
       es."participantTarget",
       es."participantTarget" - count(*) as "missing"
       from "EvaluationStudy" es 
-        join "StudySession" ss
+        left join "StudySession" ss
           on ss."studyId" = es.id
       where es.id = ${args.id}
       group by es.id
       `;
 
+      console.log(taskResults, participantStatus);
       return {
         taskResults,
         participantStatus: participantStatus[0],
