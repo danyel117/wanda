@@ -36,7 +36,7 @@ const AppIndex: NextPage = () => (
       />
     </PrivateComponent>
     <IndexCard
-      image='/img/script.jpg'
+      image='/img/dash.jpg'
       title='Study Sessions'
       description='Review the sessions you have been invited to.'
       href='/app/sessions'
