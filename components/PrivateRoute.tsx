@@ -3,6 +3,7 @@ import Loading from '@components/Loading';
 import PrivateLayout from '@layouts/PrivateLayout';
 // import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { NoRoleWelcome } from '@components/NoRoleWelcome';
 // import LayoutPublic from '@layouts/LayoutPublic';
 
 interface PrivateRouteProps {
@@ -25,6 +26,9 @@ const PrivateRoute = ({ children, rejected, isPublic }: PrivateRouteProps) => {
 
   if (!rejected) return <PrivateLayout>{children}</PrivateLayout>;
 
+  if (session.user.roles?.length === 0) {
+    return <NoRoleWelcome />;
+  }
   return (
     <div>
       You are not authorized to view this page.
