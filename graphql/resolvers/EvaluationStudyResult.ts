@@ -29,7 +29,6 @@ const EvaluationStudyResultResolvers: Resolver = {
       group by es.id
       `;
 
-      console.log(taskResults, participantStatus);
       return {
         taskResults,
         participantStatus: participantStatus[0],
