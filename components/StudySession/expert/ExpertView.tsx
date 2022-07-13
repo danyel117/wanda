@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import { MdCancel, MdOutlineCheckCircle } from 'react-icons/md';
 import Modal from '@components/modals/Modal';
 import { StartTaskButton } from '@components/StudySession/common/StartTaskButton';
+import Link from 'next/link';
 
 const ExpertView = () => {
   const { session } = useStudySession();
@@ -46,12 +47,27 @@ const ExpertView = () => {
           >
             Begin session
           </button>
+          <span>Session status: {session.status}</span>
         </div>
         {!session.data.participantConsentBegin &&
           session.data.expertConsentBegin && (
             <div>Please wait for the user to be ready.</div>
           )}
         {session.status === 'STARTED' && <CurrentTaskControls />}
+
+        {session.status === 'QUESTIONNAIRE' && (
+          <div>Please wait for the user to finish the questionnaire</div>
+        )}
+
+        {session.status === 'COMPLETED' && (
+          <div className='flex'>
+            <Link href={`/app/sessions/${session.id}/results`}>
+              <button className='primary' type='button'>
+                See evaluation results
+              </button>
+            </Link>
+          </div>
+        )}
       </div>
     </PrivateLayout>
   );
@@ -66,9 +82,9 @@ const CurrentTaskControls = () => {
         <h2>Current task:</h2>
         <p>{currentTask?.task.description}</p>
         <span>Task url:</span>
-        <div className='truncate'>
+        <div className='flex w-full'>
           <a
-            className='external'
+            className='external flex truncate'
             href={currentTask?.task.url}
             target='_blank'
             rel='noreferrer'
