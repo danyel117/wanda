@@ -21,6 +21,7 @@ import {
   ExtendedStudySessionTask,
 } from 'types';
 import { toast } from 'react-toastify';
+import { RadialBarChart } from '@components/charts/RadialBarChart';
 
 const Chart: any = dynamic(() => import('react-apexcharts'), { ssr: false });
 
@@ -266,52 +267,6 @@ const EvaluationResultsChart = () => {
 
   const [series, setSeries] = useState<any>([]);
 
-  const radialBarOptions = {
-    colors: ['#20E647'],
-    plotOptions: {
-      radialBar: {
-        hollow: {
-          margin: 0,
-          size: '70%',
-          background: '#293450',
-        },
-        track: {
-          dropShadow: {
-            enabled: true,
-            top: 2,
-            left: 0,
-            blur: 4,
-            opacity: 0.15,
-          },
-        },
-        dataLabels: {
-          name: {
-            offsetY: -10,
-            color: '#fff',
-            fontSize: '13px',
-          },
-          value: {
-            color: '#fff',
-            fontSize: '30px',
-            show: true,
-          },
-        },
-      },
-    },
-    fill: {
-      type: 'gradient',
-      gradient: {
-        shade: 'dark',
-        type: 'vertical',
-        gradientToColors: ['#87D4F9'],
-        stops: [0, 100],
-      },
-    },
-    stroke: {
-      lineCap: 'round',
-    },
-    labels: ['Progress'],
-  };
   const [totalProgress, setTotalProgress] = useState<number>(0);
 
   const pieOptions = {
@@ -370,18 +325,20 @@ const EvaluationResultsChart = () => {
 
   return (
     <div className='flex h-full items-center justify-center'>
-      <Tooltip
-        title={`Finished: ${data.getEvaluationResults.participantStatus.completed} | Target: ${data.getEvaluationResults.participantStatus.participantTarget}`}
-      >
-        <div className='w-1/4'>
-          <Chart
-            options={radialBarOptions}
-            series={[totalProgress]}
-            type='radialBar'
-            height={350}
-          />
-        </div>
-      </Tooltip>
+      <div className='w-1/4'>
+        <Tooltip
+          title={`Finished: ${data.getEvaluationResults.participantStatus.completed} | Target: ${data.getEvaluationResults.participantStatus.participantTarget}`}
+        >
+          <div>
+            <RadialBarChart value={totalProgress} />
+          </div>
+        </Tooltip>
+        <RadialBarChart
+          value={data.getEvaluationResults.sus.toFixed(1) ?? 0}
+          label='Average SUS Score'
+          unit=''
+        />
+      </div>
       <div className='w-1/2'>
         <Chart series={series} options={options} type='bar' height={350} />
       </div>

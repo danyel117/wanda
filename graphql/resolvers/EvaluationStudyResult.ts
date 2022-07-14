@@ -1,7 +1,41 @@
 import prisma from '@config/prisma';
 import { Resolver } from 'types';
+import { calculateSUS } from 'graphql/resolvers/StudySession';
 
 const EvaluationStudyResultResolvers: Resolver = {
+  EvaluationStudyResult: {
+    sus: async (parent) => {
+      const studySessions = await prisma.studySession.findMany({
+        where: {
+          studyId: parent.id,
+        },
+        include: {
+          questionResponses: {
+            where: {
+              question: {
+                sus: true,
+              },
+            },
+            include: {
+              question: true,
+            },
+            orderBy: {
+              question: {
+                position: 'asc',
+              },
+            },
+          },
+        },
+      });
+
+      return (
+        studySessions.reduce(
+          (prev, curr) => prev + calculateSUS(curr.questionResponses),
+          0
+        ) / studySessions.length
+      );
+    },
+  },
   Query: {
     getEvaluationResults: async (parent, args) => {
       await prisma.$queryRaw`refresh materialized view public.evaluationstudyresult`;
@@ -30,6 +64,7 @@ const EvaluationStudyResultResolvers: Resolver = {
       `;
 
       return {
+        id: args.id,
         taskResults,
         participantStatus: participantStatus[0],
       };

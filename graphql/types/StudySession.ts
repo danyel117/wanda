@@ -3,6 +3,7 @@ import { gql } from 'apollo-server-micro';
 const StudySessionTypes = gql`
   type StudySession {
     taskList: [StudySessionTask]
+    sus: Float
   }
 
   input StudySessionNoUserInput {

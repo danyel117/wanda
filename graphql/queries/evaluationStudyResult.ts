@@ -16,6 +16,7 @@ const GET_EVALUATION_STUDY_RESULT = gql`
         participantTarget
         total
       }
+      sus
     }
   }
 `;

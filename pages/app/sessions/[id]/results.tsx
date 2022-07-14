@@ -11,6 +11,7 @@ import { useRouter } from 'next/router';
 import { ExtendedQuestionResponse, ExtendedStudySessionTask } from 'types';
 import { MdExpandMore } from 'react-icons/md';
 import _ from 'lodash';
+import { RadialBarChart } from '@components/charts/RadialBarChart';
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { rejected, isPublic, page } = await matchRoles(ctx);
@@ -77,7 +78,16 @@ const SessionResultComponent = () => {
             Questionnaire
           </AccordionSummary>
           <AccordionDetails className='bg-gray-100'>
-            <QuestionResponses responses={session.questionResponses} />
+            <div className='flex items-center gap-3'>
+              <div className='w-full'>
+                <RadialBarChart
+                  value={session?.sus ?? 0}
+                  label='SUS Score'
+                  unit=''
+                />
+              </div>
+              <QuestionResponses responses={session.questionResponses} />
+            </div>
           </AccordionDetails>
         </Accordion>
       </div>
@@ -162,23 +172,57 @@ const QuestionResponses = ({
 };
 
 const ResponseCard = ({ response }: { response: ExtendedQuestionResponse }) => {
-  const SUSMapper: { [key: number]: string } = {
-    1: 'Strongly Disagree',
-    2: 'Disagree',
-    3: 'Neutral',
-    4: 'Agree',
-    5: 'Strongly Agree',
+  const colors = {
+    1: '#ff0000',
+    2: '#ffa500',
+    3: '#eedd00',
+    4: '#00f000',
+    5: '#00ff99',
+  };
+  const SUSMapper: { [key: number]: { text: string; color: string } } = {
+    1: {
+      text: 'Strongly Disagree',
+      color: colors[response.question.position % 2 === 1 ? 1 : 5],
+    },
+    2: {
+      text: 'Disagree',
+      color: colors[response.question.position % 2 === 1 ? 2 : 4],
+    },
+    3: {
+      text: 'Neutral',
+      color: colors[3],
+    },
+    4: {
+      text: 'Agree',
+      color: colors[response.question.position % 2 === 1 ? 4 : 2],
+    },
+    5: {
+      text: 'Strongly Agree',
+      color: colors[response.question.position % 2 === 1 ? 5 : 1],
+    },
   };
 
   return (
     <div className='card'>
-      <span className='h-full'>
-        {response.question.position} - {response.question.question}
-      </span>
       {response.question.sus ? (
-        <div className=''>{SUSMapper[response.responseNumber ?? 1]}</div>
+        <>
+          <span className='h-full'>
+            {response.question.position} - {response.question.question}
+          </span>
+          <div
+            className='font-bold'
+            style={{ color: SUSMapper[response.responseNumber ?? 1].color }}
+          >
+            {SUSMapper[response.responseNumber ?? 1].text}
+          </div>
+        </>
       ) : (
-        <div className='h-24 overflow-y-auto'>{response.responseText}</div>
+        <>
+          <span className='h-36'>
+            {response.question.position} - {response.question.question}
+          </span>
+          <div className='h-full overflow-y-auto'>{response.responseText}</div>
+        </>
       )}
     </div>
   );
