@@ -8,7 +8,10 @@ import { Resolver } from 'types';
 const StudySessionTaskResolvers: Resolver = {
   StudySessionTask: {
     userRecordingTranscription: async (parent: StudySessionTask, args) => {
-      if (parent.status === 'COMPLETED' && parent.userRecordingTranscription) {
+      if (
+        (parent.status === 'COMPLETED' || parent.status === 'FAILED') &&
+        parent.userRecordingTranscription
+      ) {
         const sessionStatus = await prisma.studySession.findFirst({
           where: {
             id: parent.studySessionId,
