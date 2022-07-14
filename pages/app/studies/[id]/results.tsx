@@ -40,6 +40,7 @@ interface DownloadTask {
   participant: string;
   task: string;
   status: string;
+  transcript: string;
   startTime?: Date;
   endTime?: Date;
 }
@@ -126,6 +127,7 @@ const EvaluationStudyResults: NextPage = () => {
               participant: es.participant.email ?? '',
               task: tl.task.description,
               status: tl.status,
+              transcript: tl.userRecordingTranscription ?? '',
               startTime: tl.startTime ?? undefined,
               endTime: tl.endTime ?? undefined,
             });
@@ -327,14 +329,18 @@ const EvaluationResultsChart = () => {
     <div className='flex h-full items-center justify-center'>
       <div className='w-1/4'>
         <Tooltip
-          title={`Finished: ${data.getEvaluationResults.participantStatus.completed} | Target: ${data.getEvaluationResults.participantStatus.participantTarget}`}
+          title={`Finished: ${
+            data.getEvaluationResults?.participantStatus.completed ?? 0
+          } | Target: ${
+            data.getEvaluationResults.participantStatus.participantTarget
+          }`}
         >
           <div>
             <RadialBarChart value={totalProgress} />
           </div>
         </Tooltip>
         <RadialBarChart
-          value={data.getEvaluationResults.sus.toFixed(1) ?? 0}
+          value={data.getEvaluationResults?.sus.toFixed(1) ?? 0}
           label='Average SUS Score'
           unit=''
         />

@@ -89,9 +89,7 @@ const RadialBarChart = ({
     },
     labels: [label],
   };
-  return (
-    <Chart options={options} series={[value]} type='radialBar' height={350} />
-  );
+  return <Chart options={options} series={[0]} type='radialBar' height={350} />;
 };
 
 export { RadialBarChart };

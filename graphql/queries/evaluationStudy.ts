@@ -8,6 +8,7 @@ const GET_STUDIES = gql`
       researchQuestion
       site
       taskCount
+      participantTarget
       evaluationSummary {
         pending
         completed

@@ -8,6 +8,7 @@ const EvaluationStudyResultResolvers: Resolver = {
       const studySessions = await prisma.studySession.findMany({
         where: {
           studyId: parent.id,
+          status: 'COMPLETED',
         },
         include: {
           questionResponses: {
@@ -27,7 +28,9 @@ const EvaluationStudyResultResolvers: Resolver = {
           },
         },
       });
-
+      if (studySessions.length === 0) {
+        return 0;
+      }
       return (
         studySessions.reduce(
           (prev, curr) => prev + calculateSUS(curr.questionResponses),
