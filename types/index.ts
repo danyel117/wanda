@@ -58,4 +58,5 @@ export interface ExtendedStudySession extends StudySession {
   data: StudySessionData;
   taskList: ExtendedStudySessionTask[];
   questionResponses: ExtendedQuestionResponse[];
+  sus: number;
 }

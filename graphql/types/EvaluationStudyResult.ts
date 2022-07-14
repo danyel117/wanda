@@ -17,8 +17,10 @@ const EvaluationStudyResultTypes = gql`
   }
 
   type EvaluationStudyResult {
+    id: String
     taskResults: [TaskResult]
     participantStatus: ParticipantStatus
+    sus: Float
   }
 
   type Query {

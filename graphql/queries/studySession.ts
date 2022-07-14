@@ -20,6 +20,7 @@ const GET_STUDY_SESSION = gql`
     studySession(id: $studySessionId) {
       id
       updatedAt
+      sus
       study {
         id
         name

@@ -1,6 +1,21 @@
 import prisma from '@config/prisma';
 import { StudySession, Task } from '@prisma/client';
-import { Resolver } from 'types';
+import { ExtendedQuestionResponse, Resolver } from 'types';
+
+export const calculateSUS = (questionResponses: ExtendedQuestionResponse[]) => {
+  const oddQuestions =
+    questionResponses
+      .filter((q) => q.question.position % 2 === 1)
+      .reduce((prev, current) => prev + (current.responseNumber ?? 0), 0) - 5;
+
+  const evenQuestions =
+    25 -
+    questionResponses
+      .filter((q) => q.question.position % 2 === 0)
+      .reduce((prev, current) => prev + (current.responseNumber ?? 0), 0);
+
+  return (oddQuestions + evenQuestions) * 2.5;
+};
 
 const StudySessionResolvers: Resolver = {
   StudySession: {
@@ -17,6 +32,26 @@ const StudySessionResolvers: Resolver = {
       });
 
       return tasks;
+    },
+    sus: async (parent: StudySession) => {
+      const questionResponses = await prisma.questionResponse.findMany({
+        where: {
+          studySessionId: parent.id,
+          question: {
+            sus: { equals: true },
+          },
+        },
+        orderBy: {
+          question: {
+            position: 'asc',
+          },
+        },
+        include: {
+          question: true,
+        },
+      });
+
+      return calculateSUS(questionResponses);
     },
   },
   Query: {
