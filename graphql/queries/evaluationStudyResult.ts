@@ -36,6 +36,7 @@ const GET_EXPORT_DATA = gql`
           task {
             description
           }
+          userRecordingTranscription
           status
         }
         questionResponses {
