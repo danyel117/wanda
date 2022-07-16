@@ -4,7 +4,7 @@ import {
   MdOutlineKeyboardArrowDown,
   MdOutlineKeyboardArrowUp,
 } from 'react-icons/md';
-import Draggable from 'react-draggable';
+import Draggable, { DraggableEventHandler } from 'react-draggable';
 import { Tooltip } from '@mui/material';
 import { useStudySession } from 'context/studySession';
 import Modal from '@components/modals/Modal';
@@ -133,6 +133,10 @@ const StartedState = () => {
 };
 
 const StudySessionTaskControls = ({ taskAudio }: { taskAudio: string }) => {
+  const [position, setPosition] = useState({
+    x: 0,
+    y: window.innerHeight - 180,
+  });
   const { currentTask } = useStudySession();
   const [showOptions, setShowOptions] = useState<boolean>(false);
   const { updateStudySessionTask } = useUpdateStudySessionData();
@@ -154,8 +158,22 @@ const StudySessionTaskControls = ({ taskAudio }: { taskAudio: string }) => {
     toast.success('Task status updated successfully');
   };
 
+  const stopDragging: DraggableEventHandler = (e, data) => {
+    let newX = data.x;
+    let newY = data.y;
+    if (data.x < 0) {
+      newX = 0;
+    }
+
+    if (data.y < 0) {
+      newY = 0;
+    }
+
+    setPosition({ x: newX, y: newY });
+  };
+
   return (
-    <Draggable>
+    <Draggable position={position} onStop={stopDragging}>
       <div
         className={`flex flex-col items-start justify-center rounded-xl border-4 border-yellow-500 p-2   ${
           showOptions
