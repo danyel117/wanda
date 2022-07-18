@@ -9,10 +9,12 @@ import {
   QuestionResponse,
   Question,
 } from '@prisma/client';
+import { NextApiRequest } from 'next';
 import { Session } from 'next-auth';
 
 interface Context {
   session: Session;
+  req: NextApiRequest;
 }
 
 interface ResolverFunction {

@@ -1,5 +1,8 @@
 import prisma from '@config/prisma';
 import { StudySession, Task } from '@prisma/client';
+import { createVerificationRequest } from '@utils/createVerificationRequest';
+import { sendInviteEmail } from '@utils/email';
+
 import { ExtendedQuestionResponse, Resolver } from 'types';
 
 export const calculateSUS = (questionResponses: ExtendedQuestionResponse[]) => {
@@ -83,7 +86,7 @@ const StudySessionResolvers: Resolver = {
           tasks: true,
         },
       });
-      await prisma.studySession.create({
+      const session = await prisma.studySession.create({
         data: {
           expert: {
             connect: {
@@ -122,9 +125,50 @@ const StudySessionResolvers: Resolver = {
             },
           },
         },
+        include: {
+          participant: true,
+          expert: true,
+        },
+      });
+
+      await sendParticipantEmail({
+        participantEmail: session.participant.email ?? '',
+        expertEmail: session.expert.email ?? '',
+        sessionId: session.id,
+        host: context.req.headers.host ?? '',
+        site: study?.site ?? '',
       });
     },
   },
+};
+
+interface SendParticipantEmailInterface {
+  participantEmail: string;
+  sessionId: string;
+  site: string;
+  expertEmail: string;
+  host: string;
+}
+
+const sendParticipantEmail = async ({
+  participantEmail,
+  expertEmail,
+  sessionId,
+  site,
+  host,
+}: SendParticipantEmailInterface) => {
+  const { token } = await createVerificationRequest({
+    email: participantEmail,
+  });
+
+  const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http';
+  const callbackUrl = encodeURIComponent(
+    `${protocol}://${host}/app/sessions/${sessionId}`
+  );
+  const link = `${protocol}://${host}/api/auth/callback/email?callbackUrl=${callbackUrl}&token=${token}&email=${encodeURIComponent(
+    participantEmail
+  )}`;
+  await sendInviteEmail(participantEmail, site, expertEmail, link);
 };
 
 export { StudySessionResolvers };
