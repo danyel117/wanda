@@ -43,6 +43,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   };
 };
 const NewStudy: NextPage = () => {
+  const [loading, setLoading] = useState<boolean>(false);
   const [createStudy] = useMutation(CREATE_EVALUATION_STUDY);
   const { data: session } = useSession();
   const [files, setFiles] = useState<{ [key: string]: TaskInput }>({});
@@ -61,6 +62,7 @@ const NewStudy: NextPage = () => {
   const newTaskContext = useMemo(() => ({ files, setFiles }), [files]);
 
   const submitForm = async (e: SyntheticEvent) => {
+    setLoading(true);
     e.preventDefault();
     const studyId = cuid();
     const filesUploaded = await Promise.all(
@@ -135,6 +137,8 @@ const NewStudy: NextPage = () => {
     } catch (err) {
       toast.error(`Error creating the study: ${err}`);
     }
+
+    setLoading(false);
   };
 
   return (
@@ -233,8 +237,8 @@ const NewStudy: NextPage = () => {
             </Accordion>
           </div>
 
-          <button type='submit' className='primary'>
-            Create study
+          <button type='submit' className='primary' disabled={loading}>
+            {loading ? 'Loading...' : 'Create Study'}
           </button>
         </form>
         <Modal open={showScriptModal} setOpen={setShowScriptModal}>
