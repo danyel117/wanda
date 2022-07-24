@@ -54,6 +54,7 @@
     "react-loading": "^2.0.3",
     "react-media-recorder": "^1.6.5",
     "react-rte": "^0.16.5",
+    "react-system-usability-scale": "^0.1.23",
     "react-table": "^7.8.0",
     "react-toastify": "^9.0.4",
     "sharp": "^0.30.6",
