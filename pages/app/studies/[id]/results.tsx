@@ -22,6 +22,8 @@ import {
 } from 'types';
 import { toast } from 'react-toastify';
 import { RadialBarChart } from '@components/charts/RadialBarChart';
+import SUS from 'react-system-usability-scale';
+import 'react-system-usability-scale/dist/styles/styles.css';
 
 const Chart: any = dynamic(() => import('react-apexcharts'), { ssr: false });
 
@@ -326,30 +328,35 @@ const EvaluationResultsChart = () => {
   if (loading) return <Loading />;
 
   return (
-    <div className='flex h-full items-center justify-center'>
-      <div className='w-1/4'>
-        <Tooltip
-          title={`Finished: ${
-            data.getEvaluationResults?.participantStatus.completed ?? 0
-          } | Target: ${
-            data.getEvaluationResults.participantStatus.participantTarget
-          }`}
-        >
-          <div>
-            <RadialBarChart value={totalProgress} />
-          </div>
-        </Tooltip>
-        <RadialBarChart
-          value={data.getEvaluationResults?.sus.toFixed(1) ?? 0}
-          label='Average SUS Score'
-          unit=''
-        />
+    <div className='flex flex-col items-center'>
+      <div className='flex h-full w-full items-center justify-center'>
+        <div className='w-1/4'>
+          <Tooltip
+            title={`Finished: ${
+              data.getEvaluationResults?.participantStatus.completed ?? 0
+            } | Target: ${
+              data.getEvaluationResults.participantStatus.participantTarget
+            }`}
+          >
+            <div>
+              <RadialBarChart value={totalProgress} />
+            </div>
+          </Tooltip>
+        </div>
+        <div className='w-1/2'>
+          <Chart series={series} options={options} type='bar' height={350} />
+        </div>
+        <div className='w-1/4'>
+          <Chart
+            options={pieOptions}
+            series={pieData}
+            type='pie'
+            height={350}
+          />
+        </div>
       </div>
-      <div className='w-1/2'>
-        <Chart series={series} options={options} type='bar' height={350} />
-      </div>
-      <div className='w-1/4'>
-        <Chart options={pieOptions} series={pieData} type='pie' height={350} />
+      <div>
+        <SUS result={data.getEvaluationResults?.sus.toFixed(1) ?? 0} />
       </div>
     </div>
   );
