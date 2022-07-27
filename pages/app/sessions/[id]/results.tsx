@@ -11,7 +11,9 @@ import { useRouter } from 'next/router';
 import { ExtendedQuestionResponse, ExtendedStudySessionTask } from 'types';
 import { MdExpandMore } from 'react-icons/md';
 import _ from 'lodash';
-import { RadialBarChart } from '@components/charts/RadialBarChart';
+import SUS from 'react-system-usability-scale';
+import 'react-system-usability-scale/dist/styles/styles.css';
+import PageHeader from '@components/PageHeader';
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { rejected, isPublic, page } = await matchRoles(ctx);
@@ -42,23 +44,25 @@ const SessionResultComponent = () => {
   if (loading) return <Loading />;
 
   return (
-    <div className='flex flex-col justify-center gap-4 p-10'>
+    <div className='flex flex-col justify-center gap-4 p-3 lg:p-10'>
       <div className='w-full text-center'>
-        <h1>Study session summary</h1>
+        <PageHeader title='Study session summary' />
       </div>
-      <div className='flex w-full justify-between'>
+      <div className='flex w-full flex-col justify-between gap-2 lg:flex-row'>
         <span>Participant: {session.participant.email}</span>
         <span>Date: {new Date(session.updatedAt).toLocaleDateString()}</span>
-        <button type='button' className='primary'>
-          <a
-            href={`data:text/json;charset=utf-8,${encodeURIComponent(
-              JSON.stringify(session)
-            )}`}
-            download={`session_export_${session.id}.json`}
-          >
-            Download data
-          </a>
-        </button>
+        <div className='flex justify-start'>
+          <button type='button' className='primary'>
+            <a
+              href={`data:text/json;charset=utf-8,${encodeURIComponent(
+                JSON.stringify(session)
+              )}`}
+              download={`session_export_${session.id}.json`}
+            >
+              Download data
+            </a>
+          </button>
+        </div>
       </div>
       <div>
         <Accordion>
@@ -66,7 +70,7 @@ const SessionResultComponent = () => {
             Tasks
           </AccordionSummary>
           <AccordionDetails className='bg-gray-100'>
-            <div className='grid grid-cols-3 gap-5'>
+            <div className='grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3'>
               {session.taskList.map((task: ExtendedStudySessionTask) => (
                 <TaskCard key={task.id} task={task} />
               ))}
@@ -78,13 +82,9 @@ const SessionResultComponent = () => {
             Questionnaire
           </AccordionSummary>
           <AccordionDetails className='bg-gray-100'>
-            <div className='flex items-center gap-3'>
-              <div className='w-full'>
-                <RadialBarChart
-                  value={session?.sus ?? 0}
-                  label='SUS Score'
-                  unit=''
-                />
+            <div className='flex flex-col gap-3'>
+              <div className='flex w-full overflow-x-auto md:justify-center'>
+                <SUS result={session?.sus ?? 0} />
               </div>
               <QuestionResponses responses={session.questionResponses} />
             </div>
@@ -97,15 +97,19 @@ const SessionResultComponent = () => {
 
 const TaskCard = ({ task }: { task: ExtendedStudySessionTask }) => (
   <div className='card'>
-    <h2>Task {task.task.order}</h2>
-    <span>{task.task.description}</span>
-    <div className='my-2 h-48 overflow-y-auto'>
-      <span>{task.userRecordingTranscription}</span>
+    <div className='flex w-full flex-col'>
+      <h2>Task {task.task.order}</h2>
+      <span>{task.task.description}</span>
+      <div className='my-2 h-48 overflow-y-auto'>
+        <span>{task.userRecordingTranscription}</span>
+      </div>
+      <div className='w-full'>
+        <audio className='w-56' src={task.userRecording ?? ''} controls />
+      </div>
+      <span>
+        Status: <Status status={task.status} />
+      </span>
     </div>
-    <audio src={task.userRecording ?? ''} controls />
-    <span>
-      Status: <Status status={task.status} />
-    </span>
   </div>
 );
 
@@ -151,8 +155,8 @@ const QuestionResponses = ({
     <div className='flex flex-col gap-4'>
       {sus.length > 0 && (
         <div className='flex flex-col gap-3'>
-          <h3>System Usability Scale</h3>
-          <div className='grid grid-cols-5 gap-3'>
+          <h3>System Usability Scale answers</h3>
+          <div className='grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5'>
             {sus.map((response: ExtendedQuestionResponse) => (
               <ResponseCard response={response} />
             ))}
@@ -161,7 +165,7 @@ const QuestionResponses = ({
       )}
       <div className='flex flex-col gap-3'>
         <h3>Additional Questions</h3>
-        <div className='grid grid-cols-3 gap-3'>
+        <div className='grid grid-cols-1 gap-3 md:grid-cols-3'>
           {notSus.map((response: ExtendedQuestionResponse) => (
             <ResponseCard response={response} />
           ))}

@@ -16,6 +16,7 @@ import { SyntheticEvent, useEffect, useMemo, useState } from 'react';
 import { MdBarChart, MdLaunch } from 'react-icons/md';
 import { toast } from 'react-toastify';
 import { ExtendedStudySession } from 'types';
+import { nanoid } from 'nanoid';
 
 const StudySessionIndex = () => {
   const { data: session } = useSession();
@@ -40,6 +41,10 @@ const StudySessionIndex = () => {
         accessor: 'participant',
       },
       {
+        Header: 'Date',
+        accessor: 'createdAt',
+      },
+      {
         Header: 'Actions',
         accessor: 'editBtn',
       },
@@ -54,6 +59,7 @@ const StudySessionIndex = () => {
           status: uev.status,
           EvaluationStudy: uev.study.name,
           participant: uev.participant.email,
+          createdAt: new Date(uev.createdAt).toLocaleDateString(),
           editBtn: <StudySessionActions session={uev} />,
         }))
       );
@@ -88,9 +94,8 @@ const StudySessionIndex = () => {
             </button>
           </PrivateComponent>
         </PageHeader>
-        <div className='card'>
-          <Table columns={columns} data={tableData} />
-        </div>
+        <StudySessionTable columns={columns} tableData={tableData} />
+        <StudySessionMobile tableData={tableData} />
       </div>
       <Modal open={openNew} setOpen={setOpenNew} title='New study session'>
         <NewStudySession setOpenNew={setOpenNew} />
@@ -99,12 +104,41 @@ const StudySessionIndex = () => {
   );
 };
 
+interface StudySessionTableProps {
+  columns: {
+    Header: string;
+    accessor: string;
+  }[];
+  tableData: TableData[];
+}
+
+const StudySessionTable = ({ columns, tableData }: StudySessionTableProps) => (
+  <div className='hidden md:block'>
+    <div className='card'>
+      <Table columns={columns} data={tableData} />
+    </div>
+  </div>
+);
+
+const StudySessionMobile = ({ tableData }: { tableData: TableData[] }) => (
+  <div className='flex flex-col gap-2 md:hidden'>
+    {tableData.map((td) => (
+      <div className='card' key={nanoid()}>
+        <span>{td.EvaluationStudy}</span>
+        <span>{td.participant}</span>
+        <span>{td.createdAt}</span>
+        {td.editBtn}
+      </div>
+    ))}
+  </div>
+);
+
 interface StudySessionActionsProps {
   session: ExtendedStudySession;
 }
 
 const StudySessionActions = ({ session }: StudySessionActionsProps) => (
-  <div className='flex w-full justify-center gap-2'>
+  <div className='flex w-full flex-col  gap-2 text-sm lg:text-lg'>
     <Tooltip
       title={
         session.status === 'COMPLETED'
@@ -112,12 +146,12 @@ const StudySessionActions = ({ session }: StudySessionActionsProps) => (
           : ''
       }
     >
-      <div>
+      <div className='w-full'>
         <Link href={`/app/sessions/${session.id}`}>
           <button
             disabled={session.status === 'COMPLETED'}
             type='button'
-            className='primary flex items-center gap-3'
+            className='primary flex w-full items-center justify-center gap-3'
           >
             <span>Launch session</span>
             <MdLaunch />
@@ -133,12 +167,12 @@ const StudySessionActions = ({ session }: StudySessionActionsProps) => (
             : ''
         }`}
       >
-        <div>
+        <div className='flex w-full'>
           <Link href={`/app/sessions/${session.id}/results`}>
             <button
               disabled={session.status !== 'COMPLETED'}
               type='button'
-              className='primary flex items-center gap-2'
+              className='primary flex w-full items-center justify-center gap-2'
             >
               <span>View results</span>
               <MdBarChart />

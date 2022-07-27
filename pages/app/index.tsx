@@ -17,7 +17,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 };
 
 const AppIndex: NextPage = () => (
-  <div className='flex flex-wrap gap-5 p-10'>
+  <div className='flex flex-wrap justify-center gap-5 p-10 lg:justify-start'>
     <PrivateComponent roleList={[Enum_RoleName.ADMIN, Enum_RoleName.EXPERT]}>
       <IndexCard
         image='/img/evaluation.jpg'
@@ -53,7 +53,7 @@ interface IndexCardProps {
 
 const IndexCard = ({ image, title, description, href }: IndexCardProps) => (
   <Link href={href}>
-    <div className='flex w-96 cursor-pointer rounded-lg bg-gray-900 shadow-lg hover:shadow-xl'>
+    <div className='flex w-full cursor-pointer rounded-lg bg-gray-900 shadow-lg hover:shadow-xl sm:w-96'>
       <div className='relative h-full w-64'>
         <Image
           className='rounded-l-lg'

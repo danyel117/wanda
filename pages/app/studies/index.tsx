@@ -8,6 +8,7 @@ import { UserStudy } from 'types';
 import { MdPsychology, MdTask } from 'react-icons/md';
 import StatCard from '@components/StatCard';
 import PageHeader from '@components/PageHeader';
+import { nanoid } from 'nanoid';
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { rejected, isPublic, page } = await matchRoles(ctx);
@@ -37,9 +38,9 @@ const Studies: NextPage = () => {
           </a>
         </Link>
       </PageHeader>
-      <div className='my-4 grid grid-cols-2 justify-items-center gap-2'>
+      <div className='my-4 flex flex-wrap justify-center gap-3'>
         {data.getUserStudies.map((study: UserStudy) => (
-          <StudyCard study={study} />
+          <StudyCard key={nanoid()} study={study} />
         ))}
       </div>
     </div>
@@ -54,12 +55,14 @@ const StudyCard = ({ study }: StudyCardProps) => (
     <h3 className='my-3 font-bold'>{study.name}</h3>
     <div className='flex flex-col items-center'>
       <span className='text-sm text-gray-600'>Research question</span>
-      <span className='text-lg'>{study.researchQuestion}</span>
+      <span className='w-48 text-center text-lg md:w-96'>
+        {study.researchQuestion}
+      </span>
     </div>
-    <div className='flex flex-col items-center'>
+    <div className='flex w-full flex-col items-center'>
       <span className='text-sm text-gray-600'>Site</span>
       <a
-        className='external truncate'
+        className='external w-full truncate text-center'
         href={study.site}
         title='Go to study site'
         target='_blank'
@@ -68,7 +71,7 @@ const StudyCard = ({ study }: StudyCardProps) => (
         {study.site}
       </a>
     </div>
-    <div className='flex'>
+    <div className='flex flex-col md:flex-row'>
       <StatCard
         Icon={MdTask}
         link={`/app/studies/${study.id}/tasks`}

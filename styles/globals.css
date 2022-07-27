@@ -24,8 +24,6 @@ button.secondary {
   @apply rounded bg-gray-500 py-2 px-4 font-bold text-white hover:bg-gray-700;
 }
 
-
-
 nav {
   height: 10vh;
 }
