@@ -153,7 +153,7 @@ const EvaluationStudyResults: NextPage = () => {
     }
   }, [data]);
   return (
-    <div className='flex h-full flex-col p-10'>
+    <div className='flex h-full flex-col p-3 lg:p-10'>
       <PageHeader title='Evaluation study results'>
         <button
           onClick={() => fetch()}
@@ -328,9 +328,15 @@ const EvaluationResultsChart = () => {
   if (loading) return <Loading />;
 
   return (
-    <div className='flex flex-col items-center'>
-      <div className='flex h-full w-full items-center justify-center'>
-        <div className='w-1/4'>
+    <div className='flex w-full flex-col items-center'>
+      <div className='flex h-full w-full overflow-x-auto md:justify-center'>
+        <SUS result={data.getEvaluationResults?.sus.toFixed(1) ?? 0} />
+      </div>
+      <div className='w-full'>
+        <Chart series={series} options={options} type='bar' height={350} />
+      </div>
+      <div className='grid grid-cols-1 md:grid-cols-2'>
+        <div>
           <Tooltip
             title={`Finished: ${
               data.getEvaluationResults?.participantStatus.completed ?? 0
@@ -343,10 +349,7 @@ const EvaluationResultsChart = () => {
             </div>
           </Tooltip>
         </div>
-        <div className='w-1/2'>
-          <Chart series={series} options={options} type='bar' height={350} />
-        </div>
-        <div className='w-1/4'>
+        <div>
           <Chart
             options={pieOptions}
             series={pieData}
@@ -354,9 +357,6 @@ const EvaluationResultsChart = () => {
             height={350}
           />
         </div>
-      </div>
-      <div>
-        <SUS result={data.getEvaluationResults?.sus.toFixed(1) ?? 0} />
       </div>
     </div>
   );
