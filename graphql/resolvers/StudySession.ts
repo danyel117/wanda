@@ -74,6 +74,9 @@ const StudySessionResolvers: Resolver = {
             },
           ],
         },
+        orderBy: {
+          createdAt: 'desc',
+        },
       }),
   },
   Mutation: {

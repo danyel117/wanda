@@ -11,6 +11,7 @@ const GET_USER_STUDY_SESSIONS = gql`
         email
       }
       status
+      createdAt
     }
   }
 `;
