@@ -20,9 +20,11 @@ const Sidebar = () => {
   const { open, setOpen } = useSidebar();
   const sidebarItems = [
     <SidebarItem key={nanoid()} Icon={MdHome} name='Dashboard' href='/app' />,
-    <PrivateComponent roleList={[Enum_RoleName.ADMIN, Enum_RoleName.EXPERT]}>
+    <PrivateComponent
+      key={nanoid()}
+      roleList={[Enum_RoleName.ADMIN, Enum_RoleName.EXPERT]}
+    >
       <SidebarItem
-        key={nanoid()}
         Icon={MdLightbulbOutline}
         name='Evaluation Studies'
         href='/app/studies'
@@ -34,13 +36,11 @@ const Sidebar = () => {
       name='Study Sessions'
       href='/app/sessions'
     />,
-    <PrivateComponent roleList={[Enum_RoleName.ADMIN, Enum_RoleName.EXPERT]}>
-      <SidebarItem
-        key={nanoid()}
-        Icon={MdAssignment}
-        name='Scripts'
-        href='/app/scripts'
-      />
+    <PrivateComponent
+      key={nanoid()}
+      roleList={[Enum_RoleName.ADMIN, Enum_RoleName.EXPERT]}
+    >
+      <SidebarItem Icon={MdAssignment} name='Scripts' href='/app/scripts' />
     </PrivateComponent>,
   ];
   return (
