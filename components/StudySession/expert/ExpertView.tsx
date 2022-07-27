@@ -26,11 +26,11 @@ const ExpertView = () => {
 
   return (
     <PrivateLayout>
-      <div className='flex flex-col gap-4 p-10'>
+      <div className='flex flex-col gap-4 p-4 lg:p-10'>
         <div className='flex w-full justify-center'>
-          <h1>User session controls</h1>
+          <h1>Participant session controls</h1>
         </div>
-        <div className='flex w-full justify-center gap-4'>
+        <div className='flex w-full flex-col justify-center gap-4 md:flex-row'>
           <span>
             Study: <strong>{session.study.name}</strong>
           </span>
@@ -77,8 +77,8 @@ const CurrentTaskControls = () => {
   const { currentTask } = useStudySession();
 
   return (
-    <div className='flex justify-center gap-10'>
-      <div className='card h-64 w-80 justify-start'>
+    <div className='flex flex-col justify-center gap-10 md:flex-row'>
+      <div className='card h-64 w-full justify-start'>
         <h2>Current task:</h2>
         <p>{currentTask?.task.description}</p>
         <span>Task url:</span>
@@ -93,11 +93,11 @@ const CurrentTaskControls = () => {
           </a>
         </div>
       </div>
-      <div className='card h-64 w-80 justify-start'>
+      <div className='card h-64 w-full justify-start'>
         <h2>Status:</h2>
         <TaskStatuses currentTask={currentTask} />
       </div>
-      <div className='card w-80 justify-between'>
+      <div className='card w-full justify-between'>
         <AddComments />
       </div>
     </div>
