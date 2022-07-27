@@ -48,7 +48,7 @@ const Scripts: NextPage = () => {
   if (loading) return <Loading />;
   return (
     <>
-      <div className='flex h-full w-full flex-col p-10'>
+      <div className='flex h-full w-full flex-col p-4 lg:p-10'>
         <PageHeader title='Script management'>
           <button
             className='primary flex'
@@ -59,7 +59,7 @@ const Scripts: NextPage = () => {
           </button>
         </PageHeader>
 
-        <div className='grid w-full grid-cols-3 justify-items-center gap-6 p-6'>
+        <div className='grid w-full grid-cols-1 justify-items-center gap-6 p-6 md:grid-cols-3'>
           {data.getScripts?.map((script: Script) => (
             <ScriptCard key={script.id} script={script} />
           ))}

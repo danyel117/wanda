@@ -15,13 +15,13 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 };
 
 const Home: NextPage = () => (
-  <div className='flex h-screen w-screen bg-white'>
+  <div className='flex h-screen w-screen bg-white p-4 lg:p-10'>
     <main className='flex h-full w-full flex-col items-center justify-center gap-4'>
       <div className='flex flex-col items-center gap-2'>
         <h1>Welcome to Wanda!</h1>
-        <h2>Think Aloud evaluations made easy</h2>
+        <h2>Remote evaluations made easy</h2>
       </div>
-      <div className='flex gap-3'>
+      <div className='flex flex-col gap-3 md:flex-row'>
         <button type='button' className='secondary'>
           How does it work?
         </button>
