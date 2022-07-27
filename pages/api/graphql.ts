@@ -25,7 +25,7 @@ const Server = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   const apolloServer = new ApolloServer({
-    context: () => ({ session }),
+    context: () => ({ session, req }),
     typeDefs: [...types, ...customTypes],
     resolvers: [...resolvers, ...customResolvers],
     introspection: true,

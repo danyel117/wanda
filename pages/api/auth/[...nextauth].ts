@@ -6,6 +6,7 @@ import prisma from '@config/prisma';
 import EmailProvider from 'next-auth/providers/email';
 import { getSession } from 'next-auth/react';
 import { NextApiRequest, NextApiResponse } from 'next';
+import { nanoid } from 'nanoid';
 
 const getUser = async (email: string) =>
   await prisma.user.findFirst({
@@ -132,13 +133,16 @@ const getNextAuthOptions = (req: NextApiRequest) =>
       EmailProvider({
         server: {
           host: process.env.EMAIL_SERVER_HOST,
-          port: process.env.EMAIL_SERVER_PORT,
+          port: Number(process.env.EMAIL_SERVER_PORT) || 0,
           auth: {
             user: process.env.EMAIL_SERVER_USER,
             pass: process.env.EMAIL_SERVER_PASSWORD,
           },
         },
         from: process.env.EMAIL_FROM,
+        generateVerificationToken: async () => {
+          return getToken(nanoid());
+        },
       }),
     ],
   } as NextAuthOptions);
@@ -146,3 +150,7 @@ const getNextAuthOptions = (req: NextApiRequest) =>
 export default async function auth(req: NextApiRequest, res: NextApiResponse) {
   return await NextAuth(req, res, getNextAuthOptions(req));
 }
+
+export const getToken = (test: string) => {
+  return process.env.NEXTAUTH_SECRET + test;
+};
