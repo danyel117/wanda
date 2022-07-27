@@ -24,6 +24,7 @@ import { useSession } from 'next-auth/react';
 import { CREATE_EVALUATION_STUDY } from 'graphql/mutations/evaluationStudy';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
+import Loading from '@components/Loading';
 
 const VoiceRecorder = dynamic(
   () => import('@components/VoiceRecorder/VoiceRecorder'),
@@ -49,14 +50,18 @@ const NewStudy: NextPage = () => {
   const [files, setFiles] = useState<{ [key: string]: TaskInput }>({});
   const [showScriptModal, setShowScriptModal] = useState<boolean>(false);
   const [script, setScript] = useState<Script>();
-  const { data: scripts } = useQuery(GET_SCRIPTS, {
+  const { data: scripts, loading: loadingScript } = useQuery(GET_SCRIPTS, {
     fetchPolicy: 'cache-and-network',
   });
   const router = useRouter();
   const { form, formData, updateFormData } = useFormData(null);
 
   useEffect(() => {
-    setScript(scripts.getScripts.find((f: Script) => f.id === formData.script));
+    if (scripts) {
+      setScript(
+        scripts.getScripts.find((f: Script) => f.id === formData.script)
+      );
+    }
   }, [formData, scripts]);
 
   const newTaskContext = useMemo(() => ({ files, setFiles }), [files]);
@@ -141,9 +146,11 @@ const NewStudy: NextPage = () => {
     setLoading(false);
   };
 
+  if (loading || loadingScript) return <Loading />;
+
   return (
     <NewTaskContext.Provider value={newTaskContext}>
-      <div className='flex w-full flex-col items-center justify-start gap-4 p-10'>
+      <div className='flex w-full flex-col items-center justify-start gap-4 p-3 lg:p-10'>
         <h1>New Evaluation Study</h1>
         <form
           ref={form}
@@ -151,7 +158,7 @@ const NewStudy: NextPage = () => {
           onSubmit={submitForm}
           className='flex w-full flex-col items-center gap-3'
         >
-          <div className='grid grid-cols-2 gap-4 rounded-lg bg-gray-50 p-6 shadow-lg'>
+          <div className='flex w-full flex-col gap-4 rounded-lg bg-gray-50 p-6 shadow-lg md:grid md:grid-cols-2 lg:grid-cols-3'>
             <label htmlFor='name'>
               <span>Study name</span>
               <input name='name' type='text' placeholder='MyWebsite' required />
@@ -227,7 +234,7 @@ const NewStudy: NextPage = () => {
                 <h3 className='font-bold'>Questionnaire</h3>
               </AccordionSummary>
               <AccordionDetails>
-                <div className='flex justify-center gap-3'>
+                <div className='flex flex-col justify-center gap-3'>
                   <SUS />
                   <div className='block'>
                     <QuestionnaireDataRepeater />
@@ -258,7 +265,9 @@ const TaskContainer = ({ children }: ContainerProps) => {
   return (
     <div className='flex w-full flex-col'>
       <div className='self-center'>{title}</div>
-      <div className='grid grid-cols-2'>{content}</div>
+      <div className='flex w-full flex-col gap-2 lg:flex-row lg:flex-wrap'>
+        {content}
+      </div>
     </div>
   );
 };
@@ -268,7 +277,7 @@ const QuestionContainer = ({ children }: ContainerProps) => {
   return (
     <div className='flex w-full flex-col'>
       <div className='self-center'>{title}</div>
-      <div className='grid min-w-[468px] grid-cols-2 rounded-lg bg-gray-200 p-3 shadow-lg'>
+      <div className='flex w-full flex-col gap-2 rounded-lg bg-gray-200 p-3 shadow-lg lg:flex-row lg:flex-wrap'>
         {content}
       </div>
     </div>
@@ -296,7 +305,7 @@ const TaskDefinition = ({ counter, name }: RepeatedComponentProps) => {
   }, [taskData]);
 
   return (
-    <div className='rounded-lg bg-gray-50 p-3 shadow-md'>
+    <div className='w-full rounded-lg bg-gray-50 p-3 shadow-md'>
       <h2 className='w-full text-center'>Task #{(counter ?? 0) + 1}</h2>
       <label htmlFor={`~${name}-description`}>
         <span>Task description</span>
@@ -376,7 +385,7 @@ const SUS = () => {
       'I needed to learn a lot of things before I could get going with this system.',
   });
   return (
-    <div className='min-w-[600px]'>
+    <div className='w-full'>
       <div className='my-4 flex h-[40px] items-center justify-center'>
         <h3>System Usability Scale</h3>
         <Switch
@@ -397,7 +406,7 @@ const SUS = () => {
         </Tooltip>
       </div>
       {showSus && (
-        <div className='grid grid-cols-3 rounded-lg bg-gray-200 p-3 shadow-lg'>
+        <div className='grid grid-cols-1 rounded-lg bg-gray-200 p-3 shadow-lg sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
           {Object.keys(susQuestions).map((q, index) => (
             <label htmlFor={q} className='m-2'>
               <span>SUS Question {index + 1}</span>

@@ -176,21 +176,24 @@ const RenderInputArray = ({
   minusButtonColorClass,
   minusButtonHoverColorClass,
 }: any) => (
-  <div className='my-2 flex items-center justify-center'>
+  <div className='flex flex-col gap-2 border-b md:flex-row md:border-0'>
     <RepeatedComponent
       name={`${inputName}${option.sum}`}
       defaultInput={option.preload}
       counter={index}
     />
     <Tooltip title={`Remove ${inputName}`} arrow placement='right'>
-      <button
-        type='button'
-        onKeyPress={() => removeOption(option)}
-        onClick={() => removeOption(option)}
-        className={`mx-2 cursor-pointer text-3xl  ${minusButtonColorClass} hover:${minusButtonHoverColorClass}`}
-      >
-        <MdRemoveCircleOutline />
-      </button>
+      <div className='flex items-center justify-center'>
+        <span className='block md:hidden'>Delete</span>
+        <button
+          type='button'
+          onKeyPress={() => removeOption(option)}
+          onClick={() => removeOption(option)}
+          className={`mx-2 cursor-pointer text-3xl  ${minusButtonColorClass} hover:${minusButtonHoverColorClass}`}
+        >
+          <MdRemoveCircleOutline />
+        </button>
+      </div>
     </Tooltip>
   </div>
 );
