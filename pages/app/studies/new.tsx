@@ -100,16 +100,15 @@ const NewStudy: NextPage = () => {
           return {
             question: formData[f],
             sus: true,
-            position: parseInt(f.split('sus')[1], 10),
           };
         }
 
         return {
           question: formData[f],
           sus: false,
-          position: parseInt(f.split('Question')[1], 10),
         };
-      });
+      })
+      .map((el, index) => ({ ...el, position: index + 1 }));
 
     try {
       await createStudy({
