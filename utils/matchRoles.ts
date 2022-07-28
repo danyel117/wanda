@@ -1,6 +1,8 @@
 import prisma from '@config/prisma';
+import { Enum_RoleName } from '@prisma/client';
 import { getSession } from 'next-auth/react';
 import { GetServerSidePropsContext } from 'next/types';
+import { Context } from 'types';
 
 const matchRoles = async (context: GetServerSidePropsContext) => {
   let url = context.resolvedUrl.split('?')[0];
@@ -40,9 +42,17 @@ const matchRoles = async (context: GetServerSidePropsContext) => {
   };
 };
 
-// const checkRolesServer = (context, roles) =>
-//   context?.session?.user?.roles?.filter((r) => roles.includes(r.name)).length > 0;
+const checkRolesServer = (context: Context, roles: Enum_RoleName[]) => {
+  if (roles.length > 0 && context.session.user.roles) {
+    return (
+      context.session.user.roles.filter((r) => roles.includes(r.name)).length >
+      0
+    );
+  }
 
-// export { checkRolesServer };
+  return false;
+};
+
+export { checkRolesServer };
 
 export default matchRoles;

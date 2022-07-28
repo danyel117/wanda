@@ -1,10 +1,13 @@
 import prisma from '@config/prisma';
 import {
+  Enum_RoleName,
   Enum_StudySessionStatus,
   EvaluationStudy,
   Question,
   Task,
 } from '@prisma/client';
+import { checkRolesServer } from '@utils/matchRoles';
+
 import { Resolver } from 'types';
 
 const EvaluationStudyResolvers: Resolver = {
@@ -35,14 +38,19 @@ const EvaluationStudyResolvers: Resolver = {
     },
   },
   Query: {
-    getUserStudies: async (parent, args, context) =>
-      await prisma.evaluationStudy.findMany({
+    getUserStudies: async (parent, args, context) => {
+      console.log(checkRolesServer(context, [Enum_RoleName.ADMIN]));
+      if (checkRolesServer(context, [Enum_RoleName.ADMIN])) {
+        return await prisma.evaluationStudy.findMany({});
+      }
+      return await prisma.evaluationStudy.findMany({
         where: {
           userId: {
             equals: context.session?.user.id ?? '',
           },
         },
-      }),
+      });
+    },
   },
   Mutation: {
     createEvaluationStudyWithTasks: async (parent, args, context) =>

@@ -12,7 +12,7 @@ import {
 import { NextApiRequest } from 'next';
 import { Session } from 'next-auth';
 
-interface Context {
+export interface Context {
   session: Session;
   req: NextApiRequest;
 }

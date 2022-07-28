@@ -193,7 +193,9 @@ interface NewStudySessionProps {
 }
 
 const NewStudySession = ({ setOpenNew }: NewStudySessionProps) => {
-  const { data: studies } = useQuery(GET_STUDIES);
+  const { data: studies } = useQuery(GET_STUDIES, {
+    fetchPolicy: 'cache-and-network',
+  });
   const [createStudySession] = useMutation(CREATE_STUDY_SESSION, {
     refetchQueries: [GET_USER_STUDY_SESSIONS],
   });
