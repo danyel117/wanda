@@ -39,7 +39,6 @@ const EvaluationStudyResolvers: Resolver = {
   },
   Query: {
     getUserStudies: async (parent, args, context) => {
-      console.log(checkRolesServer(context, [Enum_RoleName.ADMIN]));
       if (checkRolesServer(context, [Enum_RoleName.ADMIN])) {
         return await prisma.evaluationStudy.findMany({});
       }
@@ -73,11 +72,12 @@ const EvaluationStudyResolvers: Resolver = {
           },
           tasks: {
             createMany: {
-              data: args.data.tasks.map((t: Task) => ({
+              data: args.data.tasks.map((t: Task, index: number) => ({
                 description: t.description,
                 url: t.url,
                 id: t.id,
                 recording: t.recording,
+                order: index + 1,
               })),
             },
           },

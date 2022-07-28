@@ -3,7 +3,15 @@ import { Script } from '@prisma/client';
 import { GET_SCRIPT } from 'graphql/queries/script';
 import { GET_STUDY_SESSION } from 'graphql/queries/studySession';
 import { GET_TASK } from 'graphql/queries/task';
-import { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import {
+  createContext,
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { ExtendedStudySession, ExtendedStudySessionTask } from 'types';
 
 interface StudySessionContextInterface {
@@ -12,6 +20,10 @@ interface StudySessionContextInterface {
   currentTask: ExtendedStudySessionTask | undefined;
   taskAudio: string;
   script: Script | undefined;
+  stopPoll: () => void;
+  resumePoll: () => void;
+  result: boolean;
+  setResult: Dispatch<SetStateAction<boolean>>;
 }
 
 export const StudySessionContext = createContext<StudySessionContextInterface>(
@@ -25,12 +37,15 @@ export function useStudySession() {
 interface StudySessionContextProviderProps {
   children: JSX.Element | JSX.Element[];
   id: string;
+  pollRate?: number;
 }
 
 const StudySessionContextProvider = ({
   children,
   id,
+  pollRate = 750,
 }: StudySessionContextProviderProps) => {
+  const [result, setResult] = useState<boolean>(false);
   const [currentTask, setCurrentTask] = useState<ExtendedStudySessionTask>();
   const { data, loading, startPolling, stopPolling } = useQuery(
     GET_STUDY_SESSION,
@@ -39,15 +54,18 @@ const StudySessionContextProvider = ({
       nextFetchPolicy: 'network-only',
       variables: {
         studySessionId: id,
+        result,
       },
-      pollInterval: 500,
+      pollInterval: pollRate,
     }
   );
 
   const { data: task } = useQuery(GET_TASK, {
     variables: {
-      taskId: currentTask?.task.id,
+      taskId: currentTask?.task.id ?? '',
     },
+    fetchPolicy: 'network-only',
+    nextFetchPolicy: 'network-only',
   });
 
   const { data: script } = useQuery(GET_SCRIPT, {
@@ -58,12 +76,14 @@ const StudySessionContextProvider = ({
   });
 
   useEffect(() => {
-    startPolling(500);
+    if (pollRate) {
+      startPolling(pollRate);
+    }
 
     return () => {
       stopPolling();
     };
-  }, [startPolling, stopPolling]);
+  }, [pollRate, startPolling, stopPolling]);
 
   useEffect(() => {
     if (data?.studySession) {
@@ -72,22 +92,41 @@ const StudySessionContextProvider = ({
           (data?.studySession.data.currentTask ?? 1) - 1
         ]
       );
+
       if (data.studySession.status === 'COMPLETED') {
         stopPolling();
       }
     }
-  }, [data]);
+  }, [data, stopPolling]);
 
-  const sessionContext = useMemo(
-    () => ({
+  const sessionContext = useMemo(() => {
+    const resumePoll = () => {
+      startPolling(pollRate);
+    };
+
+    return {
       session: data?.studySession,
       loading,
       currentTask,
-      taskAudio: task?.task.recording ?? '',
+      taskAudio: task?.task?.recording ?? '',
       script: script?.script,
-    }),
-    [data, loading, currentTask, task, script]
-  );
+      stopPoll: stopPolling,
+      resumePoll,
+      result,
+      setResult,
+    };
+  }, [
+    data,
+    loading,
+    currentTask,
+    task,
+    script,
+    stopPolling,
+    startPolling,
+    pollRate,
+    result,
+    setResult,
+  ]);
 
   return (
     <StudySessionContext.Provider value={sessionContext}>
