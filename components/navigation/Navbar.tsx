@@ -55,7 +55,7 @@ const UserProfileNav = () => {
   };
   const [profile, setProfile] = useState<boolean>(false);
   return (
-    <ClickAwayListener onClickAway={() => setProfile(!profile)}>
+    <ClickAwayListener onClickAway={() => setProfile(false)}>
       <button
         type='button'
         className='relative flex cursor-pointer items-center'
