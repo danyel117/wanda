@@ -1,3 +1,4 @@
+import ClickAwayListener from '@mui/material/ClickAwayListener';
 import { useSidebar } from 'context/sidebar';
 import { signOut } from 'next-auth/react';
 import Image from 'next/image';
@@ -54,50 +55,52 @@ const UserProfileNav = () => {
   };
   const [profile, setProfile] = useState<boolean>(false);
   return (
-    <button
-      type='button'
-      className='relative flex cursor-pointer items-center'
-      onClick={() => setProfile(!profile)}
-    >
-      <div className='rounded-full'>
-        {profile && (
-          <ul className='absolute left-0 -mt-[70px] w-full rounded border-r bg-gray-900 p-2 shadow md:mt-16'>
-            <li className='flex w-full cursor-pointer items-center justify-between text-white hover:text-indigo-300'>
-              <Link href='/profile'>
-                <a>
+    <ClickAwayListener onClickAway={() => setProfile(!profile)}>
+      <button
+        type='button'
+        className='relative flex cursor-pointer items-center'
+        onClick={() => setProfile(!profile)}
+      >
+        <div className='rounded-full'>
+          {profile && (
+            <ul className='absolute left-0 -mt-[70px] w-full rounded border-r bg-gray-900 p-2 shadow md:mt-16'>
+              <li className='flex w-full cursor-pointer items-center justify-between text-white hover:text-indigo-300'>
+                <Link href='/profile'>
+                  <a>
+                    <div className='flex items-center'>
+                      <MdPersonOutline />
+                      <span className='ml-2 text-sm'>My Profile</span>
+                    </div>
+                  </a>
+                </Link>
+              </li>
+              <li className='mt-2 flex w-full cursor-pointer items-center justify-between text-white hover:text-indigo-300'>
+                <button type='button' onClick={() => logOut()}>
                   <div className='flex items-center'>
-                    <MdPersonOutline />
-                    <span className='ml-2 text-sm'>My Profile</span>
+                    <MdLogout />
+                    <span className='ml-2 text-sm'>Sign out</span>
                   </div>
-                </a>
-              </Link>
-            </li>
-            <li className='mt-2 flex w-full cursor-pointer items-center justify-between text-white hover:text-indigo-300'>
-              <button type='button' onClick={() => logOut()}>
-                <div className='flex items-center'>
-                  <MdLogout />
-                  <span className='ml-2 text-sm'>Sign out</span>
-                </div>
-              </button>
-            </li>
-          </ul>
-        )}
-        <div className='relative'>
-          <div className='h-10 w-10 rounded-full object-cover'>
-            <Image
-              layout='fill'
-              src='https://tuk-cdn.s3.amazonaws.com/assets/components/sidebar_layout/sl_1.png'
-              alt='avatar'
-            />
+                </button>
+              </li>
+            </ul>
+          )}
+          <div className='relative'>
+            <div className='h-10 w-10 rounded-full object-cover'>
+              <Image
+                layout='fill'
+                src='https://tuk-cdn.s3.amazonaws.com/assets/components/sidebar_layout/sl_1.png'
+                alt='avatar'
+              />
+            </div>
+            <div className='absolute inset-0 m-auto mb-0 mr-0 h-2 w-2 rounded-full border border-white bg-green-400' />
           </div>
-          <div className='absolute inset-0 m-auto mb-0 mr-0 h-2 w-2 rounded-full border border-white bg-green-400' />
         </div>
-      </div>
-      <p className='mx-3 text-sm text-white'>Jane Doe</p>
-      <div className='cursor-pointer text-white'>
-        {profile ? <MdExpandLess /> : <MdExpandMore />}
-      </div>
-    </button>
+        <p className='mx-3 text-sm text-white'>Jane Doe</p>
+        <div className='cursor-pointer text-white'>
+          {profile ? <MdExpandLess /> : <MdExpandMore />}
+        </div>
+      </button>
+    </ClickAwayListener>
   );
 };
 
