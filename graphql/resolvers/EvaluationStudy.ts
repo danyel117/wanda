@@ -72,11 +72,12 @@ const EvaluationStudyResolvers: Resolver = {
           },
           tasks: {
             createMany: {
-              data: args.data.tasks.map((t: Task) => ({
+              data: args.data.tasks.map((t: Task, index: number) => ({
                 description: t.description,
                 url: t.url,
                 id: t.id,
                 recording: t.recording,
+                order: index + 1,
               })),
             },
           },

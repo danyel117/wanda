@@ -15,9 +15,8 @@ const useApolloClient = () => {
     })
   );
 
-  const [persistor, setPersistor] = useState<
-    CachePersistor<NormalizedCacheObject>
-  >();
+  const [persistor, setPersistor] =
+    useState<CachePersistor<NormalizedCacheObject>>();
 
   useEffect(() => {
     async function init() {

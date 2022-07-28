@@ -7,8 +7,7 @@ interface MarkdownRendererProps {
 
 const MarkdownRenderer = ({ md }: MarkdownRendererProps) => (
   <RichTextEditor
-    value={RichTextEditor.createEmptyValue()}
-    onChange={() => {}}
+    value={RichTextEditor.createValueFromString(md, 'markdown')}
     readOnly
   />
 );

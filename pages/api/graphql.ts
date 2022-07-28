@@ -25,6 +25,7 @@ const Server = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   const apolloServer = new ApolloServer({
+    cache: 'bounded',
     context: () => ({ session, req }),
     typeDefs: [...types, ...customTypes],
     resolvers: [...resolvers, ...customResolvers],

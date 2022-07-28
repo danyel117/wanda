@@ -3,7 +3,15 @@ import { Script } from '@prisma/client';
 import { GET_SCRIPT } from 'graphql/queries/script';
 import { GET_STUDY_SESSION } from 'graphql/queries/studySession';
 import { GET_TASK } from 'graphql/queries/task';
-import { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import {
+  createContext,
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { ExtendedStudySession, ExtendedStudySessionTask } from 'types';
 
 interface StudySessionContextInterface {
@@ -14,6 +22,8 @@ interface StudySessionContextInterface {
   script: Script | undefined;
   stopPoll: () => void;
   resumePoll: () => void;
+  result: boolean;
+  setResult: Dispatch<SetStateAction<boolean>>;
 }
 
 export const StudySessionContext = createContext<StudySessionContextInterface>(
@@ -27,7 +37,7 @@ export function useStudySession() {
 interface StudySessionContextProviderProps {
   children: JSX.Element | JSX.Element[];
   id: string;
-  pollRate: number;
+  pollRate?: number;
 }
 
 const StudySessionContextProvider = ({
@@ -35,6 +45,7 @@ const StudySessionContextProvider = ({
   id,
   pollRate = 750,
 }: StudySessionContextProviderProps) => {
+  const [result, setResult] = useState<boolean>(false);
   const [currentTask, setCurrentTask] = useState<ExtendedStudySessionTask>();
   const { data, loading, startPolling, stopPolling } = useQuery(
     GET_STUDY_SESSION,
@@ -43,8 +54,9 @@ const StudySessionContextProvider = ({
       nextFetchPolicy: 'network-only',
       variables: {
         studySessionId: id,
+        result,
       },
-      pollInterval: 500,
+      pollInterval: pollRate,
     }
   );
 
@@ -52,6 +64,8 @@ const StudySessionContextProvider = ({
     variables: {
       taskId: currentTask?.task.id ?? '',
     },
+    fetchPolicy: 'network-only',
+    nextFetchPolicy: 'network-only',
   });
 
   const { data: script } = useQuery(GET_SCRIPT, {
@@ -78,6 +92,7 @@ const StudySessionContextProvider = ({
           (data?.studySession.data.currentTask ?? 1) - 1
         ]
       );
+
       if (data.studySession.status === 'COMPLETED') {
         stopPolling();
       }
@@ -97,6 +112,8 @@ const StudySessionContextProvider = ({
       script: script?.script,
       stopPoll: stopPolling,
       resumePoll,
+      result,
+      setResult,
     };
   }, [
     data,
@@ -107,6 +124,8 @@ const StudySessionContextProvider = ({
     stopPolling,
     startPolling,
     pollRate,
+    result,
+    setResult,
   ]);
 
   return (

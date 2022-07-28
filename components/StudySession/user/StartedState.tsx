@@ -22,6 +22,7 @@ import { StartTaskButton } from '@components/StudySession/common/StartTaskButton
 import Image from 'next/image';
 
 const StartedState = () => {
+  const { stopPoll, resumePoll } = useStudySession();
   const { data: userSession } = useSession();
   const [taskFinished, setTaskFinished] = useState<boolean>(false);
   const [currentStatus, setCurrentStatus] =
@@ -36,27 +37,37 @@ const StartedState = () => {
     useUpdateStudySessionData();
 
   useEffect(() => {
-    if (
-      currentStatus === Enum_StudySessionTaskStatus.NOT_STARTED &&
-      currentTask?.status === Enum_StudySessionTaskStatus.STARTED
-    ) {
-      // transition from not started to started
+    if (currentTask?.status === Enum_StudySessionTaskStatus.STARTED) {
       clearBlobUrl(); // clear the blob if it exists
       handleRecord(); // begin audio recording
-    } else if (
-      currentStatus === Enum_StudySessionTaskStatus.STARTED &&
-      (currentTask?.status === Enum_StudySessionTaskStatus.COMPLETED ||
-        currentTask?.status === Enum_StudySessionTaskStatus.FAILED)
-    ) {
-      // transition from started to either failed or completed
-      handleRecord(); // finish audio recording
-      setTaskFinished(true);
     }
-    setCurrentStatus(currentTask?.status);
+  }, []);
+
+  useEffect(() => {
+    if (currentTask) {
+      if (
+        currentStatus === Enum_StudySessionTaskStatus.NOT_STARTED &&
+        currentTask?.status === Enum_StudySessionTaskStatus.STARTED
+      ) {
+        // transition from not started to started
+        clearBlobUrl(); // clear the blob if it exists
+        handleRecord(); // begin audio recording
+      } else if (
+        currentStatus === Enum_StudySessionTaskStatus.STARTED &&
+        (currentTask?.status === Enum_StudySessionTaskStatus.COMPLETED ||
+          currentTask?.status === Enum_StudySessionTaskStatus.FAILED)
+      ) {
+        // transition from started to either failed or completed
+        handleRecord(); // finish audio recording
+        setTaskFinished(true);
+      }
+      setCurrentStatus(currentTask?.status);
+    }
   }, [clearBlobUrl, currentStatus, currentTask, handleRecord]);
 
   useEffect(() => {
     const finishTask = async () => {
+      stopPoll();
       const uploadedFiles = await uploadFormFiles(
         {
           recording: recordingFile as File,
@@ -94,6 +105,7 @@ const StartedState = () => {
           },
         });
       }
+      resumePoll();
     };
     if (recordingFile && taskFinished) {
       finishTask();

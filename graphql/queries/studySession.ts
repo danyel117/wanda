@@ -17,7 +17,7 @@ const GET_USER_STUDY_SESSIONS = gql`
 `;
 
 const GET_STUDY_SESSION = gql`
-  query StudySession($studySessionId: String!) {
+  query StudySession($studySessionId: String!, $result: Boolean!) {
     studySession(id: $studySessionId) {
       id
       updatedAt
@@ -46,15 +46,17 @@ const GET_STUDY_SESSION = gql`
       taskList {
         id
         status
-        expertComments
-        userRecordingTranscription
-        userRecording
         task {
           id
           description
           url
           order
         }
+      }
+      taskList @include(if: $result) {
+        expertComments
+        userRecordingTranscription
+        userRecording
       }
       questionResponses {
         question {

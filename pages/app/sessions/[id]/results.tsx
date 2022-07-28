@@ -14,6 +14,7 @@ import _ from 'lodash';
 import SUS from 'react-system-usability-scale';
 import 'react-system-usability-scale/dist/styles/styles.css';
 import PageHeader from '@components/PageHeader';
+import { useEffect } from 'react';
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { rejected, isPublic, page } = await matchRoles(ctx);
@@ -39,7 +40,11 @@ const SessionResults: NextPage = () => {
 };
 
 const SessionResultComponent = () => {
-  const { session, loading } = useStudySession();
+  const { session, loading, setResult } = useStudySession();
+
+  useEffect(() => {
+    setResult(true);
+  }, [setResult]);
 
   if (loading) return <Loading />;
 
