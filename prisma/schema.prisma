@@ -148,6 +148,8 @@ model StudySessionData {
 model StudySession {
   id                String                  @id @default(cuid())
   status            Enum_StudySessionStatus @default(NOT_STARTED)
+  sessionType       Enum_StudySessionType   @default(ThinkAloud)
+  isStandAlone      Boolean                 @default(false)
   study             EvaluationStudy         @relation(fields: [studyId], references: [id])
   studyId           String
   expert            User                    @relation(fields: [expertId], references: [id], name: "session-expert")
@@ -222,4 +224,10 @@ enum Enum_StudySessionStatus {
   STARTED
   QUESTIONNAIRE
   COMPLETED
+}
+
+enum Enum_StudySessionType {
+  ThinkAloud
+  QuestionAskingProtocol
+  Other
 }

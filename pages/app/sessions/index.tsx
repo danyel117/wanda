@@ -4,7 +4,11 @@ import PageHeader from '@components/PageHeader';
 import PrivateComponent from '@components/PrivateComponent';
 import Table, { TableData } from '@components/Table/Table';
 import Tooltip from '@mui/material/Tooltip';
-import { Enum_RoleName, EvaluationStudy } from '@prisma/client';
+import {
+  Enum_RoleName,
+  Enum_StudySessionType,
+  EvaluationStudy,
+} from '@prisma/client';
 import { TableContextProvider } from 'context/table';
 import { CREATE_STUDY_SESSION } from 'graphql/mutations/studySession';
 import { GET_USER_STUDY_SESSIONS } from 'graphql/queries/studySession';
@@ -197,6 +201,35 @@ const NewStudySession = ({ setOpenNew }: NewStudySessionProps) => {
 
   const submitForm = async (e: SyntheticEvent) => {
     e.preventDefault();
+    const studyType: {
+      isStandAlone: boolean;
+      sessionType: Enum_StudySessionType;
+    } = {
+      isStandAlone: true,
+      sessionType: Enum_StudySessionType.ThinkAloud,
+    };
+    switch (formData.type) {
+      case '0':
+        studyType.isStandAlone = true;
+        studyType.sessionType = Enum_StudySessionType.ThinkAloud;
+        break;
+      case '1':
+        studyType.isStandAlone = false;
+        studyType.sessionType = Enum_StudySessionType.ThinkAloud;
+        break;
+      case '2':
+        studyType.isStandAlone = false;
+        studyType.sessionType = Enum_StudySessionType.QuestionAskingProtocol;
+        break;
+      case '3':
+        studyType.isStandAlone = formData.isStandAlone as boolean;
+        studyType.sessionType = Enum_StudySessionType.Other;
+        break;
+      default:
+        studyType.isStandAlone = false;
+        studyType.sessionType = Enum_StudySessionType.Other;
+        break;
+    }
     try {
       await createStudySession({
         variables: {
@@ -207,6 +240,7 @@ const NewStudySession = ({ setOpenNew }: NewStudySessionProps) => {
               },
             },
             participantEmail: formData.participantEmail,
+            ...studyType,
           },
         },
       });
@@ -241,6 +275,27 @@ const NewStudySession = ({ setOpenNew }: NewStudySessionProps) => {
           <span>Participant email</span>
           <input type='email' name='participantEmail' required />
         </label>
+        <label htmlFor='type'>
+          <span>Type of session</span>
+          <select name='type' defaultValue=''>
+            <option value='' disabled>
+              Select an option
+            </option>
+            <option value='0'>Participant only - Think Aloud</option>
+            <option value='1'>Participant + expert - Think Aloud</option>
+            <option value='2'>
+              Participant + expert - Question-Asking Protocol
+            </option>
+            <option value='3'>Other</option>
+          </select>
+        </label>
+        {formData.type === '3' && (
+          <label htmlFor='standAlone' className='flex flex-row gap-3'>
+            <span>Is the session stand-alone?</span>
+            <input name='standAlone' type='checkbox' />
+          </label>
+        )}
+
         <div className='flex justify-center'>
           <button type='submit' className='primary'>
             Create

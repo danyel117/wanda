@@ -101,6 +101,8 @@ const StudySessionResolvers: Resolver = {
               id: study?.id ?? '',
             },
           },
+          isStandAlone: args.data.isStandAlone,
+          sessionType: args.data.sessionType,
           status: 'NOT_STARTED',
           participant: {
             connectOrCreate: {
@@ -120,6 +122,7 @@ const StudySessionResolvers: Resolver = {
           data: {
             create: {
               currentTask: 0,
+              expertConsentBegin: args.data.isStandAlone,
             },
           },
           tasks: {
