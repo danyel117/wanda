@@ -15,7 +15,6 @@ import Image from 'next/image';
 import logo from 'public/img/logo.png';
 import PrivateComponent from '@components/PrivateComponent';
 import { Enum_RoleName } from '@prisma/client';
-import { ClickAwayListener } from '@mui/material';
 
 const Sidebar = () => {
   const { open, setOpen } = useSidebar();
