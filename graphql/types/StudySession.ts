@@ -9,6 +9,8 @@ const StudySessionTypes = gql`
   input StudySessionNoUserInput {
     evaluationStudy: Connect
     participantEmail: String
+    sessionType: Enum_StudySessionType
+    isStandAlone: Boolean
   }
 
   type Query {
