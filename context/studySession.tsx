@@ -12,6 +12,8 @@ interface StudySessionContextInterface {
   currentTask: ExtendedStudySessionTask | undefined;
   taskAudio: string;
   script: Script | undefined;
+  stopPoll: () => void;
+  resumePoll: () => void;
 }
 
 export const StudySessionContext = createContext<StudySessionContextInterface>(
@@ -25,11 +27,13 @@ export function useStudySession() {
 interface StudySessionContextProviderProps {
   children: JSX.Element | JSX.Element[];
   id: string;
+  pollRate: number;
 }
 
 const StudySessionContextProvider = ({
   children,
   id,
+  pollRate = 750,
 }: StudySessionContextProviderProps) => {
   const [currentTask, setCurrentTask] = useState<ExtendedStudySessionTask>();
   const { data, loading, startPolling, stopPolling } = useQuery(
@@ -46,7 +50,7 @@ const StudySessionContextProvider = ({
 
   const { data: task } = useQuery(GET_TASK, {
     variables: {
-      taskId: currentTask?.task.id,
+      taskId: currentTask?.task.id ?? '',
     },
   });
 
@@ -58,12 +62,14 @@ const StudySessionContextProvider = ({
   });
 
   useEffect(() => {
-    startPolling(500);
+    if (pollRate) {
+      startPolling(pollRate);
+    }
 
     return () => {
       stopPolling();
     };
-  }, [startPolling, stopPolling]);
+  }, [pollRate, startPolling, stopPolling]);
 
   useEffect(() => {
     if (data?.studySession) {
@@ -76,18 +82,32 @@ const StudySessionContextProvider = ({
         stopPolling();
       }
     }
-  }, [data]);
+  }, [data, stopPolling]);
 
-  const sessionContext = useMemo(
-    () => ({
+  const sessionContext = useMemo(() => {
+    const resumePoll = () => {
+      startPolling(pollRate);
+    };
+
+    return {
       session: data?.studySession,
       loading,
       currentTask,
-      taskAudio: task?.task.recording ?? '',
+      taskAudio: task?.task?.recording ?? '',
       script: script?.script,
-    }),
-    [data, loading, currentTask, task, script]
-  );
+      stopPoll: stopPolling,
+      resumePoll,
+    };
+  }, [
+    data,
+    loading,
+    currentTask,
+    task,
+    script,
+    stopPolling,
+    startPolling,
+    pollRate,
+  ]);
 
   return (
     <StudySessionContext.Provider value={sessionContext}>

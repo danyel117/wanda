@@ -3,6 +3,7 @@ import {
   Enum_StudySessionStatus,
   Enum_StudySessionTaskStatus,
 } from '@prisma/client';
+import { useStudySession } from 'context/studySession';
 import {
   UPDATE_STUDY_SESSION,
   UPDATE_STUDY_SESSION_DATA,
@@ -57,6 +58,7 @@ interface DataUpdateFunctionProps {
 }
 
 const useUpdateStudySessionData = () => {
+  const { stopPoll, resumePoll } = useStudySession();
   const [updateStudySessionSession] = useMutation(UPDATE_STUDY_SESSION);
   const [updateStudySessionSessionData] = useMutation(
     UPDATE_STUDY_SESSION_DATA
@@ -69,6 +71,7 @@ const useUpdateStudySessionData = () => {
     id,
     data,
   }: DataUpdateFunctionProps) => {
+    stopPoll();
     await updateStudySessionSessionData({
       variables: {
         where: {
@@ -77,12 +80,14 @@ const useUpdateStudySessionData = () => {
         data,
       },
     });
+    resumePoll();
   };
 
   const updateStudySession = async ({
     id,
     data,
   }: StudySessionUpdateFunctionProps) => {
+    stopPoll();
     await updateStudySessionSession({
       variables: {
         where: {
@@ -91,12 +96,14 @@ const useUpdateStudySessionData = () => {
         data,
       },
     });
+    resumePoll();
   };
 
   const updateStudySessionTask = async ({
     id,
     data,
   }: TaskUpdateFunctionProps) => {
+    stopPoll();
     await updateStudySessionSessionTask({
       variables: {
         where: {
@@ -105,6 +112,7 @@ const useUpdateStudySessionData = () => {
         data,
       },
     });
+    resumePoll();
   };
 
   return {

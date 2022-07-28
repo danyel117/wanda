@@ -39,7 +39,6 @@ const EvaluationStudyResolvers: Resolver = {
   },
   Query: {
     getUserStudies: async (parent, args, context) => {
-      console.log(checkRolesServer(context, [Enum_RoleName.ADMIN]));
       if (checkRolesServer(context, [Enum_RoleName.ADMIN])) {
         return await prisma.evaluationStudy.findMany({});
       }
