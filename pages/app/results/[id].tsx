@@ -23,7 +23,6 @@ import {
 import { toast } from 'react-toastify';
 import { RadialBarChart } from '@components/charts/RadialBarChart';
 import SUS from 'react-system-usability-scale';
-import 'react-system-usability-scale/dist/styles/styles.css';
 
 const Chart: any = dynamic(() => import('react-apexcharts'), { ssr: false });
 
@@ -330,7 +329,7 @@ const EvaluationResultsChart = () => {
   return (
     <div className='flex w-full flex-col items-center'>
       <div className='flex h-full w-full flex-col overflow-x-auto md:items-center'>
-        <h3 className='mt-4'>System Usability Scale</h3>
+        <h3 className='mt-10 -mb-10'>System Usability Scale</h3>
         <SUS result={data.getEvaluationResults?.sus.toFixed(1) ?? 0} />
       </div>
       <div className='w-full'>

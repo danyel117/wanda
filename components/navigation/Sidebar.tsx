@@ -41,17 +41,18 @@ const Sidebar = () => {
         href='/app/design'
       />
     </PrivateComponent>,
-    <PrivateComponent roleList={[Enum_RoleName.ADMIN, Enum_RoleName.EXPERT]}>
+    <PrivateComponent
+      key={nanoid()}
+      roleList={[Enum_RoleName.ADMIN, Enum_RoleName.EXPERT]}
+    >
       <SidebarItem
-        key={nanoid()}
         Icon={MdPsychology}
         name='Conduct Study Sessions'
         href='/app/sessions'
       />
     </PrivateComponent>,
-    <PrivateComponent roleList={[Enum_RoleName.PARTICIPANT]}>
+    <PrivateComponent key={nanoid()} roleList={[Enum_RoleName.PARTICIPANT]}>
       <SidebarItem
-        key={nanoid()}
         Icon={MdPsychology}
         name='Study Sessions'
         href='/app/sessions'
@@ -62,7 +63,6 @@ const Sidebar = () => {
       roleList={[Enum_RoleName.ADMIN, Enum_RoleName.EXPERT]}
     >
       <SidebarItem
-        key={nanoid()}
         Icon={MdBarChart}
         name='Analyse Results'
         href='/app/results'

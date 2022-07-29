@@ -6,8 +6,9 @@ import PrivateRoute from '@components/PrivateRoute';
 import useApolloClient from 'hooks/useApolloClient';
 import { ApolloProvider } from '@apollo/client';
 import { ToastContainer } from 'react-toastify';
-import 'styles/globals.css';
+import 'react-system-usability-scale/dist/styles/styles.css';
 import 'react-toastify/dist/ReactToastify.css';
+import 'styles/globals.css';
 
 const MyApp = ({
   Component,
