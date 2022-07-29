@@ -33,16 +33,16 @@ const VoiceRecorder = dynamic(
   }
 );
 
-// export const getServerSideProps: GetServerSideProps = async (ctx) => {
-//   const { rejected, isPublic, page } = await matchRoles(ctx);
-//   return {
-//     props: {
-//       rejected,
-//       isPublic,
-//       page,
-//     },
-//   };
-// };
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const { rejected, isPublic, page } = await matchRoles(ctx);
+  return {
+    props: {
+      rejected,
+      isPublic,
+      page,
+    },
+  };
+};
 const NewStudy: NextPage = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [createStudy] = useMutation(CREATE_EVALUATION_STUDY);
