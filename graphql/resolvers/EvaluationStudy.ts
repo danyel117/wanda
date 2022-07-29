@@ -60,6 +60,7 @@ const EvaluationStudyResolvers: Resolver = {
           site: args.data.evaluationStudy.site,
           participantTarget: parseInt(args.data.evaluationStudy.target, 10),
           researchQuestion: args.data.evaluationStudy.researchQuestion,
+          status: args.data.evaluationStudy.status,
           script: {
             connect: {
               id: args.data.evaluationStudy.script.connect.id,
