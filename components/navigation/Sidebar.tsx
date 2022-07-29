@@ -41,12 +41,22 @@ const Sidebar = () => {
         href='/app/design'
       />
     </PrivateComponent>,
-    <SidebarItem
-      key={nanoid()}
-      Icon={MdPsychology}
-      name='Conduct Study Sessions'
-      href='/app/sessions'
-    />,
+    <PrivateComponent roleList={[Enum_RoleName.ADMIN, Enum_RoleName.EXPERT]}>
+      <SidebarItem
+        key={nanoid()}
+        Icon={MdPsychology}
+        name='Conduct Study Sessions'
+        href='/app/sessions'
+      />
+    </PrivateComponent>,
+    <PrivateComponent roleList={[Enum_RoleName.PARTICIPANT]}>
+      <SidebarItem
+        key={nanoid()}
+        Icon={MdPsychology}
+        name='Study Sessions'
+        href='/app/sessions'
+      />
+    </PrivateComponent>,
     <PrivateComponent
       key={nanoid()}
       roleList={[Enum_RoleName.ADMIN, Enum_RoleName.EXPERT]}
