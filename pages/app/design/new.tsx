@@ -9,7 +9,7 @@ import {
   Switch,
   Tooltip,
 } from '@mui/material';
-import { Script } from '@prisma/client';
+import { Enum_EvaluationStudyStatus, Script } from '@prisma/client';
 import { GET_SCRIPTS } from 'graphql/queries/script';
 import useFormData from 'hooks/useFormData';
 import { GetServerSideProps, NextPage } from 'next';
@@ -33,16 +33,16 @@ const VoiceRecorder = dynamic(
   }
 );
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const { rejected, isPublic, page } = await matchRoles(ctx);
-  return {
-    props: {
-      rejected,
-      isPublic,
-      page,
-    },
-  };
-};
+// export const getServerSideProps: GetServerSideProps = async (ctx) => {
+//   const { rejected, isPublic, page } = await matchRoles(ctx);
+//   return {
+//     props: {
+//       rejected,
+//       isPublic,
+//       page,
+//     },
+//   };
+// };
 const NewStudy: NextPage = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [createStudy] = useMutation(CREATE_EVALUATION_STUDY);
@@ -67,8 +67,16 @@ const NewStudy: NextPage = () => {
   const newTaskContext = useMemo(() => ({ files, setFiles }), [files]);
 
   const submitForm = async (e: SyntheticEvent) => {
-    setLoading(true);
     e.preventDefault();
+    await createEvaluation(false);
+  };
+
+  const createDraft = async () => {
+    await createEvaluation(true);
+  };
+
+  const createEvaluation = async (draft: boolean) => {
+    setLoading(true);
     const studyId = cuid();
     const filesUploaded = await Promise.all(
       Object.keys(files).map((f) => {
@@ -120,6 +128,9 @@ const NewStudy: NextPage = () => {
               site: formData.webiste,
               researchQuestion: formData.research,
               target: formData.target,
+              status: draft
+                ? Enum_EvaluationStudyStatus.DRAFT
+                : Enum_EvaluationStudyStatus.ONGOING,
               script: {
                 connect: {
                   id: formData.script,
@@ -137,7 +148,7 @@ const NewStudy: NextPage = () => {
         },
       });
       toast.success('Study created successfully');
-      router.push('/app/studies');
+      router.push('/app/design');
     } catch (err) {
       toast.error(`Error creating the study: ${err}`);
     }
@@ -243,9 +254,19 @@ const NewStudy: NextPage = () => {
             </Accordion>
           </div>
 
-          <button type='submit' className='primary' disabled={loading}>
-            {loading ? 'Loading...' : 'Create Study'}
-          </button>
+          <div className='flex w-full justify-center gap-3'>
+            <button type='submit' className='primary' disabled={loading}>
+              {loading ? 'Loading...' : 'Create Study'}
+            </button>
+            <button
+              type='button'
+              onClick={() => createDraft()}
+              className='secondary'
+              disabled={loading}
+            >
+              {loading ? 'Loading...' : 'Save Draft'}
+            </button>
+          </div>
         </form>
         <Modal open={showScriptModal} setOpen={setShowScriptModal}>
           <ScriptCard script={script ?? null} />

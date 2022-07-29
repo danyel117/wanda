@@ -19,6 +19,7 @@ const StudyTypes = gql`
     target: String
     site: String
     script: Connect
+    status: Enum_EvaluationStudyStatus
   }
 
   input CustomTaskCreateInput {

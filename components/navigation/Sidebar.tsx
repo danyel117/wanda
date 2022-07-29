@@ -5,6 +5,7 @@ import { nanoid } from 'nanoid';
 import { IconType } from 'react-icons/lib';
 import {
   MdAssignment,
+  MdBarChart,
   MdClose,
   MdHome,
   MdLightbulbOutline,
@@ -19,28 +20,43 @@ import { Enum_RoleName } from '@prisma/client';
 const Sidebar = () => {
   const { open, setOpen } = useSidebar();
   const sidebarItems = [
-    <SidebarItem key={nanoid()} Icon={MdHome} name='Dashboard' href='/app' />,
+    <SidebarItem key={nanoid()} Icon={MdHome} name='Home' href='/app' />,
+    <PrivateComponent
+      key={nanoid()}
+      roleList={[Enum_RoleName.ADMIN, Enum_RoleName.EXPERT]}
+    >
+      <SidebarItem
+        Icon={MdAssignment}
+        name='Configure Scripts'
+        href='/app/scripts'
+      />
+    </PrivateComponent>,
     <PrivateComponent
       key={nanoid()}
       roleList={[Enum_RoleName.ADMIN, Enum_RoleName.EXPERT]}
     >
       <SidebarItem
         Icon={MdLightbulbOutline}
-        name='Evaluation Studies'
-        href='/app/studies'
+        name='Design Evaluation Studies'
+        href='/app/design'
       />
     </PrivateComponent>,
     <SidebarItem
       key={nanoid()}
       Icon={MdPsychology}
-      name='Study Sessions'
+      name='Conduct Study Sessions'
       href='/app/sessions'
     />,
     <PrivateComponent
       key={nanoid()}
       roleList={[Enum_RoleName.ADMIN, Enum_RoleName.EXPERT]}
     >
-      <SidebarItem Icon={MdAssignment} name='Scripts' href='/app/scripts' />
+      <SidebarItem
+        key={nanoid()}
+        Icon={MdBarChart}
+        name='Analyse Results'
+        href='/app/results'
+      />
     </PrivateComponent>,
   ];
   return (
@@ -118,7 +134,7 @@ const SidebarItem = ({ Icon, name, href }: SidebarItemProps) => {
             <div className='text-3xl'>
               <Icon />
             </div>
-            <span className='ml-2'>{name}</span>
+            <span className='ml-2 leading-4'>{name}</span>
           </div>
         </a>
       </Link>

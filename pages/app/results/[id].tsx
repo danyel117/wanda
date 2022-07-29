@@ -27,16 +27,16 @@ import 'react-system-usability-scale/dist/styles/styles.css';
 
 const Chart: any = dynamic(() => import('react-apexcharts'), { ssr: false });
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const { rejected, isPublic, page } = await matchRoles(ctx);
-  return {
-    props: {
-      rejected,
-      isPublic,
-      page,
-    },
-  };
-};
+// export const getServerSideProps: GetServerSideProps = async (ctx) => {
+//   const { rejected, isPublic, page } = await matchRoles(ctx);
+//   return {
+//     props: {
+//       rejected,
+//       isPublic,
+//       page,
+//     },
+//   };
+// };
 
 interface DownloadTask {
   participant: string;
