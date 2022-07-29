@@ -6,7 +6,7 @@ interface StatCardProps {
   Icon: IconType;
   link: string;
   title: string;
-  stat: string;
+  stat: JSX.Element;
   linkText?: string;
 }
 
@@ -24,7 +24,7 @@ const StatCard = ({
       </div>
       <div className='mx-2 flex flex-col'>
         <span className='text-md text-gray-600'>{title}</span>
-        <span className='text-xl font-bold'>{stat}</span>
+        <div className='my-2 h-7'>{stat}</div>
       </div>
     </div>
     <div className='rounded-b-lg bg-gray-200 p-4'>

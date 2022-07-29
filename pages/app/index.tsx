@@ -20,27 +20,45 @@ const AppIndex: NextPage = () => (
   <div className='flex flex-wrap justify-center gap-5 p-10 lg:justify-start'>
     <PrivateComponent roleList={[Enum_RoleName.ADMIN, Enum_RoleName.EXPERT]}>
       <IndexCard
-        image='/img/evaluation.jpg'
-        title='Evaluation Study Management'
-        description='Define new evaluation studies and analyze the data on existing ones.'
-        href='/app/studies'
+        image='/img/script.jpg'
+        title='Configure Scripts'
+        description='Create, update or delete the scripts you will use before your
+          evaluations.'
+        href='/app/scripts'
       />
     </PrivateComponent>
     <PrivateComponent roleList={[Enum_RoleName.ADMIN, Enum_RoleName.EXPERT]}>
       <IndexCard
-        image='/img/script.jpg'
-        title='Script Management'
-        description='Create, update or delete the scripts you will use before your
-          evaluations'
-        href='/app/scripts'
+        image='/img/evaluation.jpg'
+        title='Design Evaluations'
+        description='Design new evaluation studies, setting up the tasks for the participants.'
+        href='/app/design'
       />
     </PrivateComponent>
-    <IndexCard
-      image='/img/dash.jpg'
-      title='Study Sessions'
-      description='Review the sessions you have been invited to.'
-      href='/app/sessions'
-    />
+    <PrivateComponent roleList={[Enum_RoleName.ADMIN, Enum_RoleName.EXPERT]}>
+      <IndexCard
+        image='/img/dash.jpg'
+        title='Conduct Study Sessions'
+        description='Recruit Participants and conduct study sessions with them.'
+        href='/app/sessions'
+      />
+    </PrivateComponent>
+    <PrivateComponent roleList={[Enum_RoleName.PARTICIPANT]}>
+      <IndexCard
+        image='/img/dash.jpg'
+        title='Study Sessions'
+        description='Visualise all the sessions you have been invited to.'
+        href='/app/sessions'
+      />
+    </PrivateComponent>
+    <PrivateComponent roleList={[Enum_RoleName.ADMIN, Enum_RoleName.EXPERT]}>
+      <IndexCard
+        image='/img/results.jpg'
+        title='Analyse Results'
+        description='Visualise the results of the evaluations and export the data.'
+        href='/app/results'
+      />
+    </PrivateComponent>
   </div>
 );
 

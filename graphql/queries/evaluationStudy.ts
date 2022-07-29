@@ -5,10 +5,12 @@ const GET_STUDIES = gql`
     getUserStudies {
       id
       name
+      status
       researchQuestion
       site
       taskCount
       participantTarget
+      sus
       evaluationSummary {
         pending
         completed

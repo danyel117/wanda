@@ -117,7 +117,7 @@ interface StudySessionTableProps {
 }
 
 const StudySessionTable = ({ columns, tableData }: StudySessionTableProps) => (
-  <div className='hidden md:block'>
+  <div className='hidden lg:block'>
     <div className='card'>
       <Table columns={columns} data={tableData} />
     </div>
@@ -125,7 +125,7 @@ const StudySessionTable = ({ columns, tableData }: StudySessionTableProps) => (
 );
 
 const StudySessionMobile = ({ tableData }: { tableData: TableData[] }) => (
-  <div className='flex flex-col gap-2 md:hidden'>
+  <div className='flex flex-col gap-2 lg:hidden'>
     {tableData.map((td) => (
       <div className='card' key={nanoid()}>
         <span>{td.EvaluationStudy}</span>
@@ -142,7 +142,7 @@ interface StudySessionActionsProps {
 }
 
 const StudySessionActions = ({ session }: StudySessionActionsProps) => (
-  <div className='flex w-full flex-col  gap-2 text-sm lg:text-lg'>
+  <div className='grid grid-cols-1 gap-4 xl:grid-cols-2'>
     <Tooltip
       title={
         session.status === 'COMPLETED'
@@ -150,14 +150,14 @@ const StudySessionActions = ({ session }: StudySessionActionsProps) => (
           : ''
       }
     >
-      <div className='w-full'>
+      <div className='flex h-full w-full'>
         <Link href={`/app/sessions/${session.id}`}>
           <button
             disabled={session.status === 'COMPLETED'}
             type='button'
             className='primary flex w-full items-center justify-center gap-3'
           >
-            <span>Launch session</span>
+            <span className='text-'>Launch session</span>
             <MdLaunch />
           </button>
         </Link>
@@ -171,7 +171,7 @@ const StudySessionActions = ({ session }: StudySessionActionsProps) => (
             : ''
         }`}
       >
-        <div className='flex w-full'>
+        <div className='flex h-full w-full'>
           <Link href={`/app/sessions/${session.id}/results`}>
             <button
               disabled={session.status !== 'COMPLETED'}

@@ -83,21 +83,22 @@ model VerificationToken {
 }
 
 model EvaluationStudy {
-  id                String         @id @default(cuid())
+  id                String                     @id @default(cuid())
   name              String
   site              String
   researchQuestion  String
   participantTarget Int?
-  script            Script         @relation(fields: [scriptId], references: [id])
+  status            Enum_EvaluationStudyStatus @default(DRAFT)
+  script            Script                     @relation(fields: [scriptId], references: [id])
   scriptId          String
-  createdBy         User           @relation(fields: [userId], references: [id], name: "study-expert")
+  createdBy         User                       @relation(fields: [userId], references: [id], name: "study-expert")
   userId            String
-  participants      User[]         @relation("study-participants")
+  participants      User[]                     @relation("study-participants")
   sessions          StudySession[]
   tasks             Task[]
   questionnaire     Questionnaire?
-  createdAt         DateTime       @default(now())
-  updatedAt         DateTime       @updatedAt
+  createdAt         DateTime                   @default(now())
+  updatedAt         DateTime                   @updatedAt
 }
 
 model Questionnaire {
@@ -230,4 +231,10 @@ enum Enum_StudySessionType {
   ThinkAloud
   QuestionAskingProtocol
   Other
+}
+
+enum Enum_EvaluationStudyStatus {
+  DRAFT
+  ONGOING
+  COMPLETED
 }
