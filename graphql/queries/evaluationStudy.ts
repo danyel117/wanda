@@ -10,7 +10,6 @@ const GET_STUDIES = gql`
       site
       taskCount
       participantTarget
-      sus
       evaluationSummary {
         pending
         completed
