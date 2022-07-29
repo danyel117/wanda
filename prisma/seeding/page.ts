@@ -18,15 +18,27 @@ const pages = [
     isPublic: false,
   },
   {
-    name: 'Studies',
-    route: '/app/studies',
+    name: 'Study Design',
+    route: '/app/design',
     roles: ['ADMIN', 'EXPERT'],
     isPublic: false,
   },
   {
     name: 'New study',
-    route: '/app/studies/new',
+    route: '/app/design/new',
     roles: ['ADMIN', 'EXPERT'],
+    isPublic: false,
+  },
+  {
+    name: 'Update draft',
+    route: '/app/design/[id]',
+    roles: ['ADMIN', 'EXPERT'],
+    isPublic: false,
+  },
+  {
+    name: 'Sessions',
+    route: '/app/sessions',
+    roles: ['ADMIN', 'EXPERT', 'PARTICIPANT'],
     isPublic: false,
   },
   {
@@ -42,8 +54,14 @@ const pages = [
     isPublic: false,
   },
   {
+    name: 'Evaluation study result',
+    route: '/app/results/[id]',
+    roles: ['ADMIN', 'EXPERT'],
+    isPublic: false,
+  },
+  {
     name: 'Evaluation study results',
-    route: '/app/studies/[id]/results',
+    route: '/app/results',
     roles: ['ADMIN', 'EXPERT'],
     isPublic: false,
   },

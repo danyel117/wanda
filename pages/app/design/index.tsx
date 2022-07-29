@@ -9,16 +9,16 @@ import PageHeader from '@components/PageHeader';
 import { nanoid } from 'nanoid';
 import { StudyStatusBadge } from '@components/EvaluationStudyBadge';
 
-// export const getServerSideProps: GetServerSideProps = async (ctx) => {
-//   const { rejected, isPublic, page } = await matchRoles(ctx);
-//   return {
-//     props: {
-//       rejected,
-//       isPublic,
-//       page,
-//     },
-//   };
-// };
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const { rejected, isPublic, page } = await matchRoles(ctx);
+  return {
+    props: {
+      rejected,
+      isPublic,
+      page,
+    },
+  };
+};
 const Studies: NextPage = () => {
   const { data, loading } = useQuery(GET_STUDIES, {
     fetchPolicy: 'cache-and-network',

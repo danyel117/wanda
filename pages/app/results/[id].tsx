@@ -329,7 +329,8 @@ const EvaluationResultsChart = () => {
 
   return (
     <div className='flex w-full flex-col items-center'>
-      <div className='flex h-full w-full overflow-x-auto md:justify-center'>
+      <div className='flex h-full w-full flex-col overflow-x-auto md:items-center'>
+        <h3 className='text-center mt-4 -mb-4'>System Usability Scale</h3>
         <SUS result={data.getEvaluationResults?.sus.toFixed(1) ?? 0} />
       </div>
       <div className='w-full'>
