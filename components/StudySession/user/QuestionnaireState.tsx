@@ -155,172 +155,182 @@ const QuestionComponent = ({
     nextQuestion();
   };
   return (
-    <form onSubmit={submitQuestion} className='flex items-center gap-3'>
-      <div>
-        <button
-          type='button'
-          className='text-4xl disabled:text-gray-500'
-          disabled={!question}
-          onClick={() => {
-            previousQuestion();
-          }}
-        >
-          <MdNavigateBefore />
-        </button>
+    <div className='flex w-full flex-col justify-center gap-3'>
+      <div className='flex'>
+        <h3 className='border-b border-b-indigo-500'>
+          Question {question.position}
+        </h3>
       </div>
-      <div className='flex w-[700px] flex-col gap-3'>
-        <div className='flex'>
-          <h3 className='border-b border-b-indigo-500'>
-            Question {question.position}
-          </h3>
+      <span className='h-20 md:h-12'>{question.question}</span>
+      <form
+        onSubmit={submitQuestion}
+        className='m flex flex-col items-center gap-4 md:flex-row md:items-end md:justify-between'
+      >
+        <div className='flex flex-col items-center'>
+          <button
+            type='button'
+            className='primary flex text-3xl disabled:text-gray-500'
+            disabled={!question}
+            onClick={() => {
+              previousQuestion();
+            }}
+          >
+            <MdNavigateBefore />
+          </button>
+          <span className='whitespace-nowrap'>Previous Question</span>
         </div>
-        <span className='h-14'>{question.question}</span>
-        {question.sus ? (
-          <>
-            <label
-              className='flex cursor-pointer flex-row gap-3'
-              htmlFor={`answer-${question.position}-1`}
-            >
-              <input
+        <div className='mx-10 flex flex-col gap-3'>
+          {question.sus ? (
+            <div className='flex flex-col gap-3'>
+              <label
+                className='flex cursor-pointer flex-row items-center gap-3'
+                htmlFor={`answer-${question.position}-1`}
+              >
+                <input
+                  required
+                  id={`answer-${question.position}-1`}
+                  type='radio'
+                  name={`answer-${question.position}`}
+                  checked={responseState[question.id]?.response === '1'}
+                  onChange={() =>
+                    setResponseState({
+                      ...responseState,
+                      [question.id]: {
+                        response: '1',
+                        responseType: 'SUS',
+                        question,
+                      },
+                    })
+                  }
+                />
+                <span>Strongly disagree</span>
+              </label>
+              <label
+                className='flex cursor-pointer flex-row items-center gap-3'
+                htmlFor={`answer-${question.position}-2`}
+              >
+                <input
+                  required
+                  id={`answer-${question.position}-2`}
+                  type='radio'
+                  name={`answer-${question.position}`}
+                  checked={responseState[question.id]?.response === '2'}
+                  onChange={() =>
+                    setResponseState({
+                      ...responseState,
+                      [question.id]: {
+                        response: '2',
+                        responseType: 'SUS',
+                        question,
+                      },
+                    })
+                  }
+                />
+                <span>Partially disagree</span>
+              </label>
+              <label
+                className='flex cursor-pointer flex-row items-center gap-3'
+                htmlFor={`answer-${question.position}-3`}
+              >
+                <input
+                  required
+                  id={`answer-${question.position}-3`}
+                  type='radio'
+                  name={`answer-${question.position}`}
+                  checked={responseState[question.id]?.response === '3'}
+                  onChange={() =>
+                    setResponseState({
+                      ...responseState,
+                      [question.id]: {
+                        response: '3',
+                        responseType: 'SUS',
+                        question,
+                      },
+                    })
+                  }
+                />
+                <span>Neither agree nor disagree</span>
+              </label>
+              <label
+                className='flex cursor-pointer flex-row items-center gap-3'
+                htmlFor={`answer-${question.position}-4`}
+              >
+                <input
+                  required
+                  id={`answer-${question.position}-4`}
+                  type='radio'
+                  name={`answer-${question.position}`}
+                  checked={responseState[question.id]?.response === '4'}
+                  onChange={() =>
+                    setResponseState({
+                      ...responseState,
+                      [question.id]: {
+                        response: '4',
+                        responseType: 'SUS',
+                        question,
+                      },
+                    })
+                  }
+                />
+                <span>Partially agree</span>
+              </label>
+              <label
+                className='flex cursor-pointer flex-row items-center gap-3'
+                htmlFor={`answer-${question.position}-5`}
+              >
+                <input
+                  required
+                  id={`answer-${question.position}-5`}
+                  type='radio'
+                  name={`answer-${question.position}`}
+                  checked={responseState[question.id]?.response === '5'}
+                  onChange={() =>
+                    setResponseState({
+                      ...responseState,
+                      [question.id]: {
+                        response: '5',
+                        responseType: 'SUS',
+                        question,
+                      },
+                    })
+                  }
+                />
+                <span>Strongly agree</span>
+              </label>
+            </div>
+          ) : (
+            <label htmlFor={`answer-${question.id}`}>
+              <textarea
                 required
-                id={`answer-${question.position}-1`}
-                type='radio'
-                name={`answer-${question.position}`}
-                checked={responseState[question.id]?.response === '1'}
-                onChange={() =>
+                id={`answer-${question.id}`}
+                className='h-40 w-full'
+                placeholder='Type your answer here'
+                value={responseState[question.id]?.response ?? ''}
+                onChange={(e) =>
                   setResponseState({
                     ...responseState,
                     [question.id]: {
-                      response: '1',
-                      responseType: 'SUS',
+                      response: e.target.value,
+                      responseType: 'TEXT',
                       question,
                     },
                   })
                 }
               />
-              <span>Strongly disagree</span>
             </label>
-            <label
-              className='flex cursor-pointer flex-row gap-3'
-              htmlFor={`answer-${question.position}-2`}
-            >
-              <input
-                required
-                id={`answer-${question.position}-2`}
-                type='radio'
-                name={`answer-${question.position}`}
-                checked={responseState[question.id]?.response === '2'}
-                onChange={() =>
-                  setResponseState({
-                    ...responseState,
-                    [question.id]: {
-                      response: '2',
-                      responseType: 'SUS',
-                      question,
-                    },
-                  })
-                }
-              />
-              <span>Partially disagree</span>
-            </label>
-            <label
-              className='flex cursor-pointer flex-row gap-3'
-              htmlFor={`answer-${question.position}-3`}
-            >
-              <input
-                required
-                id={`answer-${question.position}-3`}
-                type='radio'
-                name={`answer-${question.position}`}
-                checked={responseState[question.id]?.response === '3'}
-                onChange={() =>
-                  setResponseState({
-                    ...responseState,
-                    [question.id]: {
-                      response: '3',
-                      responseType: 'SUS',
-                      question,
-                    },
-                  })
-                }
-              />
-              <span>Neither agree nor disagree</span>
-            </label>
-            <label
-              className='flex cursor-pointer flex-row gap-3'
-              htmlFor={`answer-${question.position}-4`}
-            >
-              <input
-                required
-                id={`answer-${question.position}-4`}
-                type='radio'
-                name={`answer-${question.position}`}
-                checked={responseState[question.id]?.response === '4'}
-                onChange={() =>
-                  setResponseState({
-                    ...responseState,
-                    [question.id]: {
-                      response: '4',
-                      responseType: 'SUS',
-                      question,
-                    },
-                  })
-                }
-              />
-              <span>Partially agree</span>
-            </label>
-            <label
-              className='flex cursor-pointer flex-row gap-3'
-              htmlFor={`answer-${question.position}-5`}
-            >
-              <input
-                required
-                id={`answer-${question.position}-5`}
-                type='radio'
-                name={`answer-${question.position}`}
-                checked={responseState[question.id]?.response === '5'}
-                onChange={() =>
-                  setResponseState({
-                    ...responseState,
-                    [question.id]: {
-                      response: '5',
-                      responseType: 'SUS',
-                      question,
-                    },
-                  })
-                }
-              />
-              <span>Strongly agree</span>
-            </label>
-          </>
-        ) : (
-          <label htmlFor={`answer-${question.id}`}>
-            <textarea
-              required
-              id={`answer-${question.id}`}
-              className='h-28 w-full'
-              placeholder='Type your answer here'
-              value={responseState[question.id]?.response ?? ''}
-              onChange={(e) =>
-                setResponseState({
-                  ...responseState,
-                  [question.id]: {
-                    response: e.target.value,
-                    responseType: 'TEXT',
-                    question,
-                  },
-                })
-              }
-            />
-          </label>
-        )}
-      </div>
-      <div>
-        <button type='submit' className='text-4xl disabled:text-gray-500'>
-          <MdNavigateNext />
-        </button>
-      </div>
-    </form>
+          )}
+        </div>
+        <div className='flex flex-col items-center'>
+          <button
+            type='submit'
+            className='primary flex text-3xl disabled:text-gray-500'
+          >
+            <MdNavigateNext />
+          </button>
+          <span className='whitespace-nowrap'>Next Question</span>
+        </div>
+      </form>
+    </div>
   );
 };
 
@@ -406,7 +416,7 @@ const Summary = ({
       <div className='flex'>
         <h3 className='border-b border-b-indigo-500'>Questionnaire summary</h3>
       </div>
-      <div className='h-96 overflow-y-auto'>
+      <div className='h-[70vh] overflow-y-auto p-2'>
         {Object.keys(responseState).map((key, index) => (
           <div className='my-3 flex flex-col'>
             <div className='block'>
