@@ -1,8 +1,8 @@
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import { useSidebar } from 'context/sidebar';
-import { signOut } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import Image from 'next/image';
-import Link from 'next/link';
+// import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import {
@@ -11,7 +11,7 @@ import {
   MdLogout,
   MdMenu,
   MdOutlineNotifications,
-  MdPersonOutline,
+  // MdPersonOutline,
 } from 'react-icons/md';
 
 const Navbar = () => {
@@ -22,7 +22,7 @@ const Navbar = () => {
       <div className='hidden w-full justify-end pr-6 lg:flex'>
         <div className='hidden w-1/2 lg:flex'>
           <div className='flex w-full items-center justify-end pl-8'>
-            <Notifications />
+            {/* <Notifications /> */}
             <UserProfileNav />
           </div>
         </div>
@@ -48,7 +48,7 @@ const Notifications = () => (
 
 const UserProfileNav = () => {
   const router = useRouter();
-
+  const { data: session } = useSession();
   const logOut = async () => {
     const data = await signOut({ redirect: false, callbackUrl: '/' });
     router.push(data.url);
@@ -63,8 +63,8 @@ const UserProfileNav = () => {
       >
         <div className='rounded-full'>
           {profile && (
-            <ul className='absolute left-0 -mt-[70px] w-full rounded border-r bg-gray-900 p-2 shadow md:mt-16'>
-              <li className='flex w-full cursor-pointer items-center justify-between text-white hover:text-indigo-300'>
+            <ul className='absolute left-0 -mt-[70px] w-full rounded border-2 border border-r bg-gray-900 p-2 shadow md:mt-16'>
+              {/* <li className='flex w-full cursor-pointer items-center justify-between text-white hover:text-indigo-300'>
                 <Link href='/profile'>
                   <a>
                     <div className='flex items-center'>
@@ -73,7 +73,7 @@ const UserProfileNav = () => {
                     </div>
                   </a>
                 </Link>
-              </li>
+              </li> */}
               <li className='mt-2 flex w-full cursor-pointer items-center justify-between text-white hover:text-indigo-300'>
                 <button type='button' onClick={() => logOut()}>
                   <div className='flex items-center'>
@@ -87,15 +87,18 @@ const UserProfileNav = () => {
           <div className='relative'>
             <div className='h-10 w-10 rounded-full object-cover'>
               <Image
+                className='rounded-full'
                 layout='fill'
-                src='https://tuk-cdn.s3.amazonaws.com/assets/components/sidebar_layout/sl_1.png'
+                src={session?.user.image ?? '/img/user.png'}
                 alt='avatar'
               />
             </div>
-            <div className='absolute inset-0 m-auto mb-0 mr-0 h-2 w-2 rounded-full border border-white bg-green-400' />
+            {/* <div className='absolute inset-0 m-auto mb-0 mr-0 h-2 w-2 rounded-full border border-white bg-green-400' /> */}
           </div>
         </div>
-        <p className='mx-3 text-sm text-white'>Jane Doe</p>
+        <p className='mx-3 text-sm text-white'>
+          {session?.user.name ?? session?.user.email}
+        </p>
         <div className='cursor-pointer text-white'>
           {profile ? <MdExpandLess /> : <MdExpandMore />}
         </div>

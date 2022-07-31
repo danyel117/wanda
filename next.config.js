@@ -3,7 +3,7 @@ const { withSuperjson } = require('next-superjson');
 
 module.exports = withSuperjson()({
   images: {
-    domains: ['s3.amazonaws.com', 'tuk-cdn.s3.amazonaws.com'],
+    domains: ['s3.amazonaws.com', 'lh3.googleusercontent.com'],
   },
   reactStrictMode: true,
 });
