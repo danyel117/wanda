@@ -1,5 +1,5 @@
 import { useLazyQuery, useQuery } from '@apollo/client';
-import Loading from '@components/Loading';
+import Loading, { MiniLoading } from '@components/Loading';
 import PageHeader from '@components/PageHeader';
 import { Tooltip } from '@mui/material';
 import matchRoles from '@utils/matchRoles';
@@ -11,7 +11,6 @@ import { GetServerSideProps, NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import ReactLoading from 'react-loading';
 import ExcelJS from 'exceljs';
 import { saveAs } from 'file-saver';
 import _ from 'lodash';
@@ -159,11 +158,7 @@ const EvaluationStudyResults: NextPage = () => {
           type='button'
           className='primary flex h-[40px] w-[125px] items-center justify-center'
         >
-          {loading || queryLoading ? (
-            <ReactLoading type='spin' height={20} width={20} />
-          ) : (
-            <span>Export data</span>
-          )}
+          {loading || queryLoading ? <MiniLoading /> : <span>Export data</span>}
         </button>
       </PageHeader>
       <EvaluationResultsChart />
