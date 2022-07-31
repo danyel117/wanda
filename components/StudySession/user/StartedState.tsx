@@ -20,6 +20,9 @@ import { useSession } from 'next-auth/react';
 import { toast } from 'react-toastify';
 import { StartTaskButton } from '@components/StudySession/common/StartTaskButton';
 import Image from 'next/image';
+import { useTutorial } from 'context/tutorial';
+import Joyride, { Step } from 'react-joyride';
+import Loading from '@components/Loading';
 
 const StartedState = () => {
   const { stopPoll, resumePoll } = useStudySession();
@@ -113,24 +116,7 @@ const StartedState = () => {
   }, [recordingFile, taskFinished]);
 
   if (currentTask?.status === 'NOT_STARTED') {
-    return (
-      <Modal open setOpen={() => {}}>
-        <div className='flex flex-col gap-3'>
-          <span className='font-bold text-gray-900'>
-            You are about to start the task # {session.data.currentTask}
-          </span>
-          <span>Task description:</span>
-          <div className='max-h-36 overflow-y-auto bg-gray-50 p-4'>
-            <p>{currentTask.task.description}</p>
-          </div>
-          <span>Hear your expert explaining you the task:</span>
-          <audio src={taskAudio ?? ''} controls />
-          <div className='flex w-full justify-center'>
-            <StartTaskButton />
-          </div>
-        </div>
-      </Modal>
-    );
+    return <NotStartedState />;
   }
 
   if (currentTask?.status === 'STARTED') {
@@ -144,7 +130,66 @@ const StartedState = () => {
   );
 };
 
+const NotStartedState = () => {
+  const { session, currentTask, taskAudio } = useStudySession();
+  const { showTutorial } = useTutorial();
+
+  const steps = [
+    {
+      target: '#reactour__task-description',
+      content: 'Read the description of the task you need to execute',
+      placement: 'right',
+      disableBeacon: true,
+    },
+    {
+      target: '#reactour__task-audio',
+      content: 'Listen to the task description',
+      placement: 'right',
+    },
+    {
+      target: '#reactour__task-begin',
+      content: 'Begin the task whenever you feel you are ready.',
+      placement: 'right',
+    },
+  ] as Step[];
+
+  if (!currentTask) {
+    return <Loading />;
+  }
+
+  return (
+    <Modal open setOpen={() => {}}>
+      <div className='flex flex-col gap-3'>
+        <span className='font-bold text-gray-900'>
+          You are about to start the task # {session.data.currentTask}
+        </span>
+        <span>Task description:</span>
+        <div className='max-h-36 overflow-y-auto bg-gray-50 p-4'>
+          <p id='reactour__task-description'>{currentTask.task.description}</p>
+        </div>
+        <span>Hear your expert explaining you the task:</span>
+        <audio id='reactour__task-audio' src={taskAudio ?? ''} controls />
+        <div className='flex w-full justify-center' id='reactour__task-begin'>
+          <StartTaskButton />
+        </div>
+      </div>
+      <Joyride
+        run={currentTask.task.order === 1 && showTutorial}
+        steps={steps}
+        continuous
+        showProgress
+        styles={{
+          options: {
+            zIndex: 10000,
+          },
+        }}
+      />
+    </Modal>
+  );
+};
+
 const StudySessionTaskControls = ({ taskAudio }: { taskAudio: string }) => {
+  const { showTutorial } = useTutorial();
   const [position, setPosition] = useState({
     x: 0,
     y: window.innerHeight - 180,
@@ -184,64 +229,92 @@ const StudySessionTaskControls = ({ taskAudio }: { taskAudio: string }) => {
     setPosition({ x: newX, y: newY });
   };
 
+  const steps: Step[] = [
+    {
+      target: '#reactour__task-controls',
+      content:
+        'Use the controls to check the task description and finish the task when you feel it is ready. You can also mark it as failed if you feel you were not able to complete it',
+      placement: 'top',
+      disableBeacon: true,
+    },
+  ];
+
   return (
-    <Draggable position={position} onStop={stopDragging}>
-      <div
-        className={`flex flex-col items-start justify-center rounded-xl border-4 border-yellow-500 p-2   ${
-          showOptions
-            ? 'bg-gray-50 text-gray-900'
-            : 'bg-gray-500 p-2 text-white opacity-95'
-        } cursor-move shadow-xl`}
-      >
-        <div className='flex items-center'>
+    <>
+      <Draggable position={position} onStop={stopDragging}>
+        <div
+          id='reactour__task-controls'
+          className={`flex flex-col items-start justify-center rounded-xl border-4 border-yellow-500 p-2   ${
+            showOptions
+              ? 'bg-gray-50 text-gray-900'
+              : 'bg-gray-500 p-2 text-white opacity-95'
+          } cursor-move shadow-xl`}
+        >
           <div className='flex items-center'>
-            {showOptions ? (
-              <Image src='/img/logo-no-text.png' width={30} height={30} />
-            ) : (
-              <Image src='/img/logo-no-text-white.png' width={30} height={30} />
-            )}
-            <div className='nowrap m-2 flex cursor-move flex-nowrap text-2xl font-bold '>
-              Task controls
+            <div className='flex items-center'>
+              {showOptions ? (
+                <Image src='/img/logo-no-text.png' width={30} height={30} />
+              ) : (
+                <Image
+                  src='/img/logo-no-text-white.png'
+                  width={30}
+                  height={30}
+                />
+              )}
+              <div className='nowrap m-2 flex cursor-move flex-nowrap text-2xl font-bold '>
+                Task controls
+              </div>
             </div>
+            <button type='button' onClick={() => setShowOptions(!showOptions)}>
+              {showOptions ? (
+                <MdOutlineKeyboardArrowUp />
+              ) : (
+                <MdOutlineKeyboardArrowDown />
+              )}
+            </button>
           </div>
-          <button type='button' onClick={() => setShowOptions(!showOptions)}>
-            {showOptions ? (
-              <MdOutlineKeyboardArrowUp />
-            ) : (
-              <MdOutlineKeyboardArrowDown />
-            )}
-          </button>
+          {showOptions && (
+            <div className='flex flex-col items-start gap-3'>
+              <span className=''>
+                Task {currentTask?.task.order}: {currentTask?.task.description}
+              </span>
+              <div className='flex gap-3'>
+                <audio src={taskAudio} controls />
+                <Tooltip title='Mark task as finished'>
+                  <button
+                    onClick={() => updateStudySessionStatus('COMPLETED')}
+                    type='button'
+                    className='cursor-pointer text-4xl text-green-500 hover:text-green-700'
+                  >
+                    <MdOutlineCheckCircle />
+                  </button>
+                </Tooltip>
+                <Tooltip title='Mark task as failed'>
+                  <button
+                    onClick={() => updateStudySessionStatus('FAILED')}
+                    type='button'
+                    className='cursor-pointer text-4xl text-red-500 hover:text-red-700'
+                  >
+                    <MdCancel />
+                  </button>
+                </Tooltip>
+              </div>
+            </div>
+          )}
         </div>
-        {showOptions && (
-          <div className='flex flex-col items-start gap-3'>
-            <span className=''>
-              Task {currentTask?.task.order}: {currentTask?.task.description}
-            </span>
-            <div className='flex gap-3'>
-              <audio src={taskAudio} controls />
-              <Tooltip title='Mark task as finished'>
-                <button
-                  onClick={() => updateStudySessionStatus('COMPLETED')}
-                  type='button'
-                  className='cursor-pointer text-4xl text-green-500 hover:text-green-700'
-                >
-                  <MdOutlineCheckCircle />
-                </button>
-              </Tooltip>
-              <Tooltip title='Mark task as failed'>
-                <button
-                  onClick={() => updateStudySessionStatus('FAILED')}
-                  type='button'
-                  className='cursor-pointer text-4xl text-red-500 hover:text-red-700'
-                >
-                  <MdCancel />
-                </button>
-              </Tooltip>
-            </div>
-          </div>
-        )}
-      </div>
-    </Draggable>
+      </Draggable>
+      <Joyride
+        run={showTutorial && currentTask?.task.order === 1}
+        steps={steps}
+        continuous
+        showProgress
+        styles={{
+          options: {
+            zIndex: 10000,
+          },
+        }}
+      />
+    </>
   );
 };
 
