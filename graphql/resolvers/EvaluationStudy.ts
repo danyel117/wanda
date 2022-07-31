@@ -97,6 +97,96 @@ const EvaluationStudyResolvers: Resolver = {
           },
         },
       }),
+    fullDeleteEvaluationStudy: async (parent, args, context) => {
+      const evaluationStudy = await prisma.evaluationStudy.findUnique({
+        where: {
+          id: args.id,
+        },
+      });
+
+      if (evaluationStudy?.userId === context.session?.user.id) {
+        // delete question responses
+        await prisma.questionResponse.deleteMany({
+          where: {
+            question: {
+              questionnaire: {
+                evaluationStudyId: {
+                  equals: args.id,
+                },
+              },
+            },
+          },
+        });
+
+        // delete questions
+        await prisma.question.deleteMany({
+          where: {
+            questionnaire: {
+              evaluationStudyId: {
+                equals: args.id,
+              },
+            },
+          },
+        });
+
+        // delete questionnaire
+        await prisma.questionnaire.deleteMany({
+          where: {
+            evaluationStudyId: {
+              equals: args.id,
+            },
+          },
+        });
+
+        // delete study session data
+        await prisma.studySessionData.deleteMany({
+          where: {
+            studySession: {
+              studyId: {
+                equals: args.id,
+              },
+            },
+          },
+        });
+
+        // delete study session tasks
+        await prisma.studySessionTask.deleteMany({
+          where: {
+            session: {
+              studyId: {
+                equals: args.id,
+              },
+            },
+          },
+        });
+
+        // delete tasks
+        await prisma.task.deleteMany({
+          where: {
+            studyId: {
+              equals: args.id,
+            },
+          },
+        });
+
+        // delete study
+        await prisma.evaluationStudy.deleteMany({
+          where: {
+            id: {
+              equals: args.id,
+            },
+          },
+        });
+
+        return {
+          result: true,
+        };
+      }
+
+      return {
+        result: false,
+      };
+    },
   },
 };
 

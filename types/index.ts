@@ -8,6 +8,7 @@ import {
   StudySessionTask,
   QuestionResponse,
   Question,
+  Questionnaire,
 } from '@prisma/client';
 import { NextApiRequest } from 'next';
 import { Session } from 'next-auth';
@@ -43,6 +44,16 @@ export interface UserStudy extends EvaluationStudy {
 
 export interface ExtendedStudy extends EvaluationStudy {
   script: Script;
+}
+
+export interface ExtendedQuestionnaire extends Questionnaire {
+  questions: Question[];
+}
+
+export interface ExtendedEvaluationStudy extends EvaluationStudy {
+  tasks: Task[];
+  script: Script;
+  questionnaire: ExtendedQuestionnaire;
 }
 
 export interface ExtendedStudySessionTask extends StudySessionTask {

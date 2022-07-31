@@ -215,7 +215,7 @@ const NewStudy: NextPage = () => {
                     </option>
                   ))}
                 </select>
-                <Tooltip title={`${script ?? 'View script'}`}>
+                <Tooltip title={`${script?.name ?? 'View script'}`}>
                   <button
                     disabled={!script}
                     onClick={() => setShowScriptModal(true)}
