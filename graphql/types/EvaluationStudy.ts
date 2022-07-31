@@ -45,10 +45,15 @@ const StudyTypes = gql`
     getUserStudies: [EvaluationStudy]
   }
 
+  type DeletionResult {
+    result: Boolean
+  }
+
   type Mutation {
     createEvaluationStudyWithTasks(
       data: EvaluationStudyCreateInputWithTasks
     ): EvaluationStudy
+    fullDeleteEvaluationStudy(id: String): DeletionResult
   }
 `;
 

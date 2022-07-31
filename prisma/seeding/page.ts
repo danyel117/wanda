@@ -65,6 +65,12 @@ const pages = [
     roles: ['ADMIN', 'EXPERT'],
     isPublic: false,
   },
+  {
+    name: 'Profile',
+    route: '/profile',
+    roles: ['ADMIN', 'EXPERT', 'PARTICIPANT'],
+    isPublic: false,
+  },
 ];
 
 export { pages };

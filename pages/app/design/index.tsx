@@ -75,11 +75,7 @@ const StudyCard = ({ study }: StudyCardProps) => (
     </div>
     <div className='flex flex-col gap-3 md:flex-row'>
       <Link href={`/app/design/${study.id}`}>
-        <button
-          disabled={study.status !== 'DRAFT'}
-          type='button'
-          className='primary'
-        >
+        <button type='button' className='primary'>
           Update Study
         </button>
       </Link>
