@@ -2,12 +2,13 @@ import { useEffect, useState } from 'react';
 import RichTextEditor, { EditorValue } from 'react-rte';
 
 interface RichTextProps {
+  defaultValue?: EditorValue;
   onChange: (state: EditorValue) => void;
 }
 
-const RichText = ({ onChange }: RichTextProps) => {
+const RichText = ({ onChange, defaultValue }: RichTextProps) => {
   const [state, setState] = useState<EditorValue>(
-    RichTextEditor.createEmptyValue()
+    defaultValue ?? RichTextEditor.createEmptyValue()
   );
 
   useEffect(() => {

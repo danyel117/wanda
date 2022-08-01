@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from '@apollo/client';
 import DataRepeater, { RepeatedComponentProps } from '@components/DataRepeater';
 import Modal from '@components/modals/Modal';
-import { ScriptCard } from '@components/Scritps/ScriptCard';
+import { ScriptCard } from '@components/Scripts/ScriptCard';
 import {
   Accordion,
   AccordionDetails,

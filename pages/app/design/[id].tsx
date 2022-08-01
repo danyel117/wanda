@@ -10,7 +10,7 @@ import { SyntheticEvent, useEffect, useState } from 'react';
 import { Question, Script, Task } from '@prisma/client';
 import { MdVisibility } from 'react-icons/md';
 import Modal from '@components/modals/Modal';
-import { ScriptCard } from '@components/Scritps/ScriptCard';
+import { ScriptCard } from '@components/Scripts/ScriptCard';
 import useFormData from 'hooks/useFormData';
 import {
   DELETE_EVALUATION_STUDY,
