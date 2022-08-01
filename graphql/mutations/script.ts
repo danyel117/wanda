@@ -8,4 +8,23 @@ const CREATE_SCRIPT = gql`
   }
 `;
 
-export { CREATE_SCRIPT };
+const UPDATE_SCRIPT = gql`
+  mutation UpdateScript(
+    $where: ScriptWhereUniqueInput!
+    $data: ScriptUpdateInput
+  ) {
+    updateScript(where: $where, data: $data) {
+      id
+    }
+  }
+`;
+
+const DELETE_SCRIPT = gql`
+  mutation DeleteScript($where: ScriptWhereUniqueInput!) {
+    deleteScript(where: $where) {
+      id
+    }
+  }
+`;
+
+export { CREATE_SCRIPT, UPDATE_SCRIPT, DELETE_SCRIPT };
