@@ -17,7 +17,7 @@ import useFormData from 'hooks/useFormData';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { SyntheticEvent, useEffect, useMemo, useState } from 'react';
-import { MdBarChart, MdLaunch, MdQuestionAnswer } from 'react-icons/md';
+import { MdBarChart, MdLaunch } from 'react-icons/md';
 import { toast } from 'react-toastify';
 import { ExtendedStudySession } from 'types';
 import { nanoid } from 'nanoid';
