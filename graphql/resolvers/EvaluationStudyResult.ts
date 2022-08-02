@@ -44,7 +44,7 @@ const EvaluationStudyResultResolvers: Resolver = {
       await prisma.$queryRaw`refresh materialized view public.evaluationstudyresult`;
       const taskResults = await prisma.$queryRaw`
         select 
-            esr."order",
+            esr."order"::int,
             esr.description,
             EXTRACT(epoch FROM esr.duration) as "duration",
             (cast(esr.completed as decimal) / esr.total) as "successRate"
@@ -52,13 +52,14 @@ const EvaluationStudyResultResolvers: Resolver = {
         where esr.id = ${args.id};
       `;
 
-      const participantStatus: any = await prisma.$queryRaw`
+      const participantStatus: { [key: string]: number }[] =
+        await prisma.$queryRaw`
       select 
-      count(*) FILTER (WHERE ss.status = 'COMPLETED') AS "completed",
-      count(*) FILTER (WHERE ss.status = 'NOT_STARTED') AS "notStarted",
-      count(*) as "total",
-      es."participantTarget",
-      es."participantTarget" - count(*) as "missing"
+      count(*) FILTER (WHERE ss.status = 'COMPLETED')::int AS "completed",
+      count(*) FILTER (WHERE ss.status = 'NOT_STARTED')::int AS "notStarted",
+      count(*)::int as "total",
+      es."participantTarget"::int,
+      es."participantTarget"::int - count(*)::int as "missing"
       from "EvaluationStudy" es 
         left join "StudySession" ss
           on ss."studyId" = es.id

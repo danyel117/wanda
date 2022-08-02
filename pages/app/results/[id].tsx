@@ -334,13 +334,13 @@ const EvaluationResultsChart = () => {
         <div>
           <Tooltip
             title={`Finished: ${
-              data.getEvaluationResults?.participantStatus.completed ?? 0
+              data.getEvaluationResults?.participantStatus?.completed ?? 0
             } | Target: ${
-              data.getEvaluationResults.participantStatus.participantTarget
+              data.getEvaluationResults?.participantStatus?.participantTarget
             }`}
           >
             <div>
-              <RadialBarChart value={totalProgress} />
+              <RadialBarChart value={totalProgress ?? 0} />
             </div>
           </Tooltip>
         </div>

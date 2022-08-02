@@ -184,7 +184,7 @@ model StudySessionTask {
 
 model Script {
   id        String            @id @default(cuid())
-  name      String            @unique
+  name      String
   script    String            @db.Text
   recording String?
   createdBy User              @relation(fields: [userId], references: [id])
