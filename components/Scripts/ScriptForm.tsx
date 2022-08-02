@@ -99,10 +99,10 @@ interface LabelWithHelpProps {
   help: string;
 }
 
-const LabelWithHelp = ({ label, help }: LabelWithHelpProps) => (
+export const LabelWithHelp = ({ label, help }: LabelWithHelpProps) => (
   <div className='flex items-center gap-2'>
     <span>{label}</span>
-    <Tooltip title={help}>
+    <Tooltip title={<span className='text-sm'>{help}</span>}>
       <div>
         <BsQuestionCircle />
       </div>

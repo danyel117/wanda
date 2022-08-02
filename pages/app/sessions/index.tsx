@@ -17,10 +17,11 @@ import useFormData from 'hooks/useFormData';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { SyntheticEvent, useEffect, useMemo, useState } from 'react';
-import { MdBarChart, MdLaunch } from 'react-icons/md';
+import { MdBarChart, MdLaunch, MdQuestionAnswer } from 'react-icons/md';
 import { toast } from 'react-toastify';
 import { ExtendedStudySession } from 'types';
 import { nanoid } from 'nanoid';
+import { LabelWithHelp } from '@components/Scripts/ScriptForm';
 
 const StudySessionIndex = () => {
   const { data: session } = useSession();
@@ -278,7 +279,10 @@ const NewStudySession = ({ setOpenNew }: NewStudySessionProps) => {
           <input type='email' name='participantEmail' required />
         </label>
         <label htmlFor='type'>
-          <span>Type of session</span>
+          <LabelWithHelp
+            label='Type of session'
+            help='Select if the system should use Think Aloud or Question-Asking Protocol and whether or not the participant will do the evaluation on their own.'
+          />
           <select name='type' defaultValue=''>
             <option value='' disabled>
               Select an option
@@ -286,14 +290,17 @@ const NewStudySession = ({ setOpenNew }: NewStudySessionProps) => {
             <option value='0'>Participant only - Think Aloud</option>
             <option value='1'>Participant + expert - Think Aloud</option>
             <option value='2'>
+              Participant only - Question-Asking Protocol
+            </option>
+            <option value='3'>
               Participant + expert - Question-Asking Protocol
             </option>
-            <option value='3'>Other</option>
+            <option value='4'>Other</option>
           </select>
         </label>
         {formData.type === '3' && (
           <label htmlFor='standAlone' className='flex flex-row gap-3'>
-            <span>Is the session stand-alone?</span>
+            <span>Is the session participant-only?</span>
             <input name='standAlone' type='checkbox' />
           </label>
         )}
