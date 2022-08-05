@@ -37,21 +37,27 @@ const TutorialContextProvider = ({
   children,
 }: TutorialContextProviderProps) => {
   const [showTutorial, setShowTutorial] = useState<boolean>(() => {
-    const localStorageShowTutorial = JSON.parse(
-      localStorage.getItem('showTutorial') as string
-    );
-    if (localStorageShowTutorial) {
-      return localStorageShowTutorial.tutorial;
+    try {
+      const localStorageShowTutorial = JSON.parse(
+        localStorage.getItem('showTutorial') as string
+      );
+      if (localStorageShowTutorial) {
+        return localStorageShowTutorial.tutorial;
+      }
+    } catch {
+      return false;
     }
-
-    return false;
   });
 
   useEffect(() => {
-    localStorage.setItem(
-      'showTutorial',
-      JSON.stringify({ tutorial: showTutorial })
-    );
+    try {
+      localStorage.setItem(
+        'showTutorial',
+        JSON.stringify({ tutorial: showTutorial })
+      );
+    } catch {
+      // ignore
+    }
   }, [showTutorial]);
 
   const tutorialContext = useMemo(
