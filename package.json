@@ -12,10 +12,10 @@
     "test": "jest --watch",
     "lint": "eslint components/** utils/** pages/**",
     "lint:fix": "eslint --fix components/** utils/** pages/**",
-    "generate_build": "cosmo && npx prisma generate && prettier --config .prettierrc prisma/generated/graphql/**/*.ts --write && next build",
+    "generate_build": "cosmo && npx prisma generate --data-proxy && prettier --config .prettierrc prisma/generated/graphql/**/*.ts --write && next build",
     "aurora": "aurora && npx prisma format",
     "cosmo": "cosmo && prettier --config .prettierrc prisma/generated/graphql/**/*.ts --write",
-    "generate": "yarn aurora && npx prisma generate && yarn cosmo",
+    "generate": "yarn aurora && npx prisma generate --data-proxy && yarn cosmo",
     "migrate-dev": "yarn aurora && npx prisma migrate dev",
     "migrate-deploy": "yarn aurora && npx prisma migrate deploy"
   },
