@@ -99,6 +99,7 @@ const QuestionnaireState = () => {
 
   return (
     <QuestionComponent
+      total={questionnaire.getStudyQuestionnaire.questions.length}
       previousQuestion={previousQuestion}
       nextQuestion={nextQuestion}
       question={currentQuestion}
@@ -136,6 +137,7 @@ const BeginQuestionnaire = ({
 );
 
 interface QuestionComponentInterface {
+  total?: number;
   question: Question;
   previousQuestion: () => void;
   nextQuestion: () => void;
@@ -144,6 +146,7 @@ interface QuestionComponentInterface {
 }
 
 const QuestionComponent = ({
+  total,
   question,
   previousQuestion,
   nextQuestion,
@@ -158,7 +161,7 @@ const QuestionComponent = ({
     <div className='flex w-full flex-col justify-center gap-3'>
       <div className='flex'>
         <h3 className='border-b border-b-indigo-500'>
-          Question {question.position}
+          Question {question.position} of {total}
         </h3>
       </div>
       <span className='h-20 md:h-12'>{question.question}</span>
@@ -169,15 +172,15 @@ const QuestionComponent = ({
         <div className='flex flex-col items-center'>
           <button
             type='button'
-            className='primary flex text-3xl disabled:text-gray-500'
+            className='secondary flex items-center disabled:text-gray-500'
             disabled={!question}
             onClick={() => {
               previousQuestion();
             }}
           >
             <MdNavigateBefore />
+            <span className='whitespace-nowrap'>Previous</span>
           </button>
-          <span className='whitespace-nowrap'>Previous Question</span>
         </div>
         <div className='mx-10 flex flex-col gap-3'>
           {question.sus ? (
@@ -323,11 +326,11 @@ const QuestionComponent = ({
         <div className='flex flex-col items-center'>
           <button
             type='submit'
-            className='primary flex text-3xl disabled:text-gray-500'
+            className='secondary flex items-center disabled:text-gray-500'
           >
+            <span className='whitespace-nowrap'>Next</span>
             <MdNavigateNext />
           </button>
-          <span className='whitespace-nowrap'>Next Question</span>
         </div>
       </form>
     </div>
