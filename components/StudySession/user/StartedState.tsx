@@ -151,6 +151,12 @@ const NotStartedState = () => {
       content: 'Begin the task whenever you feel you are ready.',
       placement: 'right',
     },
+    {
+      target: '#reactour__task-begin',
+      content:
+        'Wanda will start recording your voice automatically. You should accept the microphone usage permission when prompted by your browser.',
+      placement: 'right',
+    },
   ] as Step[];
 
   if (!currentTask) {
@@ -195,7 +201,7 @@ const StudySessionTaskControls = ({ taskAudio }: { taskAudio: string }) => {
     y: window.innerHeight - 180,
   });
   const { currentTask } = useStudySession();
-  const [showOptions, setShowOptions] = useState<boolean>(false);
+  const [showOptions, setShowOptions] = useState<boolean>(true);
   const { updateStudySessionTask } = useUpdateStudySessionData();
 
   const updateStudySessionStatus = async (
@@ -233,7 +239,7 @@ const StudySessionTaskControls = ({ taskAudio }: { taskAudio: string }) => {
     {
       target: '#reactour__task-controls',
       content:
-        'Use the controls to check the task description and finish the task when you feel it is ready. You can also mark it as failed if you feel you were not able to complete it',
+        'Use the controls to check the task description and finish the task when you feel it is ready. You can also mark it as failed if you feel you were not able to complete it. Please note that you can move this box around if you need.',
       placement: 'top',
       disableBeacon: true,
     },

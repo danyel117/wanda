@@ -71,6 +71,12 @@ const pages = [
     roles: ['ADMIN', 'EXPERT', 'PARTICIPANT'],
     isPublic: false,
   },
+  {
+    name: 'SUS Visualization',
+    route: '/visualize-sus',
+    roles: ['ADMIN', 'EXPERT', 'PARTICIPANT'],
+    isPublic: true,
+  },
 ];
 
 export { pages };

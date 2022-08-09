@@ -17,6 +17,7 @@ const PrivateRoute = ({ children, rejected, isPublic }: PrivateRouteProps) => {
   const router = useRouter();
 
   if (status === 'loading') return <Loading />;
+
   if (isPublic) return children;
 
   if (!session) {
