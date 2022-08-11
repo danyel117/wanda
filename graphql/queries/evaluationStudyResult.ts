@@ -28,6 +28,7 @@ const GET_EXPORT_DATA = gql`
       sessions {
         createdAt
         participant {
+          id
           email
         }
         taskList {

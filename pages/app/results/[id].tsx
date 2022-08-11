@@ -124,7 +124,7 @@ const EvaluationStudyResults: NextPage = () => {
         data.evaluationStudy.sessions.forEach((es: ExtendedStudySession) => {
           es.taskList.forEach((tl: ExtendedStudySessionTask) => {
             downloadData.tasks.push({
-              participant: es.participant.email ?? '',
+              participant: es.participant.id ?? '',
               task: tl.task.description,
               status: tl.status,
               transcript: tl.userRecordingTranscription ?? '',
@@ -134,7 +134,7 @@ const EvaluationStudyResults: NextPage = () => {
           });
           es.questionResponses.forEach((q: ExtendedQuestionResponse) => {
             downloadData.questions.push({
-              participant: es.participant.email ?? '',
+              participant: es.participant.id ?? '',
               question: q.question.question ?? '',
               sus: q.question.sus,
               responseText: q.responseText ?? undefined,
