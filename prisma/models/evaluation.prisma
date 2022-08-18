@@ -29,6 +29,20 @@ enum Enum_EvaluationStudyStatus {
     COMPLETED
 }
 
+enum Enum_QuestionAskingProtocolType {
+    TARGET
+    INTENT
+}
+
+enum Enum_QuestionAskingProtocolCategory {
+    STATE
+    GOAL
+    MEANS
+    EFFECT
+    EXPLORATORY
+    CONFIRMATORY
+}
+
 model EvaluationStudy {
     id                String                     @id @default(cuid())
     name              String
@@ -44,6 +58,18 @@ model EvaluationStudy {
     sessions          StudySession[]
     tasks             Task[]
     questionnaire     Questionnaire?
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model ParticipantQuestion {
+    id               String                              @id @default(cuid())
+    question         String
+    questionType     Enum_QuestionAskingProtocolType
+    questionCategory Enum_QuestionAskingProtocolCategory
+    session          StudySession                        @relation(fields: [studySessionId], references: [id])
+    studySessionId   String
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -99,19 +125,20 @@ model StudySessionData {
 }
 
 model StudySession {
-    id                String                  @id @default(cuid())
-    status            Enum_StudySessionStatus @default(NOT_STARTED)
-    sessionType       Enum_StudySessionType   @default(ThinkAloud)
-    isStandAlone      Boolean                 @default(false)
-    study             EvaluationStudy         @relation(fields: [studyId], references: [id])
-    studyId           String
-    expert            User                    @relation(fields: [expertId], references: [id], name: "session-expert")
-    expertId          String
-    participant       User                    @relation(fields: [participantId], references: [id], name: "session-user")
-    participantId     String
-    data              StudySessionData?
-    tasks             StudySessionTask[]
-    questionResponses QuestionResponse[]
+    id                   String                  @id @default(cuid())
+    status               Enum_StudySessionStatus @default(NOT_STARTED)
+    sessionType          Enum_StudySessionType   @default(ThinkAloud)
+    isStandAlone         Boolean                 @default(false)
+    study                EvaluationStudy         @relation(fields: [studyId], references: [id])
+    studyId              String
+    expert               User                    @relation(fields: [expertId], references: [id], name: "session-expert")
+    expertId             String
+    participant          User                    @relation(fields: [participantId], references: [id], name: "session-user")
+    participantId        String
+    data                 StudySessionData?
+    tasks                StudySessionTask[]
+    questionResponses    QuestionResponse[]
+    participantQuestions ParticipantQuestion[]
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt

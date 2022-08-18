@@ -1,6 +1,9 @@
 import Loading from '@components/Loading';
 import { Accordion, AccordionDetails, AccordionSummary } from '@mui/material';
-import { Enum_StudySessionTaskStatus } from '@prisma/client';
+import {
+  Enum_StudySessionTaskStatus,
+  Enum_StudySessionType,
+} from '@prisma/client';
 import matchRoles from '@utils/matchRoles';
 import {
   StudySessionContextProvider,
@@ -15,6 +18,7 @@ import SUS from 'react-system-usability-scale';
 import 'react-system-usability-scale/dist/styles/styles.css';
 import PageHeader from '@components/PageHeader';
 import { useEffect } from 'react';
+import { QuestionAskingProtocol } from '@components/QuestionAskingProtocol';
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { rejected, isPublic, page } = await matchRoles(ctx);
@@ -70,6 +74,17 @@ const SessionResultComponent = () => {
         </div>
       </div>
       <div>
+        {session.sessionType ===
+          Enum_StudySessionType.QuestionAskingProtocol && (
+          <Accordion>
+            <AccordionSummary expandIcon={<MdExpandMore />}>
+              Question-Asking Protocol
+            </AccordionSummary>
+            <AccordionDetails className='bg-gray-100'>
+              <QuestionAskingProtocol />
+            </AccordionDetails>
+          </Accordion>
+        )}
         <Accordion>
           <AccordionSummary expandIcon={<MdExpandMore />}>
             Tasks

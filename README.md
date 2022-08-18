@@ -1,7 +1,13 @@
 Welcome to Wanda!
 
------this is work in progress-----
+Wanda is the result of Daniel Saldarriaga's dissertation project.
 
-Wanda is an open-source tool for executing Think Aloud and Question-Asking Protocol evaluations remotely!
+For installing the dependencies, run:
 
-Feel free to contribute!
+`yarn install`
+
+For executing Wanda, run:
+
+`yarn dev`
+
+

@@ -22,6 +22,7 @@ const GET_STUDY_SESSION = gql`
       id
       updatedAt
       sus
+      sessionType
       study {
         id
         name

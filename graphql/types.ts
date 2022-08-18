@@ -7,6 +7,7 @@ import { QuestionnaireTypes } from 'graphql/types/Questionnaire';
 import { StudySessionTaskTypes } from 'graphql/types/StudySessionTask';
 import { EvaluationStudyResultTypes } from 'graphql/types/EvaluationStudyResult';
 import { UserTypes } from 'graphql/types/User';
+import { ParticipantQuestionTypes } from 'graphql/types/ParticipantQuestion';
 
 const GlobalTypes = gql`
   scalar Date
@@ -37,6 +38,7 @@ const customTypes: DocumentNode[] = [
   StudySessionTaskTypes,
   EvaluationStudyResultTypes,
   UserTypes,
+  ParticipantQuestionTypes,
 ];
 
 export { customTypes };
